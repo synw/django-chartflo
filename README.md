@@ -20,6 +20,16 @@ class MyChartsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MyChartsView, self).get_context_data(**kwargs)
+        # get the data
+        query = MyModelToChart.objects.all()
+        # format the data
+        dataset = {}
+        for elem in query:
+        	if elem.name in dataset.keys():
+        		dataset[elem.name] = dataset[elem.name]+1
+        else:
+        	dataset[elem.name] = 1
+        # pack the data
         datapack = {
         		# required
         		'chart_id': 'chart_mymodeltochart',
@@ -35,7 +45,10 @@ In the template
 
    ```django
 {% include "chartflo/charts/pie.html" %}
-<div id="{{ datapack.chart_id }}" class="gds-xl" style="width: 100%; height: 600px; background-color: #FFFFFF;" ></div>
+<div id="{{ datapack.chart_id }}" 
+	class="gds-xl" 
+	style="width: 100%; height: 600px; background-color: #FFFFFF;" >
+</div>
    ```
 Available charts: `pie.html`, `bar.html`, `pyramid.html`, `timeline.html`
 

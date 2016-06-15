@@ -1,0 +1,48 @@
+{% load i18n staticfiles %}
+
+<script src="{% static 'js/amcharts/amcharts.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/amcharts/pie.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/amcharts/serial.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/amcharts/plugins/export/export.js' %}" type="text/javascript"></script>
+<script type="text/javascript">
+AmCharts.makeChart("{{ datapack.chart_id }}",
+	{
+		"type": "pie",
+		"marginTop": 0,
+		"creditsPosition": "bottom-right",
+		"angle": 16.2,
+		"balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+		"depth3D": 15,
+		"innerRadius": 25,
+		"labelText": "[[title]]: [[val]] {{ datapack.data_label }}",
+		"startAngle": 0,
+		"maxLabelWidth": 198,
+		"sequencedAnimation": false,
+		"titleField": "key",
+		"valueField": "val",
+		"theme": "light",
+		"allLabels": [],
+		"balloon": {},
+		"legend": {
+			"enabled": {% if datapack.legend == True %}true{% else %}false{% endif %},
+			"align": "center",
+			"markerType": "circle",
+			"rollOverGraphAlpha": 0,
+			"valueText": "[[value]] ( [[percents]] )%"
+		},
+		"titles": [
+		],
+		"export": {
+          "enabled": true
+        },
+		"dataProvider": [
+			{% for label, score in datapack.dataset.items %} 
+			{
+				"key": "{{ label }}",
+				"val": {{ score }},
+			},
+			{% endfor %}
+		]
+	}
+);
+</script>

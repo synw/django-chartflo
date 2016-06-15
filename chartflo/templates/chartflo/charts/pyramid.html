@@ -1,0 +1,41 @@
+{% load i18n staticfiles %}
+
+<script src="{% static 'js/amcharts/amcharts.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/amcharts/funnel.js' %}"></script>
+<script src="{% static 'js/amcharts/serial.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/amcharts/plugins/export/export.js' %}" type="text/javascript"></script>
+<script type="text/javascript">
+var chart = AmCharts.makeChart( "{{ datapack.chart_id }}", {
+	"type": "funnel",
+	"creditsPosition": "bottom-right",
+	"balloon": {
+	  "fixedPosition": true
+	},
+	"valueField": "val",
+	"titleField": "key",
+	"marginRight": 240,
+	"marginLeft": 50,
+	"startX": -500,
+	"rotate": true,
+	"labelPosition": "right",
+	"balloonText": "[[key]]:  [[val]] {{ datapack.data_label }}",
+	"export": {
+	  "enabled": true
+	},
+	"legend": {
+			"enabled": {% if datapack.legend == True %}true{% else %}false{% endif %},
+			"useGraphSettings": true
+			},
+	"export": {
+          "enabled": true
+        },
+	"dataProvider": [
+				{% for label, score in datapack.dataset.items %} 
+				{
+					"key": "{{ label }}",
+					"val": {{ score }},
+				},
+				{% endfor %}
+			]
+	} );
+</script>

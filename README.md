@@ -33,7 +33,7 @@ class MyChartsView(TemplateView):
         datapack = {
         		# required
         		'chart_id': 'chart_mymodeltochart',
-        		'data_label': data_label, 
+        		'data_label': 'My model to chart', 
         		'dataset': dataset, 
         		# optional
         		'legend':True

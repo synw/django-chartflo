@@ -1,13 +1,13 @@
 Django Chartflo
 ===============
 
-Charts for the lazy ones in Django
+Charts for the lazy ones in Django: just make your query, pack the data and include a template. There is no
+particular concept to understand nor complicated code to do.
 
 Install
 --------------
 
 Clone and add `'chartflo',` to INSTALLED_APPS
-
 
 Usage
 --------------

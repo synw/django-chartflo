@@ -45,9 +45,7 @@ In the template
 
    ```django
 {% include "chartflo/charts/pie.html" %}
-<div id="{{ datapack.chart_id }}" 
-	class="gds-xl" 
-	style="width: 100%; height: 600px; background-color: #FFFFFF;" >
+<div id="{{ datapack.chart_id }}" style="width: 100%; height: 600px; background-color: #FFFFFF;">
 </div>
    ```
 Available charts: `pie.html`, `bar.html`, `pyramid.html`, `timeline.html`

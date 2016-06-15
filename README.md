@@ -1,8 +1,8 @@
 Django Chartflo
 ===============
 
-Charts for the lazy ones in Django: just make your query, pack the data and include a template. There is no
-particular concept to understand nor complicated code to do.
+Charts for the lazy ones in Django (using Amcharts). just make your query, pack the data and include a template. 
+There is no particular concept to understand nor complicated code to write.
 
 Install
 --------------

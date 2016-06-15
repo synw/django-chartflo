@@ -1,7 +1,7 @@
 Django Chartflo
 ===============
 
-Charts for the lazy ones in Django (using Amcharts). just make your query, pack the data and include a template. 
+Charts for the lazy ones in Django using [Amcharts](https://www.amcharts.com). Just make your query, pack the data and include a template. 
 There is no particular concept to understand nor complicated code to write.
 
 Install
@@ -21,7 +21,7 @@ class MyChartsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(MyChartsView, self).get_context_data(**kwargs)
         # get the data
-        query = MyModelToChart.objects.all()
+        query = MyModelToChart.objects.all().order_by('name')
         # format the data
         dataset = {}
         for elem in query:

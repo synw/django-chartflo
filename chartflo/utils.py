@@ -26,8 +26,8 @@ class ChartDataPack():
                     dataset[name] = 1
         return counter
     
-    def package(self, chart_id, data_label, dataset):
-        return {'chart_id':chart_id, 'data_label':data_label, "dataset":dataset}
+    def package(self, chart_id, data_label, dataset, legend=False):
+        return {'chart_id':chart_id, 'data_label':data_label, "dataset":dataset, "legend":legend}
     
     def count(self, query, field=None, func=None):
         pack = {}

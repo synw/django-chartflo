@@ -14,7 +14,7 @@ AmCharts.makeChart("{{ datapack.chart_id }}",
 		"balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
 		"depth3D": 15,
 		"innerRadius": 25,
-		"labelText": "[[title]]: [[val]] {{ datapack.data_label }}",
+		"labelText": "[[title]]: [[val]]",
 		"startAngle": 0,
 		"maxLabelWidth": 198,
 		"sequencedAnimation": false,
@@ -33,7 +33,7 @@ AmCharts.makeChart("{{ datapack.chart_id }}",
 		"titles": [
 		],
 		"export": {
-          "enabled": true
+          "enabled": false
         },
 		"dataProvider": [
 			{% for label, score in datapack.dataset.items %} 

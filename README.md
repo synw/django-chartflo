@@ -31,9 +31,10 @@ class MyChartsView(TemplateView):
         query = MyModelToChart.objects.all().order_by('name')
 		# process count
         P = ChartDataPack()
-        all_objects = P.count(query)
-        published_objects = P.count(query.filter(published=True))
-        special_objects = P.count(query, "fieldname", special_check) 
+        dataset = {}
+        dataset["all_objects"] = P.count(query)
+        dataset["published_objects"] = P.count(query.filter(published=True))
+        dataset["special_objects"] = P.count(query, "fieldname", special_check)
         # package the data
         datapack = P.package("chart_id", "Data label", dataset)
         context['datapack'] = datapack

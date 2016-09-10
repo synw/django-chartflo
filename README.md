@@ -1,7 +1,8 @@
 Django Chartflo
 ===============
 
-Charts for the lazy ones in Django using [Amcharts](https://www.amcharts.com). Just make your query, pack the data and include a template. 
+Charts for the lazy ones in Django using [Amcharts](https://www.amcharts.com). Just make your query, pack the data and 
+include a template. 
 There is no particular concept to understand nor complicated code to write.
 
 Install
@@ -13,7 +14,13 @@ Usage
 --------------
 
   ```python
+from chartflo.utils import ChartDataPack
 from myapp.models import MyModelToChart
+
+def special_check(value):
+	if value > 0 and value*2 < 300:
+		return True
+	return False
 
 class MyChartsView(TemplateView):
     template_name = 'mytemplate.html'
@@ -22,25 +29,20 @@ class MyChartsView(TemplateView):
         context = super(MyChartsView, self).get_context_data(**kwargs)
         # get the data
         query = MyModelToChart.objects.all().order_by('name')
-        # format the data
-        dataset = {}
-        for elem in query:
-        	if elem.name in dataset.keys():
-        		dataset[elem.name] = dataset[elem.name]+1
-        else:
-        	dataset[elem.name] = 1
-        # pack the data
-        datapack = {
-        		# required
-        		'chart_id': 'chart_mymodeltochart',
-        		'data_label': 'My model to chart', 
-        		'dataset': dataset, 
-        		# optional
-        		'legend':True
-        		}
+		# process count
+        P = ChartDataPack()
+        all_objects = P.count(query)
+        published_objects = P.count(query.filter(published=True))
+        special_objects = P.count(query, "fieldname", special_check) 
+        # package the data
+        datapack = P.package("chart_id", "Data label", dataset)
         context['datapack'] = datapack
         return context
   ```
+
+You must give a query to ``ChartDataPack.count``. It is also possible to pass a field name and a function to 
+make some custom checks: if this function returns False the instance will not be counted. 
+
 In the template
 
    ```django

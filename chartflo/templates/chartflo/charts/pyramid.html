@@ -19,9 +19,9 @@ var chart = AmCharts.makeChart( "{{ datapack.chart_id }}", {
 	"rotate": true,
 	"labelPosition": "right",
 	"balloonText": "[[key]]:  [[val]] {{ datapack.data_label }}",
-	"export": {
-	  "enabled": true
-	},
+	"labelText": "[[title]]: [[val]]",
+	"allLabels": [],
+	"balloon": {},
 	"legend": {
 			"enabled": {% if datapack.legend == True %}true{% else %}false{% endif %},
 			"useGraphSettings": true

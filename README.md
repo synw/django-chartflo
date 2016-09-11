@@ -34,7 +34,7 @@ class MyChartsView(TemplateView):
         dataset = {}
         dataset["all_objects"] = P.count(query)
         dataset["published_objects"] = P.count(query.filter(published=True))
-        dataset["special_objects"] = P.count(query, "fieldname", special_check)
+        dataset["special_objects"] = P.count(query, {"fieldname", special_check})
         # package the data
         datapack = P.package("chart_id", "Data label", dataset)
         # options
@@ -44,7 +44,7 @@ class MyChartsView(TemplateView):
         return context
   ```
 
-You must give a query to ``ChartDataPack.count``. It is also possible to pass a field name and a function to 
+You must give a query to ``ChartDataPack.count``. It is also possible to pass field names associated to functions to 
 make some custom checks: if this function returns False the instance will not be counted.
 
 In the template

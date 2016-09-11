@@ -77,7 +77,7 @@ var chart = AmCharts.makeChart("{{ datapack.chart_id }}", {
         "minorGridEnabled": true
     },
     "export": {
-        "enabled": true
+        "enabled": {% if datapack.export == True %}true{% else %}false{% endif %}
     },
 	"dataProvider": [
 				{% for label, score in datapack.dataset.items %} 

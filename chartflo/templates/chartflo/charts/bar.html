@@ -42,7 +42,7 @@ AmCharts.makeChart("{{ datapack.chart_id }}",
 			"useGraphSettings": true
 		},
 		"export": {
-          "enabled": true
+          "enabled": {% if datapack.export == True %}true{% else %}false{% endif %}
         },
 		"titles": [
 		],

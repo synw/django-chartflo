@@ -37,12 +37,15 @@ class MyChartsView(TemplateView):
         dataset["special_objects"] = P.count(query, "fieldname", special_check)
         # package the data
         datapack = P.package("chart_id", "Data label", dataset)
+        # options
+        datapack['legend'] = True
+        datapack['export'] = True
         context['datapack'] = datapack
         return context
   ```
 
 You must give a query to ``ChartDataPack.count``. It is also possible to pass a field name and a function to 
-make some custom checks: if this function returns False the instance will not be counted. 
+make some custom checks: if this function returns False the instance will not be counted.
 
 In the template
 
@@ -51,5 +54,6 @@ In the template
 <div id="{{ datapack.chart_id }}" style="width: 100%; height: 600px; background-color: #FFFFFF;">
 </div>
    ```
+
 Available charts: `pie.html`, `bar.html`, `pyramid.html`, `timeline.html`
 

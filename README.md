@@ -18,7 +18,7 @@ from chartflo.utils import ChartDataPack
 from myapp.models import MyModelToChart
 
 def special_check(value):
-	if value > 0 and value*2 < 300:
+	if somecheck(value) is True:
 		return True
 	return False
 

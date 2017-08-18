@@ -38,8 +38,8 @@ AmCharts.makeChart("{{ datapack.chart_id }}",
 		"dataProvider": [
 			{% for label, score in datapack.dataset.items %} 
 			{
-				"key": "{{ label }}",
-				"val": {{ score }},
+				"key": "{{ label|safe }}",
+				"val": {{ score|safe }},
 			},
 			{% endfor %}
 		]

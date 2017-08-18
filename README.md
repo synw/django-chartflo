@@ -1,17 +1,35 @@
-Django Chartflo
-===============
+# Django Chartflo
 
 Charts for the lazy ones in Django using [Amcharts](https://www.amcharts.com). Just make your query, pack the data and 
-include a template. 
-There is no particular concept to understand nor complicated code to write.
+its ready. 
 
-Install
---------------
+## Install
 
 Clone and add `'chartflo',` to INSTALLED_APPS
 
-Usage
---------------
+## Usage
+
+### Generic view
+
+   ```python
+from chartflo.views import ChartsView
+from django.contrib.auth.models import User
+
+
+class MyView(ChartsView):
+    graph_type = "pyramid"
+
+    def get_data(self):
+        users = User.objects.all()
+        staff = users.filter(is_staff=True)
+        superusers = users.filter(is_superuser=True)
+        others = users.filter(is_superuser=False, is_staff=False)
+        dataset = {"users": others.count(), "staff": staff.count(),
+                   "superuser": superusers.count()}
+        return dataset
+   ```
+
+### Custom view
 
   ```python
 from chartflo.utils import ChartDataPack

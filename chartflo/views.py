@@ -24,9 +24,9 @@ class ChartsView(TemplateView):
         datapack['export'] = False
         context['datapack'] = datapack
         context["title"] = context["label"] = self.title
-        context["chart_url"] = self._get_chart_url()
+        context["chart_url"] = self._get_template_url()
         return context
 
-    def _get_chart_url(self):
+    def _get_template_url(self):
         url = "chartflo/charts/" + self.chart_type + ".html"
         return url

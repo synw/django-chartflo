@@ -6,7 +6,7 @@ from chartflo.factory import ChartDataPack
 
 class ChartsView(TemplateView):
     template_name = 'chartflo/charts.html'
-    graph_type = "pie"
+    chart_type = "pie"
     title = ""
 
     def get_data(self):
@@ -23,11 +23,10 @@ class ChartsView(TemplateView):
         datapack['legend'] = True
         datapack['export'] = False
         context['datapack'] = datapack
-        context["graph_type"] = self.graph_type
         context["title"] = context["label"] = self.title
         context["chart_url"] = self._get_chart_url()
         return context
 
     def _get_chart_url(self):
-        url = "chartflo/charts/" + self.graph_type + ".html"
+        url = "chartflo/charts/" + self.chart_type + ".html"
         return url

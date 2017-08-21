@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.views.generic import TemplateView
-from chartflo.utils import ChartDataPack
+from chartflo.factory import ChartDataPack
 
 
 class ChartsView(TemplateView):

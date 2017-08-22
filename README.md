@@ -46,8 +46,8 @@ class MyChartsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(MyChartsView, self).get_context_data(**kwargs)
         # get the data
-        query = MyModelToChart.objects.all().order_by('name')
-		# process count
+        query = MyModelToChart.objects.all()
+        # process count
         P = ChartDataPack()
         dataset = {}
         dataset["all_objects"] = P.count(query)
@@ -55,22 +55,22 @@ class MyChartsView(TemplateView):
         dataset["special_objects"] = P.count(query, {"fieldname", special_check})
         # package the data
         datapack = P.package("chart_id", "Data label", dataset)
+        context['datapack'] = datapack
         # options
         datapack['legend'] = True
         datapack['export'] = True
-        context['datapack'] = datapack
         return context
   ```
 
 You must give a query to ``ChartDataPack.count``. It is also possible to pass field names associated to functions to 
-make some custom checks: if this function returns False the instance will not be counted.
+make some custom checks: if this function returns `False` the instance will not be counted.
 
 In the template
 
    ```django
-{% include "chartflo/charts/pie.html" %}
-<div id="{{ datapack.chart_id }}" style="width: 100%; height: 600px; background-color: #FFFFFF;">
-</div>
+   {% include "chartflo/charts/pie.html" %}
+      <div id="{{ datapack.chart_id }}" style="width: 100%; height: 600px; background-color: #FFFFFF;">
+   </div>
    ```
 
 Available charts: `pie.html`, `bar.html`, `pyramid.html`, `timeline.html`

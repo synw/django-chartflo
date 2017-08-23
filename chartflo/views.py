@@ -8,6 +8,7 @@ class ChartsView(TemplateView):
     template_name = 'chartflo/charts.html'
     chart_type = "pie"
     title = ""
+    engine = "amcharts"
 
     def get_data(self):
         return {}
@@ -28,5 +29,5 @@ class ChartsView(TemplateView):
         return context
 
     def _get_template_url(self):
-        url = "chartflo/charts/" + self.chart_type + ".html"
+        url = "chartflo/" + self.engine + "/" + self.chart_type + ".html"
         return url

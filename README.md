@@ -12,21 +12,21 @@ Clone and add `'chartflo',` to INSTALLED_APPS
 ### Generic view
 
    ```python
-from chartflo.views import ChartsView
-from django.contrib.auth.models import User
-
-
-class MyView(ChartsView):
-    graph_type = "pyramid"
-
-    def get_data(self):
-        users = User.objects.all()
-        staff = users.filter(is_staff=True)
-        superusers = users.filter(is_superuser=True)
-        others = users.filter(is_superuser=False, is_staff=False)
-        dataset = {"users": others.count(), "staff": staff.count(),
+   from chartflo.views import ChartsView
+   from django.contrib.auth.models import User
+   
+   
+   class MyView(ChartsView):
+      chart_type = "pyramid"
+      
+      def get_data(self):
+         users = User.objects.all()
+         staff = users.filter(is_staff=True)
+         superusers = users.filter(is_superuser=True)
+         others = users.filter(is_superuser=False, is_staff=False)
+         dataset = {"users": others.count(), "staff": staff.count(),
                    "superuser": superusers.count()}
-        return dataset
+         return dataset
    ```
 
 ### Custom view

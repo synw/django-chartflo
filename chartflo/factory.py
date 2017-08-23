@@ -3,7 +3,7 @@
 
 class ChartDataPack():
 
-    def count_for_query(self, query, fieldpack):
+    def _count_for_query(self, query, fieldpack):
         dataset = {}
         counter = 0
         for elem in query:
@@ -33,4 +33,4 @@ class ChartDataPack():
         pack = {}
         if field is not None:
             pack = {field: func}
-        return self.count_for_query(query, pack)
+        return self._count_for_query(query, pack)

@@ -1,7 +1,29 @@
 # -*- coding: utf-8 -*-
 
 from django.views.generic import TemplateView
+from django.http.response import Http404
 from chartflo.factory import ChartDataPack
+from chartflo.models import Dashboard
+
+
+class DashboardView(TemplateView):
+    template_name = "chartflo/dashboard.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(DashboardView, self).get_context_data(**kwargs)
+        dashboard = None
+        try:
+            dashboard = Dashboard.objects.get(slug=kwargs["slug"])
+        except:
+            Http404()
+        questions = dashboard.questions.all()
+        html = ""
+        for question in questions:
+            html = html + question.script + question.html
+        print("HTML", html)
+        context["html_data"] = html
+        context["title"] = dashboard.title
+        return context
 
 
 class ChartsView(TemplateView):

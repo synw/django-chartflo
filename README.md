@@ -48,13 +48,13 @@ class MyChartsView(TemplateView):
         # get the data
         query = MyModelToChart.objects.all()
         # process count
-        P = ChartController()
+        chart = ChartController()
         dataset = {}
-        dataset["all_objects"] = P.count(query)
-        dataset["published_objects"] = P.count(query.filter(published=True))
-        dataset["special_objects"] = P.count(query, {"fieldname", special_check})
+        dataset["all_objects"] = chart.count(query)
+        dataset["published_objects"] = chart.count(query.filter(published=True))
+        dataset["special_objects"] = chart.count(query, {"fieldname", special_check})
         # package the data
-        datapack = P.package("chart_id", "Data label", dataset)
+        datapack = chart.package("chart_id", "Data label", dataset)
         context['datapack'] = datapack
         # options
         datapack['legend'] = True

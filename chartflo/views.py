@@ -17,10 +17,10 @@ class ChartsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ChartsView, self).get_context_data(**kwargs)
         # get data
-        P = ChartController()
+        chart = ChartController()
         dataset = self.get_data()
         # package the data
-        datapack = P.package("chart_id", self.title, dataset)
+        datapack = chart.package("chart_id", self.title, dataset)
         # options
         datapack['legend'] = True
         datapack['export'] = False

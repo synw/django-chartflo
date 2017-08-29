@@ -35,8 +35,8 @@ Clone and add `'chartflo',` to INSTALLED_APPS
 from chartflo.utils import ChartController
 from myapp.models import MyModelToChart
 
-def special_check(value):
-	if somecheck(value) is True:
+def special_check(field_value):
+	if somecheck(field_value) is True:
 		return True
 	return False
 
@@ -62,7 +62,9 @@ class MyChartsView(TemplateView):
         return context
   ```
 
-You must give a query to ``ChartController.count()``. It is also possible to pass field names associated to functions to 
+You must give a query to ``ChartController.count()``. 
+
+It is also possible to pass field names associated to functions to 
 make some custom checks: if this function returns `False` the instance will not be counted.
 
 In the template

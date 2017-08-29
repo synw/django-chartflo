@@ -32,7 +32,7 @@ Clone and add `'chartflo',` to INSTALLED_APPS
 ### Custom view
 
   ```python
-from chartflo.utils import ChartDataPack
+from chartflo.utils import ChartController
 from myapp.models import MyModelToChart
 
 def special_check(value):
@@ -48,7 +48,7 @@ class MyChartsView(TemplateView):
         # get the data
         query = MyModelToChart.objects.all()
         # process count
-        P = ChartDataPack()
+        P = ChartController()
         dataset = {}
         dataset["all_objects"] = P.count(query)
         dataset["published_objects"] = P.count(query.filter(published=True))
@@ -62,7 +62,7 @@ class MyChartsView(TemplateView):
         return context
   ```
 
-You must give a query to ``ChartDataPack.count``. It is also possible to pass field names associated to functions to 
+You must give a query to ``ChartController.count()``. It is also possible to pass field names associated to functions to 
 make some custom checks: if this function returns `False` the instance will not be counted.
 
 In the template

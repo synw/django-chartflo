@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.views.generic import TemplateView
-from .factory import ChartDataPack
+from .factory import ChartController
 from .conf import ENGINE
 
 
@@ -17,7 +17,7 @@ class ChartsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ChartsView, self).get_context_data(**kwargs)
         # get data
-        P = ChartDataPack()
+        P = ChartController()
         dataset = self.get_data()
         # package the data
         datapack = P.package("chart_id", self.title, dataset)

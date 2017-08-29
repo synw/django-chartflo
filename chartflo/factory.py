@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-class ChartDataPack():
+class ChartController():
 
     def package(self, chart_id, data_label, dataset, legend=False):
         return {'chart_id': chart_id, 'data_label': data_label, "dataset": dataset, "legend": legend}

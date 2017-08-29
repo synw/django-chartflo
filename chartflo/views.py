@@ -2,13 +2,14 @@
 
 from django.views.generic import TemplateView
 from .factory import ChartDataPack
+from .conf import ENGINE
 
 
 class ChartsView(TemplateView):
     template_name = 'chartflo/charts.html'
     chart_type = "pie"
     title = ""
-    engine = "amcharts"
+    engine = ENGINE
 
     def get_data(self):
         return {}

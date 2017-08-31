@@ -14,13 +14,13 @@ Create a `templates/base.html` with `{% block content %}{% endblock %}` block
 Install dependencies:
 
    ```
-   pip install bokeh django-introspection
+   pip install bokeh==0.12.6 django-introspection
    ```
 
 Installed apps:
 
    ```
-   "instrospection",
+   "introspection",
    "chartflo",
    ```
 

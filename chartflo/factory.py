@@ -15,14 +15,14 @@ class ChartController():
     def _count_for_query(self, query, fieldchecks):
         dataset = {}
         counter = 0
-        for object in query:
+        for obj in query:
             commit = True
             modelname = query[0].__class__.__name__
             name = modelname
             if len(fieldchecks.keys()) > 0:
                 for fieldname in fieldchecks.keys():
                     name = modelname + "." + fieldname
-                    fieldval = str(getattr(object, fieldname))
+                    fieldval = str(getattr(obj, fieldname))
                     func = fieldchecks[fieldname]
                     if func is not None:
                         if func(fieldval) is False:

@@ -14,7 +14,7 @@ Create a `templates/base.html` with `{% block content %}{% endblock %}` block
 Install dependencies:
 
    ```
-   pip install bokeh django-instrospection
+   pip install bokeh django-introspection
    ```
 
 Installed apps:

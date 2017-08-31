@@ -3,6 +3,18 @@
 
 class ChartDataPack():
 
+    def package(self, chart_id, data_label, dataset, legend=False):
+        return {'chart_id': chart_id, 'data_label': data_label, "dataset": dataset, "legend": legend}
+
+    def serialize(self, queries):
+        print(queries)
+
+    def count(self, query, field=None, func=None):
+        pack = {}
+        if field is not None:
+            pack = {field: func}
+        return self._count_for_query(query, pack)
+
     def _count_for_query(self, query, fieldpack):
         dataset = {}
         counter = 0
@@ -25,12 +37,3 @@ class ChartDataPack():
                 else:
                     dataset[name] = 1
         return counter
-
-    def package(self, chart_id, data_label, dataset, legend=False):
-        return {'chart_id': chart_id, 'data_label': data_label, "dataset": dataset, "legend": legend}
-
-    def count(self, query, field=None, func=None):
-        pack = {}
-        if field is not None:
-            pack = {field: func}
-        return self._count_for_query(query, pack)

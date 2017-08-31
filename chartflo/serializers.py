@@ -2,6 +2,9 @@
 
 
 def q_to_dictq(obj, filtersq):
+    """
+    Serialize filters line protocol to a dictionary
+    """
     filters = {}
     for f in filtersq:
         if "&" in f.value:

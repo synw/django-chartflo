@@ -19,8 +19,6 @@ def bar_chart(data):
         x.append(datapoint)
         y.append(data[datapoint])
     print(x, y)
-    #x = [1, 2, 3]
-    #y = ["a", "b", "c"]
 
     source = ColumnDataSource(dict(x=x, y=y))
 

@@ -20,7 +20,6 @@ class DashboardView(TemplateView):
         html = ""
         for question in questions:
             html = html + question.script + question.html
-        print("HTML", html)
         context["html_data"] = html
         context["title"] = dashboard.title
         return context

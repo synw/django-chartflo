@@ -3,7 +3,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from introspection.inspector import inspect
-from chartflo.serializers import q_to_dictq
+from .serializers import q_to_dictq
+from .conf import CHART_TYPES
 
 
 class Filter(models.Model):
@@ -33,6 +34,9 @@ class Query(models.Model):
         return self.name
 
     def count_data(self):
+        """
+        Returns the result of a count query from a set of filters
+        """
         filtersq = self.filters.all()
         dictq = q_to_dictq(self, filtersq)
         q = inspect.count(dictq)
@@ -45,6 +49,12 @@ class Question(models.Model):
         Query, verbose_name=_(u"Queries"), related_name="questions")
     html = models.TextField(blank=True, verbose_name=_(u'Html'))
     script = models.TextField(blank=True, verbose_name=_(u'Script'))
+    chart_type = models.CharField(
+        max_length=120, choices=CHART_TYPES, default=(CHART_TYPES[0][0]), verbose_name=_(u'Chart type'))
+    width = models.PositiveSmallIntegerField(
+        verbose_name=_(u'Width'), default=1200)
+    height = models.PositiveSmallIntegerField(
+        verbose_name=_(u'Height'), default=400)
 
     class Meta:
         verbose_name = _(u'Question')

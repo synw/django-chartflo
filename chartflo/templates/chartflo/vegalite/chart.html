@@ -1,0 +1,33 @@
+{% load staticfiles %}
+
+<script src="{% static 'js/vegalite/vega.js' %}"></script>
+<script src="{% static 'js/vegalite/vega-lite.js' %}"></script>
+<script src="{% static 'js/vegalite/vega-embed.js' %}"></script>
+
+<script>
+{% comment %}
+var s={
+		"$schema": "https://vega.github.io/schema/vega-lite/v2.json", 
+		"data": {
+			"values": [
+				{"users": "superuser", "number": 24}, 
+				{"users": "users", "number": 14}, 
+				{"users": "staff", "number": 30}
+			],
+		},
+		"mark": "bar", 
+		"encoding": {
+			"y": {
+				"type": "quantitative",
+				"field": "number"
+			}, 
+			"x": {
+				"type": "nominal",
+				"field": "users"
+			}
+		}	
+	};
+{% endcomment %}
+var s = {{ datapack|safe }};
+vega.embed("#{{ chart_id }}", s);
+</script>

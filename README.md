@@ -17,7 +17,11 @@ Clone and add `'chartflo',` to INSTALLED_APPS
    
    
    class MyView(ChartsView):
-      chart_type = "pyramid"
+      chart_type = "bar"
+      fields = ["users", "number"]
+      width = 300
+      height = 200
+      title = "User classes"
       
       def get_data(self):
          users = User.objects.all()

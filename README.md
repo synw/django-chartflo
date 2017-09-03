@@ -18,7 +18,10 @@ Clone and add `'chartflo',` to INSTALLED_APPS
    
    class MyView(ChartsView):
       chart_type = "bar"
-      fields = ["users", "number"]
+      # define a nominal field for x axis
+      x = ("users", "N")
+      # define a quantitative field for y axis
+      y = ("number", "Q")
       width = 300
       height = 200
       title = "User classes"

@@ -11,7 +11,8 @@ class ChartsView(TemplateView):
     chart_type = "bar"
     title = ""
     engine = ENGINE
-    fields = []
+    x = ()
+    y = ()
     width = 800
     height = 300
 
@@ -24,13 +25,11 @@ class ChartsView(TemplateView):
         chart = ChartController()
         dataset = self.get_data()
         # package the data
-        datapack = chart.package(
-            self.chart_type, dataset, self.fields, self.width, self.height)
-        # options
-        #print("DUMP", json.dumps(datapack, cls=DjangoJSONEncoder, indent=2))
-        context['datapack'] = json.dumps(
-            datapack, cls=DjangoJSONEncoder)
-        context["title"] = context["label"] = self.title
+        datapack = chart.serialize_count(
+            dataset, self.x, self.y, self.chart_type, self.width, self.height)
+        # context
+        context['datapack'] = datapack
+        context["title"] = self.title
         context["chart_id"] = "chart"
         context["chart_url"] = self._get_template_url()
         return context

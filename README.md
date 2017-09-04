@@ -3,9 +3,11 @@
 Charts for the lazy ones in Django using [Amcharts](https://www.amcharts.com). Just make your query, pack the data and 
 its ready. 
 
+[Explanations and overview](https://github.com/synw/django-chartflo/issues/16) for this branch
+
 ## Install
 
-Clone and add `'chartflo',` to INSTALLED_APPS
+Check the [install docs](https://github.com/synw/django-chartflo/blob/server_side_charts/install.md) for this branch
 
 ## Usage
 

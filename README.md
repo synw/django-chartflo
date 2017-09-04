@@ -1,6 +1,6 @@
 # Django Chartflo
 
-Charts for the lazy ones in Django using [Amcharts](https://www.amcharts.com). Just make your query, pack the data and 
+Charts for the lazy ones in Django. Just make your query, pack the data and 
 its ready. 
 
 [Explanations and overview](https://github.com/synw/django-chartflo/issues/16) for this branch

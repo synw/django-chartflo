@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-import json
-from django.core.serializers.json import DjangoJSONEncoder
+
 from django.views.generic import TemplateView
-from .factory import ChartController
 from .conf import ENGINE
 
 
@@ -15,6 +13,7 @@ class ChartsView(TemplateView):
     y = ()
     width = 800
     height = 300
+    time_unit = ""
 
     def get_data(self):
         return {}
@@ -22,13 +21,9 @@ class ChartsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ChartsView, self).get_context_data(**kwargs)
         # get data
-        chart = ChartController()
-        dataset = self.get_data()
-        # package the data
-        datapack = chart.serialize_count(
-            dataset, self.x, self.y, self.chart_type, self.width, self.height)
+        datapack = self.get_data()
         # context
-        context['datapack'] = datapack
+        context['datapack'] = datapack.to_json()
         context["title"] = self.title
         context["chart_id"] = "chart"
         context["chart_url"] = self._get_template_url()

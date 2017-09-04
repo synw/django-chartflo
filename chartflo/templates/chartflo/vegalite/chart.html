@@ -29,5 +29,6 @@ var s={
 	};
 {% endcomment %}
 var s = {{ datapack|safe }};
+s.$schema = "https://vega.github.io/schema/vega-lite/2.0.0-beta.15.json";
 vega.embed("#{{ chart_id }}", s);
 </script>

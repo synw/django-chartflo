@@ -3,4 +3,4 @@
 from django.conf import settings
 
 
-ENGINE = getattr(settings, 'CHARTFLO_ENGINE', "amcharts")
+ENGINE = getattr(settings, 'CHARTFLO_ENGINE', "vegalite")

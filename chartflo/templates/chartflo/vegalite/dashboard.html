@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<script src="{% static 'js/vegalite/vega.js' %}"></script>
+<script src="{% static 'js/vegalite/vega-lite.js' %}"></script>
+<script src="{% static 'js/vegalite/vega-embed.js' %}"></script>
+{% if title %}
+	<h1>{{ title }}</h1>
+{% endif %}
+<script>
+function patch_spec(spec) {
+	spec.width = spec.config.cell.width;
+	spec.height = spec.config.cell.height;
+	delete(spec.config.cell);
+	return spec
+}
+</script>
+<style>
+.vega-actions {
+	display:none;
+}
+</style>
+{{ html_data|safe }}
+{% endblock content %}

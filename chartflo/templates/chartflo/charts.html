@@ -4,7 +4,9 @@
 {% if title %}
 	<h1>{{ title }}</h1>
 {% endif %}
-{% include chart_url %}
-<div id="{{ datapack.chart_id }}" style="width: 100%; height: 600px; background-color: #FFFFFF;">
+
+<div id="{{ chart_id }}">
 </div>
+{% include chart_url %}
+<script>console.log(JSON.stringify({{ datapack|safe }}, null, 2))</script>
 {% endblock content %}

@@ -25,25 +25,46 @@ class ChartController():
     def serialize_timeseries(self, query, xfield, yfield, time_unit, chart_type="line", width=800, height=300, color=None, size=None):
         xfieldname = xfield[0]
         xfieldtype = xfield[1]
-        datesq = query.values(xfieldname)
         dates = []
-        # print(datesq)
-        for d in datesq:
-            dstr = d[xfieldname].strftime('%m/%d/%Y')
-            dates.append(dstr)
-        field = []
+        vals = []
         yfieldname = yfield[0]
         yfieldtype = yfield[1]
-        for el in query.values(yfieldname):
-            field.append(el[yfieldname])
-        df = pd.DataFrame({xfieldname: dates, yfieldname: field})
+        for row in query:
+            # date
+            has_date = False
+            d = getattr(row, xfieldname)
+            if d is not None:
+                dstr = d.strftime("%Y-%m-%d %H:%M:%S")
+                dates.append(dstr)
+                has_date = True
+            if has_date is True:
+                v = getattr(row, yfieldname)
+                vals.append(v)
+        df = pd.DataFrame({xfieldname: dates, yfieldname: vals})
         # print(df)
         xencode, yencode = self._encode_fields(
             xfieldtype, yfieldtype, time_unit)
-        chart = self._chart_class(df, chart_type).encode(x=xencode, y=yencode, color=color, size=size).configure_cell(
-            width=width,
-            height=height
-        )
+        if chart_type != "tick":
+            chart = self._chart_class(df, chart_type).encode(
+                x=xencode,
+                y=yencode,
+                color=color,
+                size=size,
+            ).configure_cell(
+                width=width,
+                height=height
+            )
+        else:
+            chart = self._chart_class(df, chart_type).encode(
+                x=xencode,
+                color=color,
+                size=size,
+            ).configure_cell(
+                width=width,
+                height=height
+            ).configure_scale(
+                bandSize=30
+            )
         return chart
 
     def count(self, query, field=None, func=None):

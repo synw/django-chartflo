@@ -10,6 +10,31 @@ from .signals import question_save
 from .conf import CHART_TYPES, HTML_TEMPLATE
 
 
+class Chart(models.Model):
+    name = models.CharField(max_length=120, verbose_name=_(u"Name"))
+    slug = models.CharField(max_length=120, unique=True,
+                            verbose_name=_(u"Slug"))
+    html = models.TextField(blank=True, verbose_name=_(u'Html'))
+    json = JSONField(blank=True, verbose_name=_(
+        u'Vega Lite encoded json data'))
+
+    class Meta:
+        verbose_name = _(u'Chart')
+        verbose_name_plural = _(u'Charts')
+
+    def __str__(self):
+        return self.name
+
+    def save_from_dataset(self, chart, slug, name, dataset):
+        """
+        Save a chart object in the database
+        """
+        chart.name = name
+        chart.json = dataset.to_json()
+        chart.html = dataset.to_html(template=HTML_TEMPLATE, id=slug)
+        chart.save()
+
+
 class Query(models.Model):
     name = models.CharField(max_length=120, verbose_name=_(u"Name"))
     app = models.CharField(max_length=120, verbose_name=_(u"App"))
@@ -45,12 +70,6 @@ class Query(models.Model):
 
 class Question(models.Model):
     name = models.CharField(max_length=120, verbose_name=_(u"Name"))
-    queries = models.ManyToManyField(
-        Query, verbose_name=_(u"Queries"), related_name="questions")
-    html = models.TextField(blank=True, verbose_name=_(u'Html'))
-    script = models.TextField(blank=True, verbose_name=_(u'Script'))
-    json = JSONField(blank=True, verbose_name=_(
-        u'Vega Lite encoded json data'))
     x_field = models.CharField(
         max_length=120, verbose_name=_(u"X axis field name"))
     x_field_type = models.CharField(max_length=120, verbose_name=_(
@@ -72,6 +91,10 @@ class Question(models.Model):
                             verbose_name=_(u"Size field"))
     time_unit = models.CharField(
         blank=True, max_length=120, verbose_name=_(u"Time unit"))
+    queries = models.ManyToManyField(Query, verbose_name=_(u"Queries"))
+    html = models.TextField(blank=True, verbose_name=_(u'Html'))
+    json = JSONField(blank=True, verbose_name=_(
+        u'Vega Lite encoded json data'))
 
     class Meta:
         verbose_name = _(u'Question')
@@ -115,7 +138,9 @@ class Dashboard(models.Model):
     slug = models.CharField(max_length=120, unique=True,
                             verbose_name=_(u"Slug"))
     questions = models.ManyToManyField(
-        Question, verbose_name=_(u"Questions"), related_name="dashboards")
+        Question, blank=True, verbose_name=_(u"Questions"))
+    charts = models.ManyToManyField(
+        Chart, blank=True, verbose_name=_(u"Charts"))
 
     class Meta:
         verbose_name = _(u'Dashboard')

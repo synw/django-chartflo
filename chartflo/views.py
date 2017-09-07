@@ -12,7 +12,7 @@ class DashboardView(TemplateView):
         context = super(DashboardView, self).get_context_data(**kwargs)
         dashboard = None
         try:
-            dashboard = Dashboard.objects.prefetch_related("questions").get(
+            dashboard = Dashboard.objects.prefetch_related("questions", "charts").get(
                 slug=kwargs["slug"])
         except Dashboard.DoesNotExist:
             Http404()
@@ -21,7 +21,10 @@ class DashboardView(TemplateView):
         questions = dashboard.questions.all()
         html = ""
         for question in questions:
-            html = html + question.script + question.html
+            html = html + question.html
+        charts = dashboard.charts.all()
+        for chart in charts:
+            html = html + chart.html
         context["html_data"] = html
         context["title"] = dashboard.title
         return context

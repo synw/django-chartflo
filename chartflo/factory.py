@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import pandas as pd
-from altair import Chart, X, Y, Scale
+from altair import Chart, X, Y
+from .conf import HTML_TEMPLATE
 
 
 class ChartController():
@@ -23,8 +24,8 @@ class ChartController():
         return chart
 
     def serialize_timeseries(self, query, xfield, yfield, time_unit, chart_type="line", width=800, height=300, color=None, size=None):
-        print("############################## SERIALIZE TS",
-              xfield, yfield, time_unit, )
+        # print("############################## SERIALIZE TS",
+        #      xfield, yfield, time_unit, )
         xfieldname = xfield[0]
         xfieldtype = xfield[1]
         #datesq = query.values(xfieldname)
@@ -43,18 +44,6 @@ class ChartController():
             if has_date is True:
                 v = getattr(row, yfieldname)
                 vals.append(v)
-        """
-        # print(datesq)
-        for d in datesq:
-            if d[xfieldname] is not None:
-                dstr = d[xfieldname].strftime('%m/%d/%Y')
-                dates.append(dstr)
-        field = []
-        yfieldname = yfield[0]
-        yfieldtype = yfield[1]
-        for el in query.values(yfieldname):
-            field.append(el[yfieldname])
-        """
         df = pd.DataFrame({xfieldname: dates, yfieldname: vals})
         # print(df)
         xencode, yencode = self._encode_fields(

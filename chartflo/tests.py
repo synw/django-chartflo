@@ -4,6 +4,7 @@ from .views import ChartsView
 # Create your tests here.
 class TestVegaLiteChartsView(TestCase):
     def setUpTestCase(self):
+        # Create new ChartsView instance
         self.chart_view = ChartsView()
 
         # Set Vega Lite as template engine

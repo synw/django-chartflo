@@ -13,7 +13,7 @@ CHART_TYPES = (
     ("text", _(u"Text")),
 )
 
-ENGINE = getattr(settings, 'CHARTFLO_ENGINE', "amcharts")
+ENGINE = getattr(settings, 'CHARTFLO_ENGINE', "vegalite")
 
 HTML_TEMPLATE = """
 <div id="{id}"></div>

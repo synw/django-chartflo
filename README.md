@@ -10,7 +10,6 @@ Just make your query, pack the data and its ready.
 Clone and add to installed apps:
 
    ```
-   "django_extensions",
    "chartflo",
    ```
 

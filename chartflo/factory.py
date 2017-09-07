@@ -9,7 +9,8 @@ class ChartController():
     Charts builder: handles serialization into Vega Lite format
     """
 
-    def serialize_count(self, dataset, xfield, yfield, chart_type="bar", width=800, height=300, color=None, size=None):
+    def serialize_count(self, dataset, xfield, yfield, chart_type="bar",
+                        width=800, height=300, color=None, size=None):
         """
         Serialize a chart from a count dataset:
         Ex: {"users":200, "groups":30}
@@ -23,13 +24,20 @@ class ChartController():
             y.append(dataset[datapoint])
         df = pd.DataFrame({xfield[0]: x, yfield[0]: y})
         xencode, yencode = self._encode_fields(xfieldtype, yfieldtype)
-        chart = self._chart_class(df, chart_type).encode(x=xencode, y=yencode, color=color, size=size).configure_cell(
+        chart = self._chart_class(df, chart_type).encode(
+            x=xencode,
+            y=yencode,
+            color=color,
+            size=size
+        ).configure_cell(
             width=width,
             height=height
         )
         return chart
 
-    def serialize_timeseries(self, query, xfield, yfield, time_unit, chart_type="line", width=800, height=300, color=None, size=None):
+    def serialize_timeseries(self, query, xfield, yfield, time_unit,
+                             chart_type="line", width=800,
+                             height=300, color=None, size=None):
         """
         Serialize a timeseries chart from a query
         """

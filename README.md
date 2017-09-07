@@ -7,7 +7,12 @@ Just make your query, pack the data and its ready.
 
 `pip install altair`
 
-Clone and add `'chartflo',` to INSTALLED_APPS
+Clone and add to installed apps:
+
+   ```
+   "django_extensions",
+   "chartflo",
+   ```
 
 ## Usage
 

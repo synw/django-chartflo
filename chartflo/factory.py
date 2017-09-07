@@ -2,12 +2,19 @@
 
 import pandas as pd
 from altair import Chart, X, Y
-from .conf import HTML_TEMPLATE
 
 
 class ChartController():
+    """
+    Charts builder: handles serialization into Vega Lite format
+    """
 
-    def serialize_count(self, dataset, xfield, yfield, chart_type="bar", width=800, height=300, color=None, size=None):
+    def serialize_count(self, dataset, xfield, yfield, chart_type="bar",
+                        width=800, height=300, color=None, size=None):
+        """
+        Serialize a chart from a count dataset:
+        Ex: {"users":200, "groups":30}
+        """
         x = []
         y = []
         xfieldtype = xfield[1]
@@ -17,18 +24,25 @@ class ChartController():
             y.append(dataset[datapoint])
         df = pd.DataFrame({xfield[0]: x, yfield[0]: y})
         xencode, yencode = self._encode_fields(xfieldtype, yfieldtype)
-        chart = self._chart_class(df, chart_type).encode(x=xencode, y=yencode, color=color, size=size).configure_cell(
+        chart = self._chart_class(df, chart_type).encode(
+            x=xencode,
+            y=yencode,
+            color=color,
+            size=size
+        ).configure_cell(
             width=width,
             height=height
         )
         return chart
 
-    def serialize_timeseries(self, query, xfield, yfield, time_unit, chart_type="line", width=800, height=300, color=None, size=None):
-        # print("############################## SERIALIZE TS",
-        #      xfield, yfield, time_unit, )
+    def serialize_timeseries(self, query, xfield, yfield, time_unit,
+                             chart_type="line", width=800,
+                             height=300, color=None, size=None):
+        """
+        Serialize a timeseries chart from a query
+        """
         xfieldname = xfield[0]
         xfieldtype = xfield[1]
-        #datesq = query.values(xfieldname)
         dates = []
         vals = []
         yfieldname = yfield[0]
@@ -67,7 +81,7 @@ class ChartController():
                 width=width,
                 height=height
             ).configure_scale(
-                bandSize=30
+                bandSize=60
             )
         return chart
 
@@ -105,6 +119,9 @@ class ChartController():
         return dictq
 
     def count(self, query, field=None, func=None):
+        """
+        Count values for a query doing custom checks on fields
+        """
         pack = {}
         if field is not None:
             pack = {field: func}
@@ -112,7 +129,7 @@ class ChartController():
 
     def _chart_class(self, df, chart_type):
         """
-        returns a function to draw the right chart from string input
+        Get the right chart class from a string
         """
         if chart_type == "bar":
             return Chart(df).mark_bar()
@@ -135,6 +152,9 @@ class ChartController():
         return None
 
     def _encode_fields(self, xfieldtype, yfieldtype, time_unit=None):
+        """
+        Encode the fields in Altair format
+        """
         if time_unit is not None:
             xencode = X(xfieldtype, timeUnit=time_unit)
         else:
@@ -143,6 +163,9 @@ class ChartController():
         return xencode, yencode
 
     def _count_for_query(self, query, fieldchecks):
+        """
+        Do custom checks on fields and returns a count
+        """
         counter = 0
         for obj in query:
             commit = True

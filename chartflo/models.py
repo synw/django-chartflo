@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import json
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields.json import JSONField
 from django.db.models.signals import post_save
 from introspection.inspector import inspect
 from .factory import ChartController
+from goerr import err
 from .signals import question_save
 from .conf import CHART_TYPES, HTML_TEMPLATE
 
@@ -25,14 +27,50 @@ class Chart(models.Model):
     def __str__(self):
         return self.name
 
-    def save_from_dataset(self, chart, slug, name, dataset):
+    def generate(self, chart, slug, name, dataset):
         """
-        Save a chart object in the database
+        Generate data and save a chart object in the database
         """
         chart.name = name
-        chart.json = dataset.to_json()
-        chart.html = dataset.to_html(template=HTML_TEMPLATE, id=slug)
-        chart.save()
+        try:
+            chart.json = self._patch_json(dataset.to_json())
+        except Exception as e:
+            err.new(e)
+        try:
+            chart.html = self._json_to_html(slug, chart.json)
+        except Exception as e:
+            err.new(e)
+        try:
+            chart.save()
+        except Exception as e:
+            err.new(e)
+        if err.exists:
+            err.throw()
+
+    def _patch_json(self, json_data):
+        """
+        Patch the Altair generated json to the newest Vega Lite spec
+        """
+        json_data = json.loads(json_data)
+        # add schema
+        json_data["$schema"] = "https://vega.github.io/schema/vega-lite/2.0.0-beta.15.json"
+        # add top level width and height
+        json_data["width"] = json_data["config"]["cell"]["width"]
+        json_data["height"] = json_data["config"]["cell"]["height"]
+        del(json_data["config"]["cell"])
+        return json.dumps(json_data)
+
+    def _json_to_html(self, slug, json_data):
+        """
+        Generates html from Vega lite data
+        """
+        html = '<div id="chart-' + slug + '"></div>'
+        html += '<script>'
+        html += 'var s' + slug + ' = ' + json_data + ';'
+        html += 'vega.embed("#chart-' + slug + '", s' + slug + ');'
+        #html += 'console.log(JSON.stringify(s{id}, null, 2));'
+        html += '</script>'
+        return html
 
 
 class Query(models.Model):
@@ -105,6 +143,9 @@ class Question(models.Model):
         return self.name
 
     def generate(self):
+        """
+        Generates the chart data for a question
+        """
         queries = self.queries.all()
         if len(queries) == 0:
             return

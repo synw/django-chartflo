@@ -10,6 +10,7 @@ Just make your query, pack the data and its ready.
 Clone and add to INSTALLED_APPS:
 
    ```
+   "django_extensions",
    "introspection",
    "chartflo",
    ```

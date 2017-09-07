@@ -93,7 +93,7 @@ Create scripts to generate `Chart` objects. Model:
 This method of generating charts uses the 
 [django-extensions script mechanism](https://django-extensions.readthedocs.io/en/latest/runscript.html). 
 
-To see an example copy the `generator/example/scripts` folder into any app, restart the dev server
+To see an example copy the `generator_example/scripts` folder into any app, restart the dev server
 and run with a management command:
 
    ```

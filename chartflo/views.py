@@ -5,6 +5,9 @@ from .conf import ENGINE
 
 
 class ChartsView(TemplateView):
+    """
+    Builds a view to render one chart
+    """
     template_name = 'chartflo/charts.html'
     chart_type = "bar"
     title = ""
@@ -16,9 +19,15 @@ class ChartsView(TemplateView):
     time_unit = ""
 
     def get_data(self):
+        """
+        User defined method to grab the data: returns a dictionnary
+        """
         return {}
 
     def get_context_data(self, **kwargs):
+        """
+        Package the data into the context
+        """
         context = super(ChartsView, self).get_context_data(**kwargs)
         # get data
         datapack = self.get_data()
@@ -30,6 +39,9 @@ class ChartsView(TemplateView):
         return context
 
     def _get_template_url(self):
+        """
+        Get the template to use depending on the rendering engine
+        """
         if self.engine == "vegalite":
             url = "chartflo/vegalite/chart.html"
         else:

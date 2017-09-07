@@ -55,7 +55,9 @@ class Query(models.Model):
         """
         chart = ChartController()
         dictq = chart.serialize_filters(self)
-        q = inspect.count(dictq)
+        q, err = inspect.count(dictq)
+        if err.exists:
+            err.throw()
         return q
 
     def get_data(self):
@@ -63,8 +65,7 @@ class Query(models.Model):
         dictq = chart.serialize_filters(self)
         res, err = inspect.query(dictq)
         if err.exists:
-            err.trace()
-        print("RES", res)
+            err.throw()
         return res
 
 

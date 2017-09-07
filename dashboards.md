@@ -61,6 +61,18 @@ standard `User` model from auth:
    python3 manage.py loaddata dashboard.json
    ```
 
+Populate your data with users; [django-seed](https://github.com/Brobin/django-seed) is good at it:
+
+   ```
+   pip install django-seed
+   ```
+
+Add `"django_seed",` to installed apps and create users:
+
+   ```
+   python3 manage.py seed auth --number=30
+   ```
+
 Go to the `Test dashboard` object in the admin, unassociate charts and associate questions. Change your data and
 save the question again: the charts will be regenerated
 

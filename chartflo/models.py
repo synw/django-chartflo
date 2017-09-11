@@ -37,7 +37,10 @@ class Chart(models.Model):
         except Exception as e:
             err.new(e)
         try:
-            chart.html = self._json_to_html(slug, chart.json)
+            chart.html = ""
+            if chart.name:
+                chart.html = "<h3>" + chart.name + "</h3>"
+            chart.html = chart.html + self._json_to_html(slug, chart.json)
         except Exception as e:
             err.new(e)
         try:

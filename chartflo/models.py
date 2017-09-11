@@ -1,29 +1,64 @@
 # -*- coding: utf-8 -*-
 
 import json
-import os
 from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields.json import JSONField
 from django.db.models.signals import post_save
-from django.utils._os import safe_join
 from introspection.inspector import inspect
 from goerr import err
 from .factory import ChartController
 from .signals import question_save
-from .conf import CHART_TYPES, HTML_TEMPLATE, TO_FILES
+from .utils import _write_file
+from .conf import CHART_TYPES, TO_HTML, HTML_TEMPLATE, number_template
+
+
+class Number(models.Model):
+    name = models.CharField(max_length=120, verbose_name=_(u"Name"))
+    slug = models.CharField(max_length=120, unique=True,
+                            verbose_name=_(u"Slug"))
+    value = models.IntegerField(verbose_name=_(u"Value"), default=0)
+    unit = models.CharField(max_length=120, blank=True,
+                            verbose_name=_(u"Unit"))
+    legend = models.CharField(
+        max_length=120, blank=True, verbose_name=_(u'Legend'))
+    html = models.TextField(blank=True, verbose_name=_(u'Html'))
+
+    class Meta:
+        verbose_name = _(u'Number')
+        verbose_name_plural = _(u'Numbers')
+
+    def __str__(self):
+        return self.name
+
+    def generate(self):
+        """
+        Generate data and save a panel number object in the database
+        """
+        global TO_HTML
+        html = number_template(self.value, self.legend)
+        self.html = html
+        self.save()
+        if TO_HTML is True:
+            _write_file(self.slug, self.html, "number")
+        if err.exists:
+            if settings.DEBUG is True:
+                err.trace()
+            else:
+                err.throw()
 
 
 class Chart(models.Model):
     name = models.CharField(max_length=120, verbose_name=_(u"Name"))
     slug = models.CharField(max_length=120, unique=True,
-                            verbose_name=_(u"Slug"))
+                            db_index=True, verbose_name=_(u"Slug"))
     html = models.TextField(blank=True, verbose_name=_(u'Html'))
     json = JSONField(blank=True, verbose_name=_(
         u'Vega Lite encoded json data'))
     html_before = models.TextField(blank=True, verbose_name=_(u'Html before'))
     html_after = models.TextField(blank=True, verbose_name=_(u'Html after'))
+    #models = models.ManyToManyField()
 
     class Meta:
         verbose_name = _(u'Chart')
@@ -32,10 +67,11 @@ class Chart(models.Model):
     def __str__(self):
         return self.name
 
-    def generate(self, chart, slug, name, dataset, file=False, html_before="", html_after=""):
+    def generate(self, chart, slug, name, dataset, html_before="", html_after=""):
         """
         Generate data and save a chart object in the database
         """
+        global TO_HTML
         chart.name = name
         try:
             chart.json = self._patch_json(dataset.to_json())
@@ -55,41 +91,13 @@ class Chart(models.Model):
         except Exception as e:
             err.new(e)
         # generate file
-        if TO_FILES is True:
-            self._write_file(slug, chart.html)
+        if TO_HTML is True:
+            _write_file(slug, chart.html)
         if err.exists:
             if settings.DEBUG is True:
                 err.trace()
             else:
                 err.throw()
-
-    def _write_file(self, slug, html):
-        """
-        Writes a chart's html to a file
-        """
-        # check directories
-        folderpath = safe_join(settings.BASE_DIR, "templates/chartflo")
-        if not os.path.isdir(folderpath):
-            try:
-                os.makedirs(folderpath)
-            except Exception as e:
-                err.new(e)
-        chartsdir_path = safe_join(
-            settings.BASE_DIR, "templates/chartflo/charts")
-        if not os.path.isdir(chartsdir_path):
-            try:
-                os.makedirs(chartsdir_path)
-            except Exception as e:
-                err.new(e)
-        # check file
-        filepath = chartsdir_path + "/" + slug + ".html"
-        #~ write the file
-        try:
-            filex = open(filepath, "w")
-            filex.write(html)
-            filex.close()
-        except Exception as e:
-            err.new(e)
 
     def _patch_json(self, json_data):
         """

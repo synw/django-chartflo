@@ -15,6 +15,8 @@ CHART_TYPES = (
 
 ENGINE = getattr(settings, 'CHARTFLO_ENGINE', "vegalite")
 
+TO_FILES = getattr(settings, 'CHARTFLO_TO_FILES', False)
+
 HTML_TEMPLATE = """
 <div id="{id}"></div>
 <script>

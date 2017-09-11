@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 
 import json
+import os
 from django.db import models
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields.json import JSONField
 from django.db.models.signals import post_save
+from django.utils._os import safe_join
 from introspection.inspector import inspect
-from .factory import ChartController
 from goerr import err
+from .factory import ChartController
 from .signals import question_save
-from .conf import CHART_TYPES, HTML_TEMPLATE
+from .conf import CHART_TYPES, HTML_TEMPLATE, TO_FILES
 
 
 class Chart(models.Model):
@@ -29,7 +32,7 @@ class Chart(models.Model):
     def __str__(self):
         return self.name
 
-    def generate(self, chart, slug, name, dataset, html_before="", html_after=""):
+    def generate(self, chart, slug, name, dataset, file=False, html_before="", html_after=""):
         """
         Generate data and save a chart object in the database
         """
@@ -46,12 +49,45 @@ class Chart(models.Model):
                 self._json_to_html(slug, chart.json) + html_after
         except Exception as e:
             err.new(e)
+        # save to db
         try:
             chart.save()
         except Exception as e:
             err.new(e)
+        # generate file
+        if TO_FILES is True:
+            self._write_file(slug, chart.html)
         if err.exists:
             err.throw()
+
+    def _write_file(self, slug, html):
+        """
+        Writes a chart's html to a file
+        """
+        # check directories
+        folderpath = safe_join(settings.BASE_DIR, "templates/chartflo")
+        if not os.path.isdir(folderpath):
+            try:
+                os.makedirs(folderpath)
+            except Exception as e:
+                err.new(e)
+        chartsdir_path = safe_join(
+            settings.BASE_DIR, "templates/chartflo/charts")
+        if not os.path.isdir(chartsdir_path):
+            try:
+                os.makedirs(chartsdir_path)
+            except Exception as e:
+                err.new(e)
+        # check file
+        print(chartsdir_path)
+        filepath = chartsdir_path + "/" + slug + ".html"
+        #~ write the file
+        try:
+            filex = open(filepath, "w")
+            filex.write(html)
+            filex.close()
+        except Exception as e:
+            err.new(e)
 
     def _patch_json(self, json_data):
         """

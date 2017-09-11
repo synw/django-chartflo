@@ -1,10 +1,14 @@
-{% extends "base.html" %}
+{% extends "analytics/base.html" %}
 {% load staticfiles %}
 
+{% block title %}
+{% if title %}
+	{{ title }}
+{% endif %}
+{% endblock title %}
+
 {% block content %}
-<script src="{% static 'js/vegalite/vega.js' %}"></script>
-<script src="{% static 'js/vegalite/vega-lite.js' %}"></script>
-<script src="{% static 'js/vegalite/vega-embed.js' %}"></script>
+{% include "chartflo/head.html" %}
 {% if title %}
 	<h1>{{ title }}</h1>
 {% endif %}

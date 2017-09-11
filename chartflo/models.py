@@ -19,6 +19,8 @@ class Chart(models.Model):
     html = models.TextField(blank=True, verbose_name=_(u'Html'))
     json = JSONField(blank=True, verbose_name=_(
         u'Vega Lite encoded json data'))
+    html_before = models.TextField(blank=True, verbose_name=_(u'Html before'))
+    html_after = models.TextField(blank=True, verbose_name=_(u'Html after'))
 
     class Meta:
         verbose_name = _(u'Chart')
@@ -27,7 +29,7 @@ class Chart(models.Model):
     def __str__(self):
         return self.name
 
-    def generate(self, chart, slug, name, dataset):
+    def generate(self, chart, slug, name, dataset, html_before="", html_after=""):
         """
         Generate data and save a chart object in the database
         """
@@ -40,7 +42,8 @@ class Chart(models.Model):
             chart.html = ""
             if chart.name:
                 chart.html = "<h3>" + chart.name + "</h3>"
-            chart.html = chart.html + self._json_to_html(slug, chart.json)
+            chart.html = html_before + chart.html +\
+                self._json_to_html(slug, chart.json) + html_after
         except Exception as e:
             err.new(e)
         try:

@@ -58,7 +58,10 @@ class Chart(models.Model):
         if TO_FILES is True:
             self._write_file(slug, chart.html)
         if err.exists:
-            err.throw()
+            if settings.DEBUG is True:
+                err.trace()
+            else:
+                err.throw()
 
     def _write_file(self, slug, html):
         """
@@ -79,7 +82,6 @@ class Chart(models.Model):
             except Exception as e:
                 err.new(e)
         # check file
-        print(chartsdir_path)
         filepath = chartsdir_path + "/" + slug + ".html"
         #~ write the file
         try:

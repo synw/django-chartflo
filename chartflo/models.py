@@ -105,6 +105,9 @@ class Query(models.Model):
         return q
 
     def get_data(self):
+        """
+        Get a dataset from a filters line protocol
+        """
         chart = ChartController()
         dictq = chart.serialize_filters(self)
         res, err = inspect.query(dictq)

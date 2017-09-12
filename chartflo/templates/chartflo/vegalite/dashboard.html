@@ -1,0 +1,29 @@
+{% extends "analytics/base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+{% if title %}
+	{{ title }}
+{% endif %}
+{% endblock title %}
+
+{% block content %}
+{% include "chartflo/head.html" %}
+{% if title %}
+	<h1>{{ title }}</h1>
+{% endif %}
+<script>
+function patch_spec(spec) {
+	spec.width = spec.config.cell.width;
+	spec.height = spec.config.cell.height;
+	delete(spec.config.cell);
+	return spec
+}
+</script>
+<style>
+.vega-actions {
+	display:none;
+}
+</style>
+{{ html_data|safe }}
+{% endblock content %}

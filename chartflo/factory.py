@@ -2,6 +2,12 @@
 
 import pandas as pd
 from altair import Chart, X, Y
+from blessings import Terminal
+from .models import Chart as ChartFlo
+
+
+COLOR = Terminal()
+OK = "[" + COLOR.bold_green("ok") + "] "
 
 
 class ChartController():
@@ -93,6 +99,25 @@ class ChartController():
         if field is not None:
             pack = {field: func}
         return self._count_for_query(query, pack)
+
+    def generate_timeseries(self, slug, name, chart_type,
+                            query, x, y, width, height,
+                            time_unit, verbose=False):
+        """
+        Generates a timeseries chart from a query
+        """
+        global OK, COLOR
+        if verbose is True:
+            print("Serializing", slug, "chart...")
+        chart = ChartController()
+        dataset = chart.serialize_timeseries(
+            query, x, y, time_unit=time_unit, chart_type=chart_type,
+            width=width, height=height
+        )
+        chart, _ = ChartFlo.objects.get_or_create(slug=slug)
+        chart.generate(chart, slug, name, dataset)
+        if verbose is True:
+            print(OK + "Chart", COLOR.bold(slug), "saved")
 
     def _chart_class(self, df, chart_type):
         """

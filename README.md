@@ -147,8 +147,9 @@ to handle the changes:
    from django.contrib.auth.models import User
 
    def save(event, conf):
-      if (event.content_type.model_class()) == User:
-         call_command("runscript", "make_charts")
+    if event.content_type is not None:
+        if event.content_type.model_class() == User:
+            call_command("runscript", "make_charts")
    ```
    
 Where `"make_charts"` is the name of your generator script. Then in settings:

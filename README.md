@@ -183,3 +183,6 @@ Available chart types: `bar`, `circle`, `point`, `square`, `line`, `tick`
 
 For the syntax of the `x` and `y` fields referer to the 
 [Altair encoding documentation](https://altair-viz.github.io/documentation/encoding.html)
+
+![Dashboard screenshot](https://raw.github.com/synw/django-chartflo/master/docs/img/inflation_dash.png)
+

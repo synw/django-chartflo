@@ -116,7 +116,8 @@ Make a view and map it to an url:
       template_name = "mymodule/dashboards/users.html"
    ```
 
-Check the example folder in the repository for example code
+Check the example folder in the repository for example code: 
+[install instructions](https://github.com/synw/django-chartflo/tree/master/example)
 
 ### Custom views
 
@@ -183,6 +184,8 @@ Available chart types: `bar`, `circle`, `point`, `square`, `line`, `tick`
 
 For the syntax of the `x` and `y` fields referer to the 
 [Altair encoding documentation](https://altair-viz.github.io/documentation/encoding.html)
+
+### Screenshot
 
 ![Dashboard screenshot](https://raw.github.com/synw/django-chartflo/master/docs/img/inflation_dash.png)
 

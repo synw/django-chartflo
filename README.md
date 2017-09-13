@@ -119,6 +119,50 @@ Make a view and map it to an url:
 Check the example folder in the repository for example code: 
 [install instructions](https://github.com/synw/django-chartflo/tree/master/example)
 
+
+### How to handle data changes
+
+An option is to use an events queue to process the changes and regenerate the charts. 
+Example with [django-mqueue](https://github.com/synw/django-mqueue):
+
+Install: `pip install django-mqueue` and add `"mqueue",` to installed apps
+
+In settings register the models that need to be watched:
+
+   ```python
+   MQUEUE_AUTOREGISTER = [
+      ('django.contrib.auth.models.User', ["c", "u", "d"]),
+   ]
+   ```
+   
+This will produce events on each create, delete and update operation for the `auth.User` model. Two options are possible
+to handle the changes:
+
+- Implement the regeneration in an asynchronous worker like Celery, consuming the events queue
+
+- Process the regeneration immediatly after the event is fired: create a `chartflo.py` in your module:
+
+   ```python
+   from django.core.management import call_command
+   from django.contrib.auth.models import User
+
+   def save(event, conf):
+      if (event.content_type.model_class()) == User:
+         call_command("runscript", "make_charts")
+   ```
+   
+Where `"make_charts"` is the name of your generator script. Then in settings:
+
+   ```python
+   MQUEUE_HOOKS = {
+      "chartflo": {
+        "path": "mymodule.chartflo",
+      }
+   }
+   ```
+
+This way the charts generation command will be executed at each create, delete update action on the model
+
 ### Custom views
 
 Compose views from direct queries

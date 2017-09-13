@@ -6,11 +6,18 @@
 </head>
 
 <body>
-	<div style="background-color:steelblue;color:white"">
+<style>
+body {
+	margin:0
+}
+</style>
+	<div style="background-color:steelblue;color:white;padding:0.5em">
 		<h1>Django Chartflo example</h1>
 	</div>
-	<div>
-		{% block content %}{% endblock %}
+	<div style="padding:1em;text-align:center;width:100%;">
+		<div style="display:inline-block;text-align:left;">
+			{% block content %}{% endblock %}
+		</div>
 	</div>
 </body>
 </html>

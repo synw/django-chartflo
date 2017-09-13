@@ -180,7 +180,7 @@ class ChartViewCount(ChartsView):
         return datapack
    ```
 
-Available chart types: `bar`, `circle`, `point`, `square`, `line`, `tick`
+Available chart types: `bar`, `circle`, `point`, `square`, `line`, `tick`, `area`
 
 For the syntax of the `x` and `y` fields referer to the 
 [Altair encoding documentation](https://altair-viz.github.io/documentation/encoding.html)

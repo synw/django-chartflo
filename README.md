@@ -22,7 +22,7 @@ Migrate the database
 ### Create charts
 
 The charts are created in the code using django-extensions scripts. Make a `scripts` folder in any app. Create a
-`make_charts.py` file in this folder and define your charts:
+`chart_users.py` file in this folder and define your charts:
 
    ```python
    from django.contrib.auth.models import User
@@ -31,19 +31,13 @@ The charts are created in the code using django-extensions scripts. Make a `scri
    
    
    def run():
-      chart_type = "line"
-      x = ("last_login", "last_login:T")
-      y = ("username", "count(username):Q")
-      width = 870
-      height = 180
-      users = User.objects.all().order_by("last_login")
       chart = ChartController()
-      dataset = chart.serialize_timeseries(
-          users, x, y, time_unit="yearmonth", chart_type=chart_type,
-          width=width, height=height
-      )
-      chart, _ = Chart.objects.get_or_create(slug=slug)
-      chart.generate(chart, slug, name, dataset)
+    x = ("last_login", "last_login:T")
+    y = ("username", "count(username):Q")
+    users = User.objects.all()
+    q = users.order_by("last_login")
+    chart.generate(
+        "last_logins", "last_logins", "line", q, x, y, 870, 180, "yearmonth", verbose=True)
    ```
 
 For the `x` and `y` axis definitions and the `time_unit` refer to 
@@ -56,7 +50,7 @@ folder.
 To run the generator: 
 
    ```
-   python3 manage.py runscript make_charts
+   python3 manage.py runscript chart_users
    ```
 
 It is also possible to generate individual numbers to include in a widget in the dashboard:

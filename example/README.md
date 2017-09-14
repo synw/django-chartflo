@@ -7,7 +7,7 @@ Create a Django instance. Copy the `scripts` folder and the `views.py` file in a
 Map an url to the view:
 
    ```python
-   from cft.views import UsersDash
+   from myapp.views import UsersDash
    
    urlpatterns = [
       # ...
@@ -31,9 +31,10 @@ Add the setting `CHARTFLO_TO_HTML = True`
 
 Populate the database with fake data: `python3 manage.py seed auth --number=100`
 
-Create a `/templates` folder and copy `base.html` in it
+Create a `/templates` folder and copy `base.html` in it. Create a `/templates/dashboards/` folder and
+copy `users.html` in it.
 
-Run the generator: `python3 manage.py runscript make_charts`. Html files will be generated in `templates/charflo`
+Run the generator: `python3 manage.py runscript chart_users`. Html files will be generated in `templates/charflo`
 
 Go to `/dashboards/users/` to see the results
 

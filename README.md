@@ -27,17 +27,15 @@ The charts are created in the code using django-extensions scripts. Make a `scri
    ```python
    from django.contrib.auth.models import User
    from chartflo.factory import ChartController
-   from chartflo.models import Chart
    
    
    def run():
       chart = ChartController()
-    x = ("last_login", "last_login:T")
-    y = ("username", "count(username):Q")
-    users = User.objects.all()
-    q = users.order_by("last_login")
-    chart.generate(
-        "last_logins", "last_logins", "line", q, x, y, 870, 180, "yearmonth", verbose=True)
+      x = ("last_login", "last_login:T")
+      y = ("username", "count(username):Q")
+      q = User.objects.all().order_by("last_login")
+      chart.generate(
+          "last_logins", "Last logins", "line", q, x, y, 870, 180, "yearmonth", verbose=True)
    ```
 
 For the `x` and `y` axis definitions and the `time_unit` refer to 

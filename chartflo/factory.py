@@ -44,6 +44,9 @@ class ChartController():
     def serialize_multiline(self, dataset, xfield, yfield, time_unit,
                             chart_type="line", width=800,
                             height=300, color=None, size=None):
+        """
+        Serializes a multiline chart from a dataset
+        """
         xfieldtype = xfield[1]
         yfieldtype = yfield[1]
         xencode, yencode = self._encode_fields(
@@ -126,12 +129,14 @@ class ChartController():
             pack = {field: func}
         return self._count_for_query(query, pack)
 
-    def generate_multiline(self, slug, name, chart_type, query, x, y,
+    def generate_multiline(self, slug, name, chart_type, data, x, y,
                            width, height, time_unit=None, color=None,
                            size=None, verbose=False):
-
+        """
+        Generates a multiline chart from a dataset
+        """
         dataset = self.serialize_multiline(
-            query, x, y, time_unit=time_unit, chart_type=chart_type,
+            data, x, y, time_unit=time_unit, chart_type=chart_type,
             width=width, height=height, size=size, color=color
         )
         chart, _ = ChartFlo.objects.get_or_create(slug=slug)

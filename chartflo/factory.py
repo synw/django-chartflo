@@ -68,6 +68,7 @@ class ChartController():
         # print(df)
         xencode, yencode = self._encode_fields(
             xfieldtype, yfieldtype, time_unit)
+        print("COL", color)
         if chart_type != "tick":
             chart = self._chart_class(df, chart_type).encode(
                 x=xencode,
@@ -100,20 +101,26 @@ class ChartController():
             pack = {field: func}
         return self._count_for_query(query, pack)
 
-    def generate_timeseries(self, slug, name, chart_type,
-                            query, x, y, width, height,
-                            time_unit, verbose=False):
+    def generate(self, slug, name, chart_type, query, x, y,
+                 width, height, time_unit=None, color=None,
+                 size=None, verbose=False):
         """
-        Generates a timeseries chart from a query
+        Generates or update a chart instance from a query
         """
         global OK, COLOR
         if verbose is True:
             print("Serializing", slug, "chart...")
         chart = ChartController()
-        dataset = chart.serialize_timeseries(
-            query, x, y, time_unit=time_unit, chart_type=chart_type,
-            width=width, height=height
-        )
+        if time_unit is not None:
+            dataset = chart.serialize_timeseries(
+                query, x, y, time_unit=time_unit, chart_type=chart_type,
+                width=width, height=height, size=size, color=color
+            )
+        else:
+            dataset = chart.serialize_count(
+                query, x, y, chart_type=chart_type,
+                width=width, height=height, size=size, color=color
+            )
         chart, _ = ChartFlo.objects.get_or_create(slug=slug)
         chart.generate(chart, slug, name, dataset)
         if verbose is True:

@@ -58,7 +58,7 @@ class ChartController():
             has_date = False
             d = getattr(row, xfieldname)
             if d is not None:
-                dstr = d.strftime("%Y-%m-%d %H:%M:%S")
+                dstr = self.serialize_date(d)
                 dates.append(dstr)
                 has_date = True
             if has_date is True:
@@ -90,6 +90,12 @@ class ChartController():
                 bandSize=30
             )
         return chart
+
+    def serialize_date(self, date):
+        """
+        Serializes a datetime object to Vega Lite format
+        """
+        return date.strftime("%Y-%m-%d %H:%M:%S")
 
     def count(self, query, field=None, func=None):
         """
@@ -181,10 +187,12 @@ class ChartController():
 
 class NumberController():
 
-    def generate(self, slug, legend, value, unit=None):
+    def generate(self, slug, legend, value, unit="", verbose=False):
         """
         Create or update a number instance from a value
         """
         defaults = {"legend": legend, "value": value, "unit": unit}
         num, _ = Number.objects.get_or_create(slug=slug, defaults=defaults)
         num.generate()
+        if verbose is True:
+            print("[x] Generated number", legend)

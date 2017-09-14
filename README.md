@@ -34,8 +34,16 @@ The charts are created in the code using django-extensions scripts. Make a `scri
       x = ("last_login", "last_login:T")
       y = ("username", "count(username):Q")
       q = User.objects.all().order_by("last_login")
+      chart_type = "line"
+      width = 870
+      height = 180
+      slug = "last_logins"
+      name = "Last logins"
+      time_unit = "yearmonth"
       chart.generate(
-          "last_logins", "Last logins", "line", q, x, y, 870, 180, "yearmonth", verbose=True)
+          slug, name, chart_type, q, x, y,
+          width, height, time_unit, verbose=True
+      )
    ```
 
 For the `x` and `y` axis definitions and the `time_unit` refer to 

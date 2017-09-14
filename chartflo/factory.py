@@ -3,7 +3,7 @@
 import pandas as pd
 from altair import Chart, X, Y
 from blessings import Terminal
-from .models import Chart as ChartFlo
+from .models import Chart as ChartFlo, Number
 
 
 COLOR = Terminal()
@@ -177,3 +177,14 @@ class ChartController():
             if commit is True:
                 counter += 1
         return counter
+
+
+class NumberController():
+
+    def generate(self, slug, legend, value, unit=None):
+        """
+        Create or update a number instance from a value
+        """
+        defaults = {"legend": legend, "value": value, "unit": unit}
+        num, _ = Number.objects.get_or_create(slug=slug, defaults=defaults)
+        num.generate()

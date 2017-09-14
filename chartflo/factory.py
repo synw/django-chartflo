@@ -41,6 +41,26 @@ class ChartController():
         )
         return chart
 
+    def serialize_multiline(self, dataset, xfield, yfield, time_unit,
+                            chart_type="line", width=800,
+                            height=300, color=None, size=None):
+        xfieldtype = xfield[1]
+        yfieldtype = yfield[1]
+        xencode, yencode = self._encode_fields(
+            xfieldtype, yfieldtype, time_unit)
+        chart = self._chart_class(dataset, chart_type).encode(
+            x=xencode,
+            y=yencode,
+            color=color,
+            size=size,
+        ).configure_cell(
+            width=width,
+            height=height
+        ).configure_scale(
+            bandSize=30
+        )
+        return chart
+
     def serialize_timeseries(self, query, xfield, yfield, time_unit,
                              chart_type="line", width=800,
                              height=300, color=None, size=None):
@@ -105,6 +125,19 @@ class ChartController():
         if field is not None:
             pack = {field: func}
         return self._count_for_query(query, pack)
+
+    def generate_multiline(self, slug, name, chart_type, query, x, y,
+                           width, height, time_unit=None, color=None,
+                           size=None, verbose=False):
+
+        dataset = self.serialize_multiline(
+            query, x, y, time_unit=time_unit, chart_type=chart_type,
+            width=width, height=height, size=size, color=color
+        )
+        chart, _ = ChartFlo.objects.get_or_create(slug=slug)
+        chart.generate(chart, slug, name, dataset)
+        if verbose is True:
+            print(OK + "Chart", COLOR.bold(slug), "saved")
 
     def generate(self, slug, name, chart_type, query, x, y,
                  width, height, time_unit=None, color=None,

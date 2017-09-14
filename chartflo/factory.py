@@ -68,7 +68,6 @@ class ChartController():
         # print(df)
         xencode, yencode = self._encode_fields(
             xfieldtype, yfieldtype, time_unit)
-        print("COL", color)
         if chart_type != "tick":
             chart = self._chart_class(df, chart_type).encode(
                 x=xencode,

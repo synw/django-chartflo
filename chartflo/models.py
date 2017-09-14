@@ -3,6 +3,7 @@
 import json
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.fields.json import JSONField
 from goerr import err
@@ -19,6 +20,7 @@ class Number(models.Model):
     legend = models.CharField(
         max_length=120, blank=True, verbose_name=_(u'Legend'))
     html = models.TextField(blank=True, verbose_name=_(u'Html'))
+    updated = models.DateTimeField(blank=True, verbose_name=_(u'Last update'))
 
     class Meta:
         verbose_name = _(u'Number')
@@ -34,6 +36,7 @@ class Number(models.Model):
         global TO_HTML
         html = number_template(self.value, self.legend)
         self.html = html
+        self.updated = timezone.now()
         self.save()
         if TO_HTML is True:
             _write_file(self.slug, self.html, "number")
@@ -53,6 +56,7 @@ class Chart(models.Model):
         u'Vega Lite encoded json data'))
     html_before = models.TextField(blank=True, verbose_name=_(u'Html before'))
     html_after = models.TextField(blank=True, verbose_name=_(u'Html after'))
+    updated = models.DateTimeField(blank=True, verbose_name=_(u'Last update'))
 
     class Meta:
         verbose_name = _(u'Chart')
@@ -87,6 +91,7 @@ class Chart(models.Model):
         # generate file
         if TO_HTML is True:
             _write_file(slug, chart.html)
+        self.updated = timezone.now()
         if err.exists:
             if settings.DEBUG is True:
                 err.trace()

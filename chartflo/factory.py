@@ -107,7 +107,7 @@ class ChartController():
                 width=width,
                 height=height
             ).configure_scale(
-                bandSize=30
+                bandSize=10
             )
         return chart
 
@@ -224,7 +224,13 @@ class NumberController():
         Create or update a number instance from a value
         """
         defaults = {"legend": legend, "value": value, "unit": unit}
-        num, _ = Number.objects.get_or_create(slug=slug, defaults=defaults)
+        num, created = Number.objects.get_or_create(
+            slug=slug, defaults=defaults)
+        if created is False:
+            num.legend = legend
+            num.value = value
+            num.unit = unit
+            num.save()
         num.generate()
         if verbose is True:
             print("[x] Generated number", legend)

@@ -11,7 +11,6 @@ from .conf import number_template, TO_HTML
 
 
 class Number(models.Model):
-    name = models.CharField(max_length=120, verbose_name=_(u"Name"))
     slug = models.CharField(max_length=120, unique=True,
                             verbose_name=_(u"Slug"))
     value = models.IntegerField(verbose_name=_(u"Value"), default=0)
@@ -26,7 +25,7 @@ class Number(models.Model):
         verbose_name_plural = _(u'Numbers')
 
     def __str__(self):
-        return self.name
+        return self.legend
 
     def generate(self):
         """

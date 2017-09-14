@@ -6,8 +6,8 @@ from .models import Chart, Number
 
 @admin.register(Number)
 class NumberAdmin(admin.ModelAdmin):
-    list_display = ("name", "slug",)
-    search_fields = ("name",)
+    list_display = ("legend", "slug",)
+    search_fields = ("legend",)
     save_on_top = True
 
 

@@ -54,14 +54,14 @@ To run the generator:
 It is also possible to generate individual numbers to include in a widget in the dashboard:
 
    ```python
+   from chartflo.factory import NumberController
+   from django.contrib.auth.models import User
+   
+   
    def run():
-      num_users = User.objects.all().count()
-      num, _ = Number.objects.get_or_create(slug="users")
-      num.name = "Users"
-      num.legend = "Users"
-      num.value = num_users
-      num.save()
-      num.generate()
+      num = NumberController()
+      val = User.objects.all().count()
+      num.generate("users", "Users", val)
    ```
 
 ### Compose dashboards

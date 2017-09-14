@@ -115,14 +115,13 @@ class ChartController():
         global OK, COLOR
         if verbose is True:
             print("Serializing", slug, "chart...")
-        chart = ChartController()
         if time_unit is not None:
-            dataset = chart.serialize_timeseries(
+            dataset = self.serialize_timeseries(
                 query, x, y, time_unit=time_unit, chart_type=chart_type,
                 width=width, height=height, size=size, color=color
             )
         else:
-            dataset = chart.serialize_count(
+            dataset = self.serialize_count(
                 query, x, y, chart_type=chart_type,
                 width=width, height=height, size=size, color=color
             )

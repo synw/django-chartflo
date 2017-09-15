@@ -126,22 +126,22 @@ class ChartController():
             pack = {field: func}
         return self._count_for_query(query, pack)
 
-    def generate_series(self, slug, name, chart_type, query, x, y,
-                        width, height, time_unit=None, color=None,
-                        size=None, verbose=False):
+    def generate_series(self, slug, name, chart_type, query, x, y, width, height,
+                        generator, time_unit=None, color=None,
+                        size=None, verbose=False, modelnames=""):
 
         dataset = self.serialize_series(
             query, x, y, time_unit=time_unit, chart_type=chart_type,
             width=width, height=height, size=size, color=color
         )
         chart, _ = ChartFlo.objects.get_or_create(slug=slug)
-        chart.generate(chart, slug, name, dataset)
+        chart.generate(chart, slug, name, dataset, modelnames, generator)
         if verbose is True:
             print(OK + "Chart", COLOR.bold(slug), "saved")
 
-    def generate(self, slug, name, chart_type, query, x, y,
-                 width, height, time_unit=None, color=None,
-                 size=None, verbose=False):
+    def generate(self, slug, name, chart_type, query, x, y, width, height,
+                 generator, time_unit=None, color=None,
+                 size=None, verbose=False, modelnames=""):
         """
         Generates or update a chart instance from a query
         """
@@ -159,7 +159,7 @@ class ChartController():
                 width=width, height=height, size=size, color=color
             )
         chart, _ = ChartFlo.objects.get_or_create(slug=slug)
-        chart.generate(chart, slug, name, dataset)
+        chart.generate(chart, slug, name, dataset, generator, modelnames)
         if verbose is True:
             print(OK + "Chart", COLOR.bold(slug), "saved")
 
@@ -219,7 +219,7 @@ class ChartController():
 
 class NumberController():
 
-    def generate(self, slug, legend, value, unit="", verbose=False):
+    def generate(self, slug, legend, value, generator, unit="", verbose=False, modelnames=""):
         """
         Create or update a number instance from a value
         """
@@ -230,6 +230,8 @@ class NumberController():
             num.legend = legend
             num.value = value
             num.unit = unit
+            num.generator = generator
+            num.modelnames = modelnames
             num.save()
         num.generate()
         if verbose is True:

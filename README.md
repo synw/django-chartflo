@@ -21,8 +21,10 @@ Migrate the database
 
 ### Create charts
 
-The charts are created in the code using django-extensions scripts. Make a `scripts` folder in any app. Create a
-`chart_users.py` file in this folder and define your charts:
+The charts are created in the code using django-extensions scripts. Make a `scripts` folder in your main app. Make sure
+the main app in in `INSTALLED_APPS`. 
+
+Create a `chart_users.py` file in this folder and define your charts:
 
    ```python
    from django.contrib.auth.models import User
@@ -42,7 +44,8 @@ The charts are created in the code using django-extensions scripts. Make a `scri
       time_unit = "yearmonth"
       chart.generate(
           slug, name, chart_type, q, x, y,
-          width, height, time_unit, verbose=True
+          width, height, time_unit, verbose=True, 
+          modelnames="User", generator="chart_users"
       )
    ```
 
@@ -69,7 +72,9 @@ It is also possible to generate individual numbers to include in a widget in the
    def run():
       num = NumberController()
       val = User.objects.all().count()
-      num.generate("users", "Users", val)
+      num.generate("users", "Users", val, 
+                   modelnames="User", generator="chart_users"
+      )
    ```
 
 ### Compose dashboards
@@ -122,9 +127,6 @@ Check the example folder in the repository for example code:
 
 ### How to handle data changes
 
-An option is to use an events queue to process the changes and regenerate the charts. 
-Example with [django-mqueue](https://github.com/synw/django-mqueue):
-
 Install: `pip install django-mqueue` and add `"mqueue",` to installed apps
 
 In settings register the models that need to be watched:
@@ -134,13 +136,28 @@ In settings register the models that need to be watched:
       ('django.contrib.auth.models.User', ["c", "u", "d"]),
    ]
    ```
-   
+
 This will produce events on each create, delete and update operation for the `auth.User` model. Two options are possible
 to handle the changes:
 
-- Implement the regeneration in an asynchronous worker like Celery, consuming the events queue
+#### Use a worker to regenerate the charts
 
-- Process the regeneration immediatly after the event is fired: create a `chartflo.py` in your module:
+The worker looks at model changes since his last run and launches the generators. Each chart and number are associated to
+some models and a generator. Run the management command:
+
+   ```bash
+   python3 manage.py gencharts
+   ```
+   
+This will run the command once and exit. To run it at fixed intervals:
+
+`-s=10`: this will run the command every 10 minutes
+
+To run quietly: `-q=1`
+
+#### Regenerate the charts on data change
+
+Process the regeneration immediatly after the event is fired: create a `chartflo.py` file in your module:
 
    ```python
    from django.core.management import call_command

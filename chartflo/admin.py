@@ -6,7 +6,7 @@ from .models import Chart, Number
 
 @admin.register(Number)
 class NumberAdmin(admin.ModelAdmin):
-    list_display = ("legend", "slug", "updated",)
+    list_display = ("slug", "generator", "modelnames", "legend", "updated")
     search_fields = ("legend",)
     save_on_top = True
     readonly_fields = ('updated',)
@@ -14,7 +14,7 @@ class NumberAdmin(admin.ModelAdmin):
 
 @admin.register(Chart)
 class ChartAdmin(admin.ModelAdmin):
-    list_display = ("name", "slug", "updated",)
+    list_display = ("slug", "generator", "modelnames", "updated")
     search_fields = ("name",)
     save_on_top = True
     readonly_fields = ('updated',)

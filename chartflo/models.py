@@ -20,7 +20,12 @@ class Number(models.Model):
     legend = models.CharField(
         max_length=120, blank=True, verbose_name=_(u'Legend'))
     html = models.TextField(blank=True, verbose_name=_(u'Html'))
-    updated = models.DateTimeField(blank=True, verbose_name=_(u'Last update'))
+    updated = models.DateTimeField(
+        blank=True, null=True, verbose_name=_(u'Last update'))
+    modelnames = models.CharField(max_length=200, verbose_name=_(u"Associated models"),
+                                  help_text="List of model names: ex: User,Group"
+                                  )
+    generator = models.CharField(max_length=120, verbose_name=_(u"Generator"))
 
     class Meta:
         verbose_name = _(u'Number')
@@ -56,7 +61,12 @@ class Chart(models.Model):
         u'Vega Lite encoded json data'))
     html_before = models.TextField(blank=True, verbose_name=_(u'Html before'))
     html_after = models.TextField(blank=True, verbose_name=_(u'Html after'))
-    updated = models.DateTimeField(blank=True, verbose_name=_(u'Last update'))
+    updated = models.DateTimeField(
+        blank=True, null=True, verbose_name=_(u'Last update'))
+    modelnames = models.CharField(max_length=200, verbose_name=_(u"Associated models"),
+                                  help_text="List of model names: ex: User,Group"
+                                  )
+    generator = models.CharField(max_length=120, verbose_name=_(u"Generator"))
 
     class Meta:
         verbose_name = _(u'Chart')
@@ -65,7 +75,7 @@ class Chart(models.Model):
     def __str__(self):
         return self.name
 
-    def generate(self, chart, slug, name, dataset, html_before="", html_after=""):
+    def generate(self, chart, slug, name, dataset, generator, modelnames="", html_before="", html_after=""):
         """
         Generate data and save a chart object in the database
         """
@@ -83,6 +93,8 @@ class Chart(models.Model):
                 self._json_to_html(slug, chart.json) + html_after
         except Exception as e:
             err.new(e)
+        chart.generator = generator
+        chart.modelnames = modelnames
         # save to db
         try:
             chart.save()
@@ -91,7 +103,7 @@ class Chart(models.Model):
         # generate file
         if TO_HTML is True:
             _write_file(slug, chart.html)
-        self.updated = timezone.now()
+        chart.updated = timezone.now()
         if err.exists:
             if settings.DEBUG is True:
                 err.trace()

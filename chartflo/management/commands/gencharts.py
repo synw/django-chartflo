@@ -9,22 +9,21 @@ from chartflo.models import Chart, Number
 from chartflo.apps import GENERATORS
 
 
-def get_changes_events():
+def get_changes_events(events_q, last_run_q):
     """
     Get the events objects that occured after the last run of this command
     """
-    last_run_q = MEvent.objects.filter(
-        event_class="charts_builder").order_by("-date_posted")
-    q = MEvent.objects.filter(Q(event_class__icontains="created") | Q(
+
+    q = events_q.filter(Q(event_class__icontains="created") | Q(
         event_class__icontains="edited") | Q(event_class__icontains="deleted"))
-    if last_run_q.count() > 0:
-        q = MEvent.objects.filter(
+    if last_run_q is not None:
+        q = events_q.filter(
             Q(event_class__icontains="created") |
             Q(event_class__icontains="edited") |
             Q(event_class__icontains="deleted"),
 
         )
-        last_run = last_run_q[0].date_posted
+        last_run = last_run_q.date_posted
         q = q.filter(date_posted__gte=last_run)
     return q
 
@@ -81,13 +80,32 @@ def update_charts(generators, quiet):
         gen()
 
 
+def run_events_generator(events_q):
+    """
+    Run the events generator
+    """
+    gen = GENERATORS["mqueue"]
+    gen()
+
+
 def run(quiet):
     """
     Run the all process
     """
     if quiet == 0:
         print("Checking events queue for changes...")
-    q = get_changes_events()
+    try:
+        last_run_q = MEvent.objects.filter(
+            event_class="charts_builder").latest("date_posted")
+    except:
+        last_run_q = MEvent.objects.none()
+    events_q = MEvent.objects.filter(
+        date_posted__gte=last_run_q.date_posted).order_by(
+            "-date_posted").exclude(event_class="charts_builder")
+    if events_q.count() > 0:
+        print("EVENTS", events_q.count(), events_q)
+        run_events_generator(events_q)
+    q = get_changes_events(events_q, last_run_q)
     if quiet == 0:
         print(q.count(), "instances have changed")
     modelnames = get_changed_models(q)
@@ -133,6 +151,7 @@ class Command(BaseCommand):
         run(quiet)
         if s is not None:
             timer = int(s) * 60
+            timer = int(s)
             while True:
                 print("Sleeping...")
                 time.sleep(timer)

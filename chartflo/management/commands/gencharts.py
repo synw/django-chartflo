@@ -151,7 +151,6 @@ class Command(BaseCommand):
         run(quiet)
         if s is not None:
             timer = int(s) * 60
-            timer = int(s)
             while True:
                 print("Sleeping...")
                 time.sleep(timer)

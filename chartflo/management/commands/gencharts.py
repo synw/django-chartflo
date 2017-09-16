@@ -63,7 +63,7 @@ def get_generators_to_run(modelnames):
     return generators
 
 
-def update_charts(generators, quiet, events_q):
+def update_charts(events_q, generators, quiet):
     """
     Run the generators
     """

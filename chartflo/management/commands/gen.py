@@ -30,4 +30,4 @@ class Command(BaseCommand):
             return
         if quiet > 0:
             print("Running generator", app)
-        generator()
+        generator(None)

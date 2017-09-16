@@ -63,7 +63,7 @@ def get_generators_to_run(modelnames):
     return generators
 
 
-def update_charts(generators, quiet):
+def update_charts(generators, quiet, events_q):
     """
     Run the generators
     """
@@ -77,7 +77,7 @@ def update_charts(generators, quiet):
             gen = GENERATORS[generator]
         except:
             print("Generator", generator, "not found")
-        gen()
+        gen(events_q)
 
 
 def run_events_generator(events_q):
@@ -85,7 +85,7 @@ def run_events_generator(events_q):
     Run the events generator
     """
     gen = GENERATORS["mqueue"]
-    gen()
+    gen(events_q)
 
 
 def run(quiet):
@@ -114,7 +114,7 @@ def run(quiet):
     generators = get_generators_to_run(modelnames)
     if quiet == 0:
         print("Generators to run", generators)
-    update_charts(generators, quiet)
+    update_charts(events_q, generators, quiet)
     # record last run
     MEvent.objects.create(
         name="Events charts builder run", event_class="charts_builder")

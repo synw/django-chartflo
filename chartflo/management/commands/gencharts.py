@@ -97,11 +97,12 @@ def run(quiet):
     try:
         last_run_q = MEvent.objects.filter(
             event_class="charts_builder").latest("date_posted")
-    except:
-        last_run_q = MEvent.objects.none()
-    events_q = MEvent.objects.filter(
-        date_posted__gte=last_run_q.date_posted).order_by(
+        events_q = MEvent.objects.filter(
+            date_posted__gte=last_run_q.date_posted).order_by(
             "-date_posted").exclude(event_class="charts_builder")
+    except:
+        last_run_q = None
+        events_q = MEvent.objects.all()
     if events_q.count() > 0:
         run_events_generator(events_q)
     q = get_changes_events(events_q, last_run_q)
@@ -150,6 +151,7 @@ class Command(BaseCommand):
         run(quiet)
         if s is not None:
             timer = int(s) * 60
+            timer = int(s)
             while True:
                 print("Sleeping...")
                 time.sleep(timer)

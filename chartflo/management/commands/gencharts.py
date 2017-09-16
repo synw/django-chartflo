@@ -103,7 +103,6 @@ def run(quiet):
         date_posted__gte=last_run_q.date_posted).order_by(
             "-date_posted").exclude(event_class="charts_builder")
     if events_q.count() > 0:
-        print("EVENTS", events_q.count(), events_q)
         run_events_generator(events_q)
     q = get_changes_events(events_q, last_run_q)
     if quiet == 0:

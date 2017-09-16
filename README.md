@@ -66,7 +66,7 @@ It is also possible to generate individual numbers to include in a widget in the
    from django.contrib.auth.models import User
    
    
-   def run():
+   def run(events):
       num = NumberController()
       val = User.objects.all().count()
       num.generate("users", "Users", val, 

@@ -88,21 +88,33 @@ def run_events_generator(events_q):
     gen(events_q)
 
 
-def run(quiet):
-    """
-    Run the all process
-    """
-    if quiet == 0:
-        print("Checking events queue for changes...")
+def get_last_run_q():
+    last_run = MEvent.objects.filter(
+        event_class="charts_builder").latest("date_posted")
+    return last_run
+
+
+def get_events_q(last_run_q=None):
     try:
-        last_run_q = MEvent.objects.filter(
-            event_class="charts_builder").latest("date_posted")
+        if last_run_q is None:
+            last_run_q = get_last_run_q()
         events_q = MEvent.objects.filter(
             date_posted__gte=last_run_q.date_posted).order_by(
             "-date_posted").exclude(event_class="charts_builder")
     except:
         last_run_q = None
         events_q = MEvent.objects.all()
+    return events_q
+
+
+def run(quiet):
+    """
+    Run the all process
+    """
+    if quiet == 0:
+        print("Checking events queue for changes...")
+    last_run_q = get_last_run_q()
+    events_q = get_events_q(last_run_q)
     if events_q.count() > 0:
         run_events_generator(events_q)
     q = get_changes_events(events_q, last_run_q)

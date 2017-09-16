@@ -3,6 +3,7 @@
 from __future__ import print_function
 from django.core.management.base import BaseCommand
 from chartflo.apps import GENERATORS
+from .gencharts import get_changes_events, get_last_run_q, get_events_q
 
 
 class Command(BaseCommand):
@@ -30,4 +31,7 @@ class Command(BaseCommand):
             return
         if quiet > 0:
             print("Running generator", app)
-        generator(None)
+        last_run_q = get_last_run_q()
+        events_q = get_events_q()
+        events = get_changes_events(events_q, last_run_q)
+        generator(events)

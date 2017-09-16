@@ -118,8 +118,9 @@ Make a view and map it to an url:
       template_name = "mymodule/dashboards/users.html"
    ```
 
-Check the example folder in the repository for example code: 
-[install instructions](https://github.com/synw/django-chartflo/tree/master/example)
+Check django-chartmodels's 
+[dashboard](https://github.com/synw/django-chartmodels/blob/master/chartmodels/templates/chartmodels/dashboards/users.html) 
+and [generators](https://github.com/synw/django-chartmodels/blob/master/chartmodels/chartflo/users.py) for a full example
 
 
 ### How to handle data changes

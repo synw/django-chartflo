@@ -3,6 +3,7 @@
 from __future__ import print_function
 from django.core.management.base import BaseCommand
 from chartflo.apps import GENERATORS
+from goerr import err
 from .gencharts import get_changes_events, get_last_run_q, get_events_q
 from mqueue.models import MEvent
 
@@ -32,16 +33,34 @@ class Command(BaseCommand):
         runall = int(options["all"])
         try:
             generator = GENERATORS[app]
-        except:
+        except Exception as e:
+            err.new(e, "Generator not found")
             if quiet > 0:
                 print("Generator not found")
             return
         if quiet > 0:
             print("Running generator", app)
-        last_run_q = get_last_run_q()
+        try:
+            last_run_q = get_last_run_q()
+        except Exception as e:
+            err.new(e)
         if runall == 0:
-            events_q = get_events_q()
-            events_q = get_changes_events(events_q, last_run_q)
+            try:
+                events_q = get_events_q()
+            except Exception as e:
+                err.new(e)
+            try:
+                events_q = get_changes_events(events_q, last_run_q)
+            except Exception as e:
+                err.new(e)
         else:
-            events_q = MEvent.objects.all()
-        generator(events_q)
+            try:
+                events_q = MEvent.objects.all()
+            except Exception as e:
+                err.new(e)
+        try:
+            generator(events_q)
+        except Exception as e:
+            err.new(e)
+        if err.exists:
+            err.throw()

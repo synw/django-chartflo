@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 import importlib
+from goerr import err
 from django.apps import AppConfig
 
 
@@ -12,7 +13,9 @@ def load_generators(modname):
         mod = importlib.import_module(path)
         generator = getattr(mod, "run")
         return generator
-    except ImportError:
+    except ImportError as e:
+        if "No module named" not in str(e):
+            err.new(e)
         return None
 
 
@@ -26,7 +29,12 @@ class ChartfloConfig(AppConfig):
         apps = settings.INSTALLED_APPS
         generators = {}
         for app in apps:
-            res = load_generators(app)
-            if res is not None:
-                generators[app] = res
+            try:
+                res = load_generators(app)
+                if res is not None:
+                    generators[app] = res
+            except Exception as e:
+                err.new(e)
         GENERATORS = generators
+        if err.exists:
+            err.trace()

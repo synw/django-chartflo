@@ -56,7 +56,7 @@ folder.
 To run the generator: 
 
    ```
-   python3 manage.py runscript myapp
+   python3 manage.py gen myapp
    ```
 
 It is also possible to generate individual numbers to include in a widget in the dashboard:
@@ -158,7 +158,7 @@ To run one generator only use: `python3 manage.py gen myapp`
 
 #### Regenerate the charts on data change
 
-Process the regeneration immediatly after the event is fired: create a `chartflo.py` file in your module:
+Process the regeneration immediatly after the event is fired: create a `generate.py` file in your module:
 
    ```python
    from django.core.management import call_command
@@ -175,7 +175,7 @@ Where `"make_charts"` is the name of your generator script. Then in settings:
    ```python
    MQUEUE_HOOKS = {
       "chartflo": {
-        "path": "mymodule.chartflo",
+        "path": "mymodule.generate",
       }
    }
    ```

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
-import subprocess
 import time
 from django.db.models import Q
 from django.core.management.base import BaseCommand
@@ -80,16 +79,6 @@ def update_charts(generators, quiet):
         except:
             print("Generator", generator, "not found")
         gen()
-        """
-        cmd = ["python3", "manage.py", "gen", generator]
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-        for line in p.stdout:
-            msg = str(line).replace("b'", "")
-            msg = msg[0:-3]
-            if quiet == 0:
-                print(msg)
-        p.wait()
-        """
 
 
 def run(quiet):
@@ -134,6 +123,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         quiet = options["quiet"]
         s = options["timer"]
+        if quiet == 0:
+            gens = ""
+            i = 0
+            for generator in GENERATORS:
+                gens = gens + generator + " "
+                i += 1
+            print("Found", i, "generators:", gens)
         run(quiet)
         if s is not None:
             timer = int(s) * 60

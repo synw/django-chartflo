@@ -50,8 +50,8 @@ For the `x` and `y` axis definitions and the `time_unit` refer to
 the [Altair encoding documentation](https://altair-viz.github.io/documentation/encoding.html)
 The generated charts will be saved to the database. 
 
-To generate html files use this setting: `CHARTFLO_TO_HTML = True`. The files will be generated in a `templates/chartflo`
-folder.
+To generate html files use this setting: `CHARTFLO_TO_HTML = True`. Create a `templates/chartflo` directory where
+the html files will be generated
 
 To run the generator: 
 

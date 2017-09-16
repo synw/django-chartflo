@@ -129,7 +129,6 @@ class ChartController():
     def generate_series(self, slug, name, chart_type, query, x, y, width, height,
                         generator, time_unit=None, color=None,
                         size=None, verbose=False, modelnames=""):
-
         dataset = self.serialize_series(
             query, x, y, time_unit=time_unit, chart_type=chart_type,
             width=width, height=height, size=size, color=color

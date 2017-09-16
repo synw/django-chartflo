@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.core.management.base import BaseCommand
 from mqueue.models import MEvent
 from chartflo.models import Chart, Number
+from chartflo.apps import GENERATORS
 
 
 def get_changes_events():
@@ -73,7 +74,14 @@ def update_charts(generators, quiet):
             print('------------------------------')
             print("Executing generator", generator)
             print('------------------------------')
-        cmd = ["python3", "manage.py", "runscript", generator, "-s"]
+
+        try:
+            gen = GENERATORS[generator]
+        except:
+            print("Generator", generator, "not found")
+        gen()
+        """
+        cmd = ["python3", "manage.py", "gen", generator]
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
         for line in p.stdout:
             msg = str(line).replace("b'", "")
@@ -81,6 +89,7 @@ def update_charts(generators, quiet):
             if quiet == 0:
                 print(msg)
         p.wait()
+        """
 
 
 def run(quiet):

@@ -22,10 +22,12 @@ class Number(models.Model):
     html = models.TextField(blank=True, verbose_name=_(u'Html'))
     updated = models.DateTimeField(
         blank=True, null=True, verbose_name=_(u'Last update'))
-    modelnames = models.CharField(max_length=200, verbose_name=_(u"Associated models"),
+    modelnames = models.CharField(max_length=200, blank=True,
+                                  verbose_name=_(u"Associated models"),
                                   help_text="List of model names: ex: User,Group"
                                   )
-    generator = models.CharField(max_length=120, verbose_name=_(u"Generator"))
+    generator = models.CharField(
+        max_length=120, blank=True, verbose_name=_(u"Generator"))
 
     class Meta:
         verbose_name = _(u'Number')
@@ -63,10 +65,12 @@ class Chart(models.Model):
     html_after = models.TextField(blank=True, verbose_name=_(u'Html after'))
     updated = models.DateTimeField(
         blank=True, null=True, verbose_name=_(u'Last update'))
-    modelnames = models.CharField(max_length=200, verbose_name=_(u"Associated models"),
+    modelnames = models.CharField(max_length=200, blank=True,
+                                  verbose_name=_(u"Associated models"),
                                   help_text="List of model names: ex: User,Group"
                                   )
-    generator = models.CharField(max_length=120, verbose_name=_(u"Generator"))
+    generator = models.CharField(
+        max_length=120, blank=True, verbose_name=_(u"Generator"))
 
     class Meta:
         verbose_name = _(u'Chart')
@@ -75,7 +79,8 @@ class Chart(models.Model):
     def __str__(self):
         return self.name
 
-    def generate(self, chart, slug, name, dataset, generator, modelnames="", html_before="", html_after=""):
+    def generate(self, chart, slug, name, dataset, generator="",
+                 modelnames="", html_before="", html_after=""):
         """
         Generate data and save a chart object in the database
         """

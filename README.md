@@ -21,10 +21,7 @@ Migrate the database
 
 ### Create charts
 
-The charts are created in the code using django-extensions scripts. Make a `scripts` folder in your main app. Make sure
-the main app in in `INSTALLED_APPS`. 
-
-Create a `chart_users.py` file in this folder and define your charts:
+Create a `chartflo.py` file in your app and define your charts:
 
    ```python
    from django.contrib.auth.models import User
@@ -59,7 +56,7 @@ folder.
 To run the generator: 
 
    ```
-   python3 manage.py runscript chart_users
+   python3 manage.py runscript myapp
    ```
 
 It is also possible to generate individual numbers to include in a widget in the dashboard:
@@ -136,6 +133,8 @@ In settings register the models that need to be watched:
       ('django.contrib.auth.models.User', ["c", "u", "d"]),
    ]
    ```
+Check the [documentation](http://django-mqueue.readthedocs.io/en/latest/usage/registered_models.html) for more info 
+about the models registration mechanism.
 
 This will produce events on each create, delete and update operation for the `auth.User` model. Two options are possible
 to handle the changes:
@@ -154,6 +153,8 @@ This will run the command once and exit. To run it at fixed intervals:
 `-s=10`: this will run the command every 10 minutes
 
 To run quietly: `-q=1`
+
+To run one generator only use: `python3 manage.py gen myapp`
 
 #### Regenerate the charts on data change
 
@@ -242,7 +243,7 @@ class ChartViewCount(ChartsView):
         return datapack
    ```
 
-Available chart types: `bar`, `circle`, `point`, `square`, `line`, `tick`, `area`
+Available chart types: `bar`, `circle`, `point`, `square`, `line`, `tick`, `area`, `rule`
 
 For the syntax of the `x` and `y` fields referer to the 
 [Altair encoding documentation](https://altair-viz.github.io/documentation/encoding.html)

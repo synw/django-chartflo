@@ -2,7 +2,7 @@
 
 Get the dependencies: `pip install altair django-extensions goerr blessings django-seed`
 
-Create a Django instance. Copy the `scripts` folder and the `views.py` file in any app.
+Create a Django instance. Copy the `chartflo.py` and `views.py` files in any app.
 
 Map an url to the view:
 
@@ -34,7 +34,8 @@ Populate the database with fake data: `python3 manage.py seed auth --number=100`
 Create a `/templates` folder and copy `base.html` in it. Create a `/templates/dashboards/` folder and
 copy `users.html` in it.
 
-Run the generator: `python3 manage.py runscript chart_users`. Html files will be generated in `templates/charflo`
+Run the generator: `python3 manage.py gen myapp`. Where `myapp` is the name of the application where `charflo.py` is.
+Html files will be generated in `templates/charflo`
 
 Go to `/dashboards/users/` to see the results
 

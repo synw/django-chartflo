@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from chartflo.factory import ChartController, NumberController
 
 
-GENERATOR = "chart_users"
+GENERATOR = "analytics"
 
 
 def run():
@@ -45,16 +45,16 @@ def run():
     y = ("username", "count(username):Q")
     q = users.order_by("last_login")
     chart.generate(
-        "last_logins", "Last logins", "line", q, x, y, 870, 180,
-        time_unit="yearmonth", verbose=True, modelnames="User", generator=GENERATOR
+        "last_logins", "Last logins", "line", q, x, y, 870, 180, GENERATOR,
+        time_unit="yearmonth", verbose=True, modelnames="User"
     )
     # date joined chart
     q = users.order_by("date_joined")
     x = ("date_joined", "date_joined:T")
     y = ("username", "count(username):Q")
     chart.generate(
-        "date_joined", "Date joined", "line", q, x, y, 870, 180,
-        time_unit="yearmonth", verbose=True, modelnames="User", generator=GENERATOR
+        "date_joined", "Date joined", "line", q, x, y, 870, 180, GENERATOR,
+        time_unit="yearmonth", verbose=True, modelnames="User"
     )
     # User groups chart
     x = ("group", "group")

@@ -6,7 +6,7 @@ Charts for the lazy ones in Django using [Vega Lite](https://vega.github.io/vega
 
 Clone and:
 
-`pip install altair goerr`
+`pip install altair goerr blessings`
 
 Clone and add to installed apps:
 

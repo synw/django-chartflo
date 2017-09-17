@@ -5,7 +5,6 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from django_extensions.db.fields.json import JSONField
 from goerr import err
 from .utils import _write_file
 from .conf import number_template, TO_HTML
@@ -40,7 +39,6 @@ class Number(models.Model):
         """
         Generate data and save a panel number object in the database
         """
-        global TO_HTML
         html = number_template(self.value, self.legend)
         self.html = html
         self.updated = timezone.now()
@@ -59,7 +57,7 @@ class Chart(models.Model):
     slug = models.CharField(max_length=120, unique=True,
                             db_index=True, verbose_name=_(u"Slug"))
     html = models.TextField(blank=True, verbose_name=_(u'Html'))
-    json = JSONField(blank=True, verbose_name=_(
+    json = models.TextField(blank=True, verbose_name=_(
         u'Vega Lite encoded json data'))
     html_before = models.TextField(blank=True, verbose_name=_(u'Html before'))
     html_after = models.TextField(blank=True, verbose_name=_(u'Html after'))

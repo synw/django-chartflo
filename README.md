@@ -6,12 +6,11 @@ Charts for the lazy ones in Django using [Vega Lite](https://vega.github.io/vega
 
 Clone and:
 
-`pip install altair django-extensions goerr`
+`pip install altair goerr`
 
 Clone and add to installed apps:
 
    ```
-   "django_extensions",
    "chartflo",
    ```
 

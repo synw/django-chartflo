@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pandas as pd
-from altair import Chart, X, Y, Axis
+from altair import Chart, X, Y, Axis, Data
 from blessings import Terminal
 from .models import Chart as ChartFlo, Number
 
@@ -23,7 +23,6 @@ class ChartController():
         """
         x = []
         y = []
-        print("X", xfield)
         for datapoint in dataset:
             x.append(datapoint)
             y.append(dataset[datapoint])
@@ -40,9 +39,30 @@ class ChartController():
         )
         return chart
 
-    def serialize_timeseries(self, query, xfield, yfield, time_unit,
-                             chart_type="line", width=800,
-                             height=300, color=None, size=None):
+    def serialize_series_from_dataset(self, dataset, xfield, yfield, time_unit,
+                                      chart_type="line", width=800,
+                                      height=300, color=None, size=None):
+        """
+        Serialize a timeseries from a dataset
+        """
+        xencode, yencode = self._encode_fields(
+            xfield, yfield, time_unit)
+        chart = self._chart_class(dataset, chart_type).encode(
+            x=xencode,
+            y=yencode,
+            color=color,
+            size=size,
+        ).configure_cell(
+            width=width,
+            height=height
+        ).configure_scale(
+            bandSize=30
+        )
+        return chart
+
+    def serialize_series_from_query(self, query, xfield, yfield, time_unit,
+                                    chart_type="line", width=800,
+                                    height=300, color=None, size=None):
         """
         Serialize a timeseries chart from a query
         """
@@ -106,10 +126,16 @@ class ChartController():
     def generate_series(self, slug, name, chart_type, query, x, y, width, height,
                         generator, time_unit=None, color=None,
                         size=None, verbose=False, modelnames=""):
-        dataset = self.serialize_timeseries(
-            query, x, y, time_unit=time_unit, chart_type=chart_type,
-            width=width, height=height, size=size, color=color
-        )
+        if isinstance(query, Data):
+            dataset = self.serialize_series_from_dataset(
+                query, x, y, time_unit=time_unit, chart_type=chart_type,
+                width=width, height=height, size=size, color=color
+            )
+        else:
+            dataset = self.serialize_series_from_query(
+                query, x, y, time_unit=time_unit, chart_type=chart_type,
+                width=width, height=height, size=size, color=color
+            )
         chart, _ = ChartFlo.objects.get_or_create(slug=slug)
         chart.generate(chart, slug, name, dataset, modelnames, generator)
         if verbose is True:
@@ -125,7 +151,7 @@ class ChartController():
         if verbose is True:
             print("Serializing", slug, "chart...")
         if time_unit is not None:
-            dataset = self.serialize_timeseries(
+            dataset = self.serialize_series_from_query(
                 query, x, y, time_unit=time_unit, chart_type=chart_type,
                 width=width, height=height, size=size, color=color
             )
@@ -172,8 +198,6 @@ class ChartController():
         x_options = None
         if len(xfield) > 2:
             x_options = xfield[2]
-        print(xfield)
-        print(xfieldtype, x_options)
         y_options = None
         if len(yfield) > 2:
             y_options = yfield[2]
@@ -198,8 +222,8 @@ class ChartController():
             yencode = Y(yfieldtype)
         else:
             yencode = Y(
-                xfieldtype,
-                axis=Axis(**x_options)
+                yfieldtype,
+                axis=Axis(**y_options)
             )
         return xencode, yencode
 

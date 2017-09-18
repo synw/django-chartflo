@@ -39,7 +39,7 @@ class Number(models.Model):
         """
         Generate data and save a panel number object in the database
         """
-        html = number_template(self.value, self.legend)
+        html = number_template(self.value, self.legend, self.unit)
         self.html = html
         self.updated = timezone.now()
         self.save()

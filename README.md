@@ -138,7 +138,7 @@ In settings register the models that need to be watched:
       ('django.contrib.auth.models.User', ["c", "u", "d"]),
    ]
    ```
-Check the [documentation](http://django-mqueue.readthedocs.io/en/latest/usage/registered_models.html) for more info 
+Check the [Mqueue documentation](http://django-mqueue.readthedocs.io/en/latest/usage/registered_models.html) for more info 
 about the models registration mechanism.
 
 This will produce events on each create, delete and update operation for the `auth.User` model. Two options are possible

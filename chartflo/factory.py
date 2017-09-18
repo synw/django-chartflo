@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import pandas as pd
-from altair import Chart, X, Y, Axis, Data
+from altair import Chart, X, Y, Axis
 from blessings import Terminal
+from django.db.models.query import QuerySet
 from .models import Chart as ChartFlo, Number
 
 
@@ -15,8 +16,8 @@ class ChartController():
     Charts builder: handles serialization into Vega Lite format
     """
 
-    def serialize_count(self, dataset, xfield, yfield, chart_type="bar",
-                        width=800, height=300, color=None, size=None):
+    def serialize_from_dataset(self, dataset, xfield, yfield, chart_type="bar",
+                               width=800, height=300, color=None, size=None):
         """
         Serialize a chart from a count dataset:
         Ex: {"users":200, "groups":30}
@@ -39,9 +40,9 @@ class ChartController():
         )
         return chart
 
-    def serialize_series_from_dataset(self, dataset, xfield, yfield, time_unit,
-                                      chart_type="line", width=800,
-                                      height=300, color=None, size=None):
+    def serialize_series_from_altairdata(self, dataset, xfield, yfield, time_unit,
+                                         chart_type="line", width=800,
+                                         height=300, color=None, size=None):
         """
         Serialize a timeseries from a dataset
         """
@@ -123,17 +124,17 @@ class ChartController():
             pack = {field: func}
         return self._count_for_query(query, pack)
 
-    def generate_series(self, slug, name, chart_type, query, x, y, width, height,
+    def generate_series(self, slug, name, chart_type, datapack, x, y, width, height,
                         generator, time_unit=None, color=None,
                         size=None, verbose=False, modelnames=""):
-        if isinstance(query, Data):
-            dataset = self.serialize_series_from_dataset(
-                query, x, y, time_unit=time_unit, chart_type=chart_type,
+        if not isinstance(datapack, QuerySet):
+            dataset = self.serialize_series_from_altairdata(
+                datapack, x, y, time_unit=time_unit, chart_type=chart_type,
                 width=width, height=height, size=size, color=color
             )
         else:
             dataset = self.serialize_series_from_query(
-                query, x, y, time_unit=time_unit, chart_type=chart_type,
+                datapack, x, y, time_unit=time_unit, chart_type=chart_type,
                 width=width, height=height, size=size, color=color
             )
         chart, _ = ChartFlo.objects.get_or_create(slug=slug)
@@ -142,7 +143,7 @@ class ChartController():
             print(OK + "Chart", COLOR.bold(slug), "saved")
 
     def generate(self, slug, name, chart_type, query, x, y, width, height,
-                 generator, time_unit=None, color=None,
+                 generator, color=None,
                  size=None, verbose=False, modelnames=""):
         """
         Generates or update a chart instance from a query
@@ -150,16 +151,10 @@ class ChartController():
         global OK, COLOR
         if verbose is True:
             print("Serializing", slug, "chart...")
-        if time_unit is not None:
-            dataset = self.serialize_series_from_query(
-                query, x, y, time_unit=time_unit, chart_type=chart_type,
-                width=width, height=height, size=size, color=color
-            )
-        else:
-            dataset = self.serialize_count(
-                query, x, y, chart_type=chart_type,
-                width=width, height=height, size=size, color=color
-            )
+        dataset = self.serialize_from_dataset(
+            query, x, y, chart_type=chart_type,
+            width=width, height=height, size=size, color=color
+        )
         chart, _ = ChartFlo.objects.get_or_create(slug=slug)
         chart.generate(chart, slug, name, dataset, generator, modelnames)
         if verbose is True:

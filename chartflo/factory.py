@@ -23,13 +23,12 @@ class ChartController():
         """
         x = []
         y = []
-        xfieldtype = xfield[1]
-        yfieldtype = yfield[1]
+        print("X", xfield)
         for datapoint in dataset:
             x.append(datapoint)
             y.append(dataset[datapoint])
         df = pd.DataFrame({xfield[0]: x, yfield[0]: y})
-        xencode, yencode = self._encode_fields(xfieldtype, yfieldtype)
+        xencode, yencode = self._encode_fields(xfield, yfield)
         chart = self._chart_class(df, chart_type).encode(
             x=xencode,
             y=yencode,
@@ -48,11 +47,9 @@ class ChartController():
         Serialize a timeseries chart from a query
         """
         xfieldname = xfield[0]
-        xfieldtype = xfield[1]
         dates = []
         vals = []
         yfieldname = yfield[0]
-        yfieldtype = yfield[1]
         for row in query:
             # date
             has_date = False
@@ -67,7 +64,7 @@ class ChartController():
         df = pd.DataFrame({xfieldname: dates, yfieldname: vals})
         # print(df)
         xencode, yencode = self._encode_fields(
-            xfieldtype, yfieldtype, time_unit)
+            xfield, yfield, time_unit)
         if chart_type != "tick":
             chart = self._chart_class(df, chart_type).encode(
                 x=xencode,
@@ -109,7 +106,7 @@ class ChartController():
     def generate_series(self, slug, name, chart_type, query, x, y, width, height,
                         generator, time_unit=None, color=None,
                         size=None, verbose=False, modelnames=""):
-        dataset = self.serialize_series(
+        dataset = self.serialize_timeseries(
             query, x, y, time_unit=time_unit, chart_type=chart_type,
             width=width, height=height, size=size, color=color
         )
@@ -166,25 +163,44 @@ class ChartController():
             return Chart(df).mark_rule()
         return None
 
-    def _encode_fields(self, xfieldtype, yfieldtype, time_unit=None):
+    def _encode_fields(self, xfield, yfield, time_unit=None):
         """
         Encode the fields in Altair format
         """
+        xfieldtype = xfield[1]
+        yfieldtype = yfield[1]
+        x_options = None
+        if len(xfield) > 2:
+            x_options = xfield[2]
+        print(xfield)
+        print(xfieldtype, x_options)
+        y_options = None
+        if len(yfield) > 2:
+            y_options = yfield[2]
         if time_unit is not None:
-            xencode = X(xfieldtype, timeUnit=time_unit)
-        else:
-            xencode = X(xfieldtype)
-
-            xencode = X(
-                xfieldtype,
-                axis=Axis(
-                    axisWidth=10.0,
-                    format='%Y%M%D',
-                    labelAngle=0.0,
+            if x_options is None:
+                xencode = X(xfieldtype, timeUnit=time_unit)
+            else:
+                xencode = X(
+                    xfieldtype,
+                    axis=Axis(**x_options),
+                    timeUnit=time_unit
                 )
+        else:
+            if x_options is None:
+                xencode = X(xfieldtype)
+            else:
+                xencode = X(
+                    xfieldtype,
+                    axis=Axis(**x_options)
+                )
+        if y_options is None:
+            yencode = Y(yfieldtype)
+        else:
+            yencode = Y(
+                xfieldtype,
+                axis=Axis(**x_options)
             )
-
-        yencode = Y(yfieldtype)
         return xencode, yencode
 
     def _count_for_query(self, query, fieldchecks):

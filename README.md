@@ -52,6 +52,9 @@ The generated charts will be saved to the database.
 Html files will be generated. Create a `templates/chartflo` directory where
 the html files will be generated
 
+To generate Vega Lite encoded json files use this setting: `CHARTFLO_TO_JSON = True`: the files
+will be generated in `templates/chartflo/json/charts`
+
 To not generate html use this use this setting: `CHARTFLO_TO_HTML = False`
 
 To run the generator: 

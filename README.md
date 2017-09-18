@@ -60,7 +60,7 @@ To not generate html use this use this setting: `CHARTFLO_TO_HTML = False`
 To run the generator: 
 
    ```
-   python3 manage.py gen myapp
+   python3 manage.py gen myapp -all
    ```
 
 It is also possible to generate individual numbers to include in a widget in the dashboard:

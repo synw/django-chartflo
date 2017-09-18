@@ -17,6 +17,7 @@ CHART_TYPES = (
 ENGINE = getattr(settings, 'CHARTFLO_ENGINE', "vegalite")
 
 TO_HTML = getattr(settings, 'CHARTFLO_TO_HTML', True)
+TO_JSON = getattr(settings, 'CHARTFLO_TO_HTML', True)
 
 
 def number_template(number, legend=None):

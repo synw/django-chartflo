@@ -6,8 +6,8 @@ from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from goerr import err
-from .utils import _write_file
-from .conf import number_template, TO_HTML
+from .utils import _write_file, _write_json
+from .conf import number_template, TO_HTML, TO_JSON
 
 
 class Number(models.Model):
@@ -82,7 +82,6 @@ class Chart(models.Model):
         """
         Generate data and save a chart object in the database
         """
-        global TO_HTML
         chart.name = name
         try:
             chart.json = self._patch_json(dataset.to_json())
@@ -106,6 +105,8 @@ class Chart(models.Model):
         # generate file
         if TO_HTML is True:
             _write_file(slug, chart.html)
+        if TO_JSON is True:
+            _write_json(self.slug, self.json)
         chart.updated = timezone.now()
         if err.exists:
             if settings.DEBUG is True:

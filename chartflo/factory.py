@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pandas as pd
-from altair import Chart, X, Y
+from altair import Chart, X, Y, Axis
 from blessings import Terminal
 from .models import Chart as ChartFlo, Number
 
@@ -38,26 +38,6 @@ class ChartController():
         ).configure_cell(
             width=width,
             height=height
-        )
-        return chart
-
-    def serialize_series(self, dataset, xfield, yfield, time_unit,
-                         chart_type="line", width=800,
-                         height=300, color=None, size=None):
-        xfieldtype = xfield[1]
-        yfieldtype = yfield[1]
-        xencode, yencode = self._encode_fields(
-            xfieldtype, yfieldtype, time_unit)
-        chart = self._chart_class(dataset, chart_type).encode(
-            x=xencode,
-            y=yencode,
-            color=color,
-            size=size,
-        ).configure_cell(
-            width=width,
-            height=height
-        ).configure_scale(
-            bandSize=30
         )
         return chart
 
@@ -194,6 +174,16 @@ class ChartController():
             xencode = X(xfieldtype, timeUnit=time_unit)
         else:
             xencode = X(xfieldtype)
+
+            xencode = X(
+                xfieldtype,
+                axis=Axis(
+                    axisWidth=10.0,
+                    format='%Y%M%D',
+                    labelAngle=0.0,
+                )
+            )
+
         yencode = Y(yfieldtype)
         return xencode, yencode
 

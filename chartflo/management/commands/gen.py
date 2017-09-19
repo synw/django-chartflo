@@ -15,13 +15,15 @@ class Command(BaseCommand):
         parser.add_argument('app', type=str)
         parser.add_argument('-q',
                             dest="quiet",
-                            default=0,
-                            help='Quiet mode: ex: -q=1',
+                            action='store_true',
+                            default=False,
+                            help='Quiet mode: ex: -q',
                             )
         parser.add_argument('-all',
+                            action='store_true',
                             dest="all",
-                            default=0,
-                            help='Update for all instances: ex: -all=1',
+                            default=False,
+                            help='Update for all instances: ex: -all',
                             )
 
     def handle(self, *args, **options):

@@ -157,7 +157,7 @@ This will run the command once and exit. To run it at fixed intervals:
 
 `-s=10`: this will run the command every 10 minutes
 
-To run quietly: `-q=1`
+To run quietly: `-q`
 
 To run one generator only use: `python3 manage.py gen myapp`
 

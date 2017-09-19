@@ -89,8 +89,11 @@ def run_events_generator(events_q):
 
 
 def get_last_run_q():
-    last_run = MEvent.objects.filter(
-        event_class="charts_builder").latest("date_posted")
+    try:
+        last_run = MEvent.objects.filter(
+            event_class="charts_builder").latest("date_posted")
+    except:
+        return None
     return last_run
 
 
@@ -146,8 +149,9 @@ class Command(BaseCommand):
                             )
         parser.add_argument('-q',
                             dest="quiet",
-                            default=0,
-                            help='Quiet mode: ex: -q=1.',
+                            action='store_true',
+                            default=False,
+                            help='Quiet mode: ex: -q.',
                             )
 
     def handle(self, *args, **options):

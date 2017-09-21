@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pandas as pd
-from altair import Chart, X, Y, Axis
+from altair import Chart, X, Y, Axis, Scale
 from blessings import Terminal
 from django.db.models.query import QuerySet
 from .models import Chart as ChartFlo, Number
@@ -56,8 +56,6 @@ class ChartController():
         ).configure_cell(
             width=width,
             height=height
-        ).configure_scale(
-            bandSize=30
         )
         return chart
 
@@ -104,8 +102,6 @@ class ChartController():
             ).configure_cell(
                 width=width,
                 height=height
-            ).configure_scale(
-                bandSize=10
             )
         return chart
 
@@ -203,7 +199,8 @@ class ChartController():
                 xencode = X(
                     xfieldtype,
                     axis=Axis(**x_options),
-                    timeUnit=time_unit
+                    timeUnit=time_unit,
+                    scale=Scale(zero=False)
                 )
         else:
             if x_options is None:
@@ -211,14 +208,16 @@ class ChartController():
             else:
                 xencode = X(
                     xfieldtype,
-                    axis=Axis(**x_options)
+                    axis=Axis(**x_options),
+                    scale=Scale(zero=False)
                 )
         if y_options is None:
-            yencode = Y(yfieldtype)
+            yencode = Y(yfieldtype, scale=Scale(zero=False))
         else:
             yencode = Y(
                 yfieldtype,
-                axis=Axis(**y_options)
+                axis=Axis(**y_options),
+                scale=Scale(zero=False)
             )
         return xencode, yencode
 

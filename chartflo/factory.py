@@ -17,7 +17,8 @@ class ChartController():
     """
 
     def serialize_from_dataset(self, dataset, xfield, yfield, chart_type="bar",
-                               width=800, height=300, color=None, size=None):
+                               width=800, height=300, color=None, size=None,
+                               scale=Scale(zero=False)):
         """
         Serialize a chart from a count dataset:
         Ex: {"users":200, "groups":30}
@@ -28,7 +29,7 @@ class ChartController():
             x.append(datapoint)
             y.append(dataset[datapoint])
         df = pd.DataFrame({xfield[0]: x, yfield[0]: y})
-        xencode, yencode = self._encode_fields(xfield, yfield)
+        xencode, yencode = self._encode_fields(xfield, yfield, scale=scale)
         chart = self._chart_class(df, chart_type).encode(
             x=xencode,
             y=yencode,
@@ -42,12 +43,13 @@ class ChartController():
 
     def serialize_series_from_altairdata(self, dataset, xfield, yfield, time_unit,
                                          chart_type="line", width=800,
-                                         height=300, color=None, size=None):
+                                         height=300, color=None, size=None,
+                                         scale=Scale(zero=False)):
         """
         Serialize a timeseries from a dataset
         """
         xencode, yencode = self._encode_fields(
-            xfield, yfield, time_unit)
+            xfield, yfield, time_unit, scale=scale)
         chart = self._chart_class(dataset, chart_type).encode(
             x=xencode,
             y=yencode,
@@ -61,7 +63,8 @@ class ChartController():
 
     def serialize_series_from_query(self, query, xfield, yfield, time_unit,
                                     chart_type="line", width=800,
-                                    height=300, color=None, size=None):
+                                    height=300, color=None, size=None,
+                                    scale=Scale(zero=False)):
         """
         Serialize a timeseries chart from a query
         """
@@ -83,7 +86,7 @@ class ChartController():
         df = pd.DataFrame({xfieldname: dates, yfieldname: vals})
         # print(df)
         xencode, yencode = self._encode_fields(
-            xfield, yfield, time_unit)
+            xfield, yfield, time_unit, scale=scale)
         if chart_type != "tick":
             chart = self._chart_class(df, chart_type).encode(
                 x=xencode,
@@ -122,16 +125,19 @@ class ChartController():
 
     def generate_series(self, slug, name, chart_type, datapack, x, y, width, height,
                         generator, time_unit=None, color=None,
-                        size=None, verbose=False, modelnames=""):
+                        size=None, verbose=False, modelnames="",
+                        scale=Scale(zero=False)):
         if not isinstance(datapack, QuerySet):
             dataset = self.serialize_series_from_altairdata(
                 datapack, x, y, time_unit=time_unit, chart_type=chart_type,
-                width=width, height=height, size=size, color=color
+                width=width, height=height, size=size, color=color,
+                scale=scale
             )
         else:
             dataset = self.serialize_series_from_query(
                 datapack, x, y, time_unit=time_unit, chart_type=chart_type,
-                width=width, height=height, size=size, color=color
+                width=width, height=height, size=size, color=color,
+                scale=scale
             )
         chart, _ = ChartFlo.objects.get_or_create(slug=slug)
         chart.generate(chart, slug, name, dataset, modelnames, generator)
@@ -140,7 +146,8 @@ class ChartController():
 
     def generate(self, slug, name, chart_type, query, x, y, width, height,
                  generator, color=None,
-                 size=None, verbose=False, modelnames=""):
+                 size=None, verbose=False, modelnames="",
+                 scale=Scale(zero=False)):
         """
         Generates or update a chart instance from a query
         """
@@ -149,7 +156,8 @@ class ChartController():
             print("Serializing", slug, "chart...")
         dataset = self.serialize_from_dataset(
             query, x, y, chart_type=chart_type,
-            width=width, height=height, size=size, color=color
+            width=width, height=height, size=size, color=color,
+            scale=scale
         )
         chart, _ = ChartFlo.objects.get_or_create(slug=slug)
         chart.generate(chart, slug, name, dataset, generator, modelnames)
@@ -180,10 +188,12 @@ class ChartController():
             return Chart(df).mark_rule()
         return None
 
-    def _encode_fields(self, xfield, yfield, time_unit=None):
+    def _encode_fields(self, xfield, yfield, time_unit=None, scale=Scale(zero=False)):
         """
         Encode the fields in Altair format
         """
+        if scale is None:
+            scale = Scale()
         xfieldtype = xfield[1]
         yfieldtype = yfield[1]
         x_options = None
@@ -200,7 +210,7 @@ class ChartController():
                     xfieldtype,
                     axis=Axis(**x_options),
                     timeUnit=time_unit,
-                    scale=Scale(zero=False)
+                    scale=scale
                 )
         else:
             if x_options is None:
@@ -209,15 +219,15 @@ class ChartController():
                 xencode = X(
                     xfieldtype,
                     axis=Axis(**x_options),
-                    scale=Scale(zero=False)
+                    scale=scale
                 )
         if y_options is None:
-            yencode = Y(yfieldtype, scale=Scale(zero=False))
+            yencode = Y(yfieldtype, scale=scale)
         else:
             yencode = Y(
                 yfieldtype,
                 axis=Axis(**y_options),
-                scale=Scale(zero=False)
+                scale=scale
             )
         return xencode, yencode
 

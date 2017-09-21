@@ -112,15 +112,14 @@ from querying the database in a view. The template:
 {% endblock %}
    ```
 
-Make a view and map it to an url:
+To use the generic dashboard view: in url.py:
 
    ```python
-   from django.views.generic import TemplateView
-
-
-   class UsersDash(TemplateView):
-      template_name = "mymodule/dashboards/users.html"
+   url(r'^dashboards/', include('chartflo.urls')),
    ```
+
+The go to `/dashboards/users/` where `users` is the slug of your dashboard, corresponding to the `generator` parameter
+supplied to the constructor method.
 
 Check django-chartmodels's 
 [dashboard](https://github.com/synw/django-chartmodels/blob/master/chartmodels/templates/chartmodels/dashboards/users.html) 

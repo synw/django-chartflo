@@ -4,6 +4,20 @@ from django.views.generic import TemplateView
 from .conf import ENGINE
 
 
+class DashboardView(TemplateView):
+    """
+    Generic dashboard view
+    """
+
+    def dispatch(self, request, *args, **kwargs):
+        self.slug = kwargs["slug"]
+        return super(DashboardView, self).dispatch(request, *args, **kwargs)
+
+    def get_template_names(self, *args, **kwargs):
+        path = "analytics/dashboards/" + self.slug + ".html"
+        return [path]
+
+
 class ChartsView(TemplateView):
     """
     Builds a view to render one chart

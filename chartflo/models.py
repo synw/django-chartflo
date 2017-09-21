@@ -27,6 +27,8 @@ class Number(models.Model):
                                   )
     generator = models.CharField(
         max_length=120, blank=True, verbose_name=_(u"Generator"))
+    thresholds = models.CharField(max_length=255, blank=True,
+                                  verbose_name=_(u"Thresholds"))
 
     class Meta:
         verbose_name = _(u'Number')
@@ -39,7 +41,8 @@ class Number(models.Model):
         """
         Generate data and save a panel number object in the database
         """
-        html = number_template(self.value, self.legend, self.unit)
+        html = number_template(self.value, self.legend,
+                               self.unit, self.thresholds)
         self.html = html
         self.updated = timezone.now()
         self.save()

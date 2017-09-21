@@ -19,10 +19,19 @@ TO_HTML = getattr(settings, 'CHARTFLO_TO_HTML', True)
 TO_JSON = getattr(settings, 'CHARTFLO_TO_JSON', False)
 
 
-def number_template(number, legend=None, unit=""):
+def number_template(number, legend=None, unit="", thresholds={}):
     if unit != "":
         unit = '<span class="unit">&nbsp;' + unit + '</span>'
-    res = '<div class="panel-number"><h1>' + str(number) + unit + "</h1>"
+    css_class = ""
+    if thresholds:
+        if "low" in thresholds:
+            if number <= thresholds["low"]:
+                css_class = "low"
+        if "high" in thresholds:
+            if number >= thresholds["high"]:
+                css_class = "high"
+    res = '<div class="panel-number"><h1 class="' + \
+        css_class + '">' + str(number) + unit + "</h1>"
     if legend is not None:
         res = res + '<div class="panel-legend">' + legend + '</div>'
     res = res + "</div>"

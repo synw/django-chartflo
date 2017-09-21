@@ -242,7 +242,8 @@ class ChartController():
 
 class NumberController():
 
-    def generate(self, slug, legend, value, generator, unit="", verbose=False, modelnames=""):
+    def generate(self, slug, legend, value, generator, unit="",
+                 verbose=False, modelnames="", thresholds={}):
         """
         Create or update a number instance from a value
         """
@@ -255,6 +256,7 @@ class NumberController():
             num.unit = unit
             num.generator = generator
             num.modelnames = modelnames
+            num.thresholds = thresholds
             num.save()
         num.generate()
         if verbose is True:

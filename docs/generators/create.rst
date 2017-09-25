@@ -40,6 +40,8 @@ Example chart for last logins using the auth.User model: in ``myapp/chartflo.py`
 This will create a line chart showing the last logins with a timeseries ``x`` axis and a quantitative ``y``
 axis. The generated charts will be saved to the database. 
 
+Available chart types: `bar`, `circle`, `point`, `square`, `line`, `tick`, `area`, `rule`
+
 Create a ``templates/chartflo`` directory where the html files will be generated
 
 Encoding options

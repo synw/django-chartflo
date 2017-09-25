@@ -31,7 +31,7 @@ Example chart for last logins using the auth.User model: in ``myapp/chartflo.py`
       slug = "last_logins"
       name = "Last logins"
       time_unit = "yearmonth"
-      chart.generate(
+      chart.generate_series(
           slug, name, chart_type, q, x, y,
           width, height, time_unit=time_unit, verbose=True, 
           modelnames="User", generator="chart_users"

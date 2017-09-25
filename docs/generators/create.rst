@@ -4,7 +4,7 @@ Charts
 To charts are created using python generators: the user defines the data and the chart options. Html files are 
 generated and included in templates to view them.
 
-Define a ``chartflo.py`` file or package in any app. This is where the generators live. These
+Define a ``chartflo.py`` file or package in any app with a ``run`` function. This is where the generators live. These
 files will be detected at startup and the generators will be registered.
 
 Write a generator
@@ -37,7 +37,7 @@ Example chart for last logins using the auth.User model: in ``myapp/chartflo.py`
           modelnames="User", generator="chart_users"
       )
       
-This will create a line chart showing the last logins with a timeseries ``x`` axis and and a quantitative ``y``
+This will create a line chart showing the last logins with a timeseries ``x`` axis and a quantitative ``y``
 axis. The generated charts will be saved to the database. 
 
 Create a ``templates/chartflo`` directory where the html files will be generated

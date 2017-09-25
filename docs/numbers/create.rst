@@ -1,7 +1,7 @@
 Single numbers
 ==============
 
-A widget showing a single number is available to include in a widget in the dashboard. Generate it the same way
+A widget showing a single number is available to include in a dashboard. Generate it the same way
 as charts:
 
 .. highlight:: python

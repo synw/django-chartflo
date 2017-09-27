@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 from django.core.management.base import BaseCommand
+from django.conf import settings
 from chartflo.apps import GENERATORS
 from goerr import err
 from .gencharts import get_changes_events, get_last_run_q, get_events_q
@@ -65,4 +66,7 @@ class Command(BaseCommand):
         except Exception as e:
             err.new(e)
         if err.exists:
-            err.throw()
+            if settings.DEBUG is True:
+                err.throw()
+            else:
+                err.report()

@@ -73,16 +73,15 @@ Run the generator with a management command to generate the html files:
 Subgenerators
 -------------
 
-An app can contain multiple subgenerators: to use this feature create a `chartflo` package in an app:
-
-.. highlight:: python
+An app can contain multiple subgenerators: to use this feature create a ``chartflo`` package in an app:
 
 ::
+   
    __init__.py
    mysubgenerator.py
    
-The `__init__.py` contains the main generator with its `run` function. The `subgenerator.py` also has to have a
-`run` function. To launch a subgenerator:
+The ``__init__.py`` contains the main generator with its ``run`` function. The ``subgenerator.py`` also has to have a
+``run`` function. To launch a subgenerator:
 
 .. highlight:: python
 

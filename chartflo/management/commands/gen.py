@@ -3,7 +3,7 @@
 from __future__ import print_function
 from django.core.management.base import BaseCommand
 from django.conf import settings
-from chartflo.apps import GENERATORS
+from chartflo.apps import GENERATORS, load_generator
 from goerr import err
 from .gencharts import get_changes_events, get_last_run_q, get_events_q
 from mqueue.models import MEvent
@@ -34,8 +34,15 @@ class Command(BaseCommand):
         app = options["app"]
         quiet = int(options["quiet"])
         runall = int(options["all"])
+        subgenerator = None
+        if "." in app:
+            l = app.split(".")
+            app = l[0]
+            subgenerator = l[1]
         try:
             generator = GENERATORS[app]
+            if subgenerator is not None:
+                generator = load_generator(app, subgenerator)
         except Exception as e:
             err.new(e, "Generator not found")
             if quiet > 0:

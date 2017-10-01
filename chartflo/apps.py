@@ -7,9 +7,11 @@ from django.apps import AppConfig
 GENERATORS = {}
 
 
-def load_generators(modname):
+def load_generator(modname, subgenerator=None):
     try:
         path = modname + ".chartflo"
+        if subgenerator is not None:
+            path = path + "." + subgenerator
         mod = importlib.import_module(path)
         generator = getattr(mod, "run")
         return generator
@@ -30,7 +32,7 @@ class ChartfloConfig(AppConfig):
         generators = {}
         for app in apps:
             try:
-                res = load_generators(app)
+                res = load_generator(app)
                 if res is not None:
                     generators[app] = res
             except Exception as e:

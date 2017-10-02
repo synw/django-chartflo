@@ -7,6 +7,8 @@ from querying the database in a view.
 Create a template
 -----------------
 
+Create a ``templates/dashboards/users.html``:
+
 .. highlight:: django
 
 ::
@@ -51,8 +53,7 @@ To use the generic dashboard view: in url.py:
     url(r'^dashboards/', include('chartflo.urls')),
 
 
-Go to ``/dashboards/users/`` where ``users`` is the slug of your dashboard, corresponding to the ``generator`` 
-parameter supplied to the constructor method.
+Go to ``/dashboards/users/`` where ``users`` is the slug of your dashboard
 
 Example dashboards
 ------------------

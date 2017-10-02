@@ -17,5 +17,5 @@ class DashboardView(TemplateView):
         return super(DashboardView, self).dispatch(request, *args, **kwargs)
 
     def get_template_names(self, *args, **kwargs):
-        path = "analytics/dashboards/" + self.slug + ".html"
+        path = "dashboards/" + self.slug + ".html"
         return [path]

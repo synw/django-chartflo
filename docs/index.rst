@@ -6,7 +6,7 @@
 Django Chartflo
 ===============
 
-To install: clone and ``pip install altair goerr blessings gencharts``
+To install: clone and ``pip install gencharts goerr blessings``
 
 Add to INSTALLED_APPS: 
 

@@ -31,10 +31,10 @@ Example chart for last logins using the auth.User model: in ``myapp/chartflo.py`
       slug = "last_logins"
       name = "Last logins"
       time_unit = "yearmonth"
-      chart.generate_series(
+      chart.generate(
           slug, name, chart_type, q, x, y,
           width, height, time_unit=time_unit, verbose=True, 
-          modelnames="User", generator="chart_users"
+          modelnames="User", generator="myapp"
       )
       
 This will create a line chart showing the last logins with a timeseries ``x`` axis and a quantitative ``y``
@@ -49,14 +49,6 @@ Encoding options
 
 For the ``x`` and ``y`` axis definitions and the ``time_unit`` refer to 
 the `Altair encoding documentation <https://altair-viz.github.io/documentation/encoding.html>`_
-
-Settings
---------
-
-To generate Vega Lite encoded json files use this setting: ``CHARTFLO_TO_JSON = True``: the files
-will be generated in ``templates/chartflo/json/charts``
-
-To not generate html use this use this setting: ``CHARTFLO_TO_HTML = False``
 
 Run the generator
 -----------------

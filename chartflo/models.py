@@ -6,8 +6,9 @@ from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from goerr import err
-from .utils import _write_file, _write_json
-from .conf import number_template, TO_HTML, TO_JSON
+from gencharts import ChartsGenerator
+from .utils import _write_file
+from .conf import number_template
 
 
 class Number(models.Model):
@@ -46,8 +47,7 @@ class Number(models.Model):
         self.html = html
         self.updated = timezone.now()
         self.save()
-        if TO_HTML is True:
-            _write_file(self.slug, self.html, "number")
+        _write_file(self.slug, self.html, "number")
         if err.exists:
             if settings.DEBUG is True:
                 err.trace()
@@ -55,7 +55,7 @@ class Number(models.Model):
                 err.throw()
 
 
-class Chart(models.Model):
+class Chart(models.Model, ChartsGenerator):
     name = models.CharField(max_length=120, verbose_name=_(u"Name"))
     slug = models.CharField(max_length=120, unique=True,
                             db_index=True, verbose_name=_(u"Slug"))
@@ -105,39 +105,3 @@ class Chart(models.Model):
             chart.save()
         except Exception as e:
             err.new(e)
-        # generate file
-        if TO_HTML is True:
-            _write_file(slug, chart.html)
-        if TO_JSON is True:
-            _write_json(self.slug, self.json)
-        chart.updated = timezone.now()
-        if err.exists:
-            if settings.DEBUG is True:
-                err.trace()
-            else:
-                err.throw()
-
-    def _patch_json(self, json_data):
-        """
-        Patch the Altair generated json to the newest Vega Lite spec
-        """
-        json_data = json.loads(json_data)
-        # add schema
-        json_data["$schema"] = "https://vega.github.io/schema/vega-lite/2.0.0-beta.15.json"
-        # add top level width and height
-        json_data["width"] = json_data["config"]["cell"]["width"]
-        json_data["height"] = json_data["config"]["cell"]["height"]
-        del(json_data["config"]["cell"])
-        return json.dumps(json_data)
-
-    def _json_to_html(self, slug, json_data):
-        """
-        Generates html from Vega lite data
-        """
-        html = '<div id="chart-' + slug + '"></div>'
-        html += '<script>'
-        html += 'var s' + slug + ' = ' + json_data + ';'
-        html += 'vega.embed("#chart-' + slug + '", s' + slug + ');'
-        #html += 'console.log(JSON.stringify(s{id}, null, 2));'
-        html += '</script>'
-        return html

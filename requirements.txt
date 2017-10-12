@@ -1,3 +1,4 @@
 altair
 django-extensions
 goerr
+gencharts

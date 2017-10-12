@@ -4,7 +4,6 @@ import os
 from django.conf import settings
 from django.utils._os import safe_join
 from goerr import err
-from .conf import TO_HTML, TO_JSON
 
 
 def _write_json(slug, json):
@@ -36,13 +35,12 @@ def _write_json(slug, json):
         settings.BASE_DIR, "templates/chartflo/json/" + endpath)
     filepath = chartsdir_path + "/" + slug + ".json"
     #~ write the file
-    if TO_JSON is True:
-        try:
-            filex = open(filepath, "w")
-            filex.write(json)
-            filex.close()
-        except Exception as e:
-            err.new(e)
+    try:
+        filex = open(filepath, "w")
+        filex.write(json)
+        filex.close()
+    except Exception as e:
+        err.new(e)
 
 
 def _write_file(slug, html, ctype="chart"):
@@ -69,10 +67,9 @@ def _write_file(slug, html, ctype="chart"):
     # check file
     filepath = chartsdir_path + "/" + slug + ".html"
     #~ write the file
-    if TO_HTML is True:
-        try:
-            filex = open(filepath, "w")
-            filex.write(html)
-            filex.close()
-        except Exception as e:
-            err.new(e)
+    try:
+        filex = open(filepath, "w")
+        filex.write(html)
+        filex.close()
+    except Exception as e:
+        err.new(e)

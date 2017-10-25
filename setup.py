@@ -21,6 +21,7 @@ setup(
     ],
     zip_safe=False,
     install_requires=[
+        'altair',
         'gencharts',
         'goerr',
         "blessings",

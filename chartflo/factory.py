@@ -22,7 +22,7 @@ class ChartController(ChartsGenerator):
 
     def serialize_query(self, query, xfield, yfield, time_unit,
                         chart_type="line", width=800,
-                        height=300, color=None, size=None,
+                        height=300, color=Color(), size=Size(),
                         scale=Scale(zero=False)):
         """
         Serialize a timeseries chart from a query

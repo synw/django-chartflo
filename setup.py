@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 version = __import__('chartflo').__version__
 
 setup(
-    name='chartflo',
+    name='django-chartflo',
     packages=find_packages(),
     version=version,
     description='Charts for the lazy ones in Django',

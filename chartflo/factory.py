@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pandas as pd
-from altair import Scale
+from altair import Scale, Size, Color
 from blessings import Terminal
 from django.db.models.query import QuerySet
 from django.utils._os import safe_join
@@ -68,8 +68,8 @@ class ChartController(ChartsGenerator):
         return chart
 
     def generate(self, slug, name, chart_type, datapack, x, y, width, height,
-                 generator, time_unit=None, color=None,
-                 size=None, verbose=False, modelnames="",
+                 generator, time_unit=None, color=Color(),
+                 size=Size(), verbose=False, modelnames="",
                  scale=Scale(zero=False)):
         """
         Generates a chart from either a Django orm query, a pandas dataframe, a dictionnary

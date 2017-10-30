@@ -43,17 +43,20 @@ class Command(BaseCommand):
             generator = GENERATORS[app]
             if subgenerator is not None:
                 generator = load_generator(app, subgenerator)
+                if generator is None:
+                    err.new("Subgenerator " + subgenerator + " not found")
+                    err.trace()
+                    return
         except Exception as e:
             err.new(e, "Generator not found")
-            if quiet > 0:
-                print("Generator not found")
+            err.report()
             return
         if quiet > 0:
             print("Running generator", app)
         try:
             last_run_q = get_last_run_q()
-        except Exception as e:
-            err.new(e)
+        except Exception:
+            pass
         if runall == 0:
             try:
                 events_q = get_events_q()

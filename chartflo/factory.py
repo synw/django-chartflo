@@ -68,8 +68,8 @@ class ChartController(ChartsGenerator):
         return chart
 
     def generate(self, slug, name, chart_type, datapack, x, y, width, height,
-                 generator, time_unit=None, color=Color(),
-                 size=Size(), verbose=False, modelnames="",
+                 generator=None, time_unit=None, color=Color(),
+                 size=Size(), verbose=False, modelnames=None,
                  scale=Scale(zero=False)):
         """
         Generates a chart from either a Django orm query, a pandas dataframe, a dictionnary
@@ -90,7 +90,8 @@ class ChartController(ChartsGenerator):
         chart, _ = ChartFlo.objects.get_or_create(slug=slug)
         folderpath = safe_join(settings.BASE_DIR, "templates/chartflo")
         self.html(slug, name, dataset, folderpath)
-        chart.generate(chart, slug, name, dataset)
+        if generator is not None and modelnames is not None:
+            chart.generate(chart, slug, name, dataset, generator, modelnames)
         if verbose is True:
             print(OK + "Chart", COLOR.bold(slug), "saved")
         if err.exists:

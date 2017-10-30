@@ -23,7 +23,7 @@ class ChartController(ChartsGenerator):
     def serialize_query(self, query, xfield, yfield, time_unit,
                         chart_type="line", width=800,
                         height=300, color=Color(), size=Size(),
-                        scale=Scale(zero=False)):
+                        scale=Scale(zero=False), shape=Shape()):
         """
         Serialize a timeseries chart from a query
         """
@@ -52,9 +52,11 @@ class ChartController(ChartsGenerator):
                 y=yencode,
                 color=color,
                 size=size,
+                shape=shape,
             ).configure_cell(
                 width=width,
-                height=height
+                height=height,
+                shape=shape,
             )
         else:
             chart = self._chart_class(df, chart_type).encode(
@@ -79,13 +81,13 @@ class ChartController(ChartsGenerator):
             chart = self.serialize(
                 datapack, x, y, time_unit=time_unit, chart_type=chart_type,
                 width=width, height=height, size=size, color=color,
-                scale=scale
+                scale=scale, shape=shape
             )
         else:
             chart = self.serialize_query(
                 datapack, x, y, time_unit=time_unit, chart_type=chart_type,
                 width=width, height=height, size=size, color=color,
-                scale=scale
+                scale=scale, shape=shape
             )
         # generate htmk file
         folderpath = safe_join(settings.BASE_DIR, "templates/chartflo")

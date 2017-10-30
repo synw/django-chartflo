@@ -99,6 +99,7 @@ class ChartController(ChartsGenerator):
             print(OK + "Chart", COLOR.bold(slug), "saved")
         if err.exists:
             err.report()
+        return chart
 
 
 class NumberController():

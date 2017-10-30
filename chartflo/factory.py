@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pandas as pd
-from altair import Scale, Size, Color
+from altair import Scale, Size, Color, Shape
 from blessings import Terminal
 from django.db.models.query import QuerySet
 from django.utils._os import safe_join
@@ -70,28 +70,31 @@ class ChartController(ChartsGenerator):
     def generate(self, slug, name, chart_type, datapack, x, y, width, height,
                  generator=None, time_unit=None, color=Color(),
                  size=Size(), verbose=False, modelnames=None,
-                 scale=Scale(zero=False)):
+                 scale=Scale(zero=False), shape=Shape()):
         """
         Generates a chart from either a Django orm query, a pandas dataframe, a dictionnary
         or an Altair Data object
         """
         if not isinstance(datapack, QuerySet):
-            dataset = self.serialize(
+            chart = self.serialize(
                 datapack, x, y, time_unit=time_unit, chart_type=chart_type,
                 width=width, height=height, size=size, color=color,
                 scale=scale
             )
         else:
-            dataset = self.serialize_query(
+            chart = self.serialize_query(
                 datapack, x, y, time_unit=time_unit, chart_type=chart_type,
                 width=width, height=height, size=size, color=color,
                 scale=scale
             )
-        chart, _ = ChartFlo.objects.get_or_create(slug=slug)
+        # generate htmk file
         folderpath = safe_join(settings.BASE_DIR, "templates/chartflo")
-        self.html(slug, name, dataset, folderpath)
+        self.html(slug, name, chart, folderpath)
+        # save to db
         if generator is not None and modelnames is not None:
-            chart.generate(chart, slug, name, dataset, generator, modelnames)
+            chartobj, _ = ChartFlo.objects.get_or_create(slug=slug)
+            chartobj.record(chart, slug, name, generator, modelnames)
+        # report
         if verbose is True:
             print(OK + "Chart", COLOR.bold(slug), "saved")
         if err.exists:

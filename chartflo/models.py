@@ -80,28 +80,29 @@ class Chart(models.Model, ChartsGenerator):
     def __str__(self):
         return self.name
 
-    def generate(self, chart, slug, name, dataset, generator="",
-                 modelnames="", html_before="", html_after=""):
+    def record(self, chart, slug, name="", generator="",
+               modelnames="", html_before="", html_after=""):
         """
         Generate data and save a chart object in the database
         """
-        chart.name = name
+        dataset = chart.to_json()
+        self.json = {}
         try:
-            chart.json = self._patch_json(dataset.to_json())
+            self.json = self._patch_json(dataset)
         except Exception as e:
             err.new(e)
         try:
-            chart.html = ""
-            if chart.name:
-                chart.html = "<h3>" + chart.name + "</h3>"
-            chart.html = html_before + chart.html +\
-                self._json_to_html(slug, chart.json) + html_after
+            self.html = ""
+            if self.name:
+                self.html = "<h3>" + name + "</h3>"
+            self.html = html_before + self._json_to_html(slug, self.json) +\
+                self._json_to_html(slug, self.json) + html_after
         except Exception as e:
             err.new(e)
-        chart.generator = generator
-        chart.modelnames = modelnames
+        self.generator = generator
+        self.modelnames = modelnames
         # save to db
         try:
-            chart.save()
+            self.save()
         except Exception as e:
             err.new(e)

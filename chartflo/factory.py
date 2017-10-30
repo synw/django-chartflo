@@ -22,8 +22,8 @@ class ChartController(ChartsGenerator):
 
     def serialize_query(self, query, xfield, yfield, time_unit,
                         chart_type="line", width=800,
-                        height=300, color=Color(), size=Size(),
-                        scale=Scale(zero=False), shape=Shape()):
+                        height=300, color=None, size=None,
+                        scale=Scale(zero=False), shape=None):
         """
         Serialize a timeseries chart from a query
         """
@@ -46,33 +46,21 @@ class ChartController(ChartsGenerator):
         # print(df)
         xencode, yencode = self._encode_fields(
             xfield, yfield, time_unit, scale=scale)
-        if chart_type != "tick":
-            chart = self._chart_class(df, chart_type).encode(
-                x=xencode,
-                y=yencode,
-                color=color,
-                size=size,
-                shape=shape,
-            ).configure_cell(
-                width=width,
-                height=height,
-                shape=shape,
-            )
-        else:
-            chart = self._chart_class(df, chart_type).encode(
-                x=xencode,
-                color=color,
-                size=size,
-            ).configure_cell(
-                width=width,
-                height=height
-            )
+        cargs = self.get_args(xencode, yencode, color, size, shape)
+        if chart_type == "tick":
+            cargs.pop("y")
+        chart = self._chart_class(df, chart_type).encode(
+            **cargs
+        ).configure_cell(
+            width=width,
+            height=height,
+        )
         return chart
 
     def generate(self, slug, name, chart_type, datapack, x, y, width, height,
-                 generator=None, time_unit=None, color=Color(),
-                 size=Size(), verbose=False, modelnames=None,
-                 scale=Scale(zero=False), shape=Shape()):
+                 generator=None, time_unit=None, color=None,
+                 size=None, verbose=False, modelnames=None,
+                 scale=Scale(zero=False), shape=None):
         """
         Generates a chart from either a Django orm query, a pandas dataframe, a dictionnary
         or an Altair Data object
@@ -97,10 +85,10 @@ class ChartController(ChartsGenerator):
             chartobj, _ = ChartFlo.objects.get_or_create(slug=slug)
             chartobj.record(chart, slug, name, generator, modelnames)
         # report
-        if verbose is True:
+        if verbose is True and not err.exists:
             print(OK + "Chart", COLOR.bold(slug), "saved")
         if err.exists:
-            err.report()
+            err.throw()
         return chart
 
 

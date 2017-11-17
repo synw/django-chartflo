@@ -27,5 +27,6 @@ setup(
         'gencharts',
         'goerr',
         "blessings",
+        'dataswim',
     ],
 )

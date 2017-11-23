@@ -76,7 +76,9 @@ class Chart():
             err.new(e, self.convert_dataset, "Can not find fields", x, y)
             err.throw()
         try:
-            if isinstance(dataset, QuerySet):
+            if isinstance(dataset, pd.DataFrame):
+                return dataset
+            elif isinstance(dataset, QuerySet):
                 x_vals = []
                 y_vals = []
                 for row in dataset.values():

@@ -16,6 +16,14 @@ Add to INSTALLED_APPS:
 
    "chartflo",
    
+Add to urls: 
+
+.. highlight:: python
+
+::
+
+   url(r'^dashboards/',include('chartflo.urls')),
+   
 Run the migrations.
 
 .. toctree::

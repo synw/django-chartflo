@@ -1,5 +1,4 @@
-function loadDashboard(name) {
-	var url = "/dashboards/page/"+name+"/";
+function loadDashboard(page, url) {
 	console.log("Getting", url);
 	axios.get(url).then(function (response) {
 		$('#content').html(response.data);
@@ -9,5 +8,6 @@ function loadDashboard(name) {
 }
 
 $(document).ready(function () {
-	loadDashboard("{{ slug }}");
+	var url = "/dashboards/page/{{ dashboard }}/";
+	loadDashboard("{{ page }}", url);
 });

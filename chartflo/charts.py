@@ -1,5 +1,7 @@
+import pandas as pd
 from goerr import err
 from dataswim import ds
+from django.db.models.query import QuerySet
 from django.utils._os import safe_join
 from django.conf import settings
 
@@ -17,7 +19,7 @@ class Chart():
         self.opts = dict(width=940)
         self.style = dict(color="blue")
 
-    def draw(self, x, y, dataset=None, chart_type="line", opts=None, style=None, label=None):
+    def draw(self, dataset=None, x=None, y=None, chart_type="line", opts=None, style=None, label=None):
         """
         Returns a chart object
         """
@@ -25,12 +27,16 @@ class Chart():
             if ds.df is None:
                 err.new(
                     self.draw, "Dataset not found: use load_data or pass it as parameter")
-                err.throw()
+                err.throw(True)
             dataset = ds.df
-        opts, style, label = self._set_opts(opts, style, label)
-        ds.engine = self.engine
-        ds.df = self._convert_dataset(dataset)
-        chart = ds.chart_(x, y, chart_type, opts, style, label)
+        try:
+            opts, style, label = self._set_opts(opts, style, label)
+            ds.engine = self.engine
+            ds.df = self._convert_dataset(dataset, x, y)
+            chart = ds.chart_(x, y, chart_type, opts, style, label)
+        except Exception as e:
+            err.new(e, self.draw, "Can not draw chart")
+            err.throw(True)
         return chart
 
     def stack(self, slug, title, chart_obj=None):
@@ -60,11 +66,57 @@ class Chart():
         """
         return ds.df.head()
 
-    def _convert_dataset(self, dataset):
+    def _convert_dataset(self, dataset, x=None, y=None):
         """
         Convert the input data to pandas dataframe
         """
+        try:
+            self._check_fields(x, y)
+        except Exception as e:
+            err.new(e, self._convert_dataset, "Can not find fields", x, y)
+            err.throw()
+        try:
+            if isinstance(dataset, QuerySet):
+                x_vals = []
+                y_vals = []
+                for row in dataset.values():
+                    y_vals.append(row[x])
+                    x_vals.append(row[y])
+                dataset = pd.DataFrame({x: x_vals, y: y_vals})
+            elif isinstance(dataset, dict):
+                dataset = self._dict_to_df(dataset, x, y)
+        except Exception as e:
+            err.new(e, self._convert_dataset, "Can not convert dataset")
+            err.throw()
         return dataset
+
+    def _check_fields(self, x, y):
+        """
+        Check if X and Y field are set
+        """
+        if x is None:
+            if ds.x is None:
+                err.new(self._check_fields,
+                        "No X field set: please pass one as parameter")
+                return
+            ds.x = x
+        if y is None:
+            if ds.y is None:
+                err.new(self._check_fields,
+                        "No Y field set: please pass one as parameter")
+            ds.y = y
+
+    def _dict_to_df(self, dictobj, xfield, yfield):
+        """
+        Converts a dictionnary to a pandas dataframe
+        """
+        x = []
+        y = []
+        for datapoint in dictobj:
+            x.append(datapoint)
+            y.append(dictobj[datapoint])
+        df = pd.DataFrame({xfield: x, yfield: y})
+        return df
 
     def _set_opts(self, opts, style, label):
         """

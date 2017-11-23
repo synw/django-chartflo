@@ -32,7 +32,7 @@ class Chart():
         try:
             opts, style, label = self._set_opts(opts, style, label)
             ds.engine = self.engine
-            ds.df = self._convert_dataset(dataset, x, y)
+            ds.df = self.convert_dataset(dataset, x, y)
             chart = ds.chart_(x, y, chart_type, opts, style, label)
         except Exception as e:
             err.new(e, self.draw, "Can not draw chart")
@@ -66,14 +66,14 @@ class Chart():
         """
         return ds.df.head()
 
-    def _convert_dataset(self, dataset, x=None, y=None):
+    def convert_dataset(self, dataset, x=None, y=None):
         """
         Convert the input data to pandas dataframe
         """
         try:
             self._check_fields(x, y)
         except Exception as e:
-            err.new(e, self._convert_dataset, "Can not find fields", x, y)
+            err.new(e, self.convert_dataset, "Can not find fields", x, y)
             err.throw()
         try:
             if isinstance(dataset, QuerySet):
@@ -86,7 +86,7 @@ class Chart():
             elif isinstance(dataset, dict):
                 dataset = self._dict_to_df(dataset, x, y)
         except Exception as e:
-            err.new(e, self._convert_dataset, "Can not convert dataset")
+            err.new(e, self.convert_dataset, "Can not convert dataset")
             err.throw()
         return dataset
 

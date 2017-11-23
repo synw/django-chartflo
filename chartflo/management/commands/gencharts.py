@@ -5,7 +5,6 @@ import time
 from django.db.models import Q
 from django.core.management.base import BaseCommand
 from mqueue.models import MEvent
-from chartflo.models import Chart, Number
 from chartflo.apps import GENERATORS
 
 

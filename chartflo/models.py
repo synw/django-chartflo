@@ -1,14 +1,31 @@
 # -*- coding: utf-8 -*-
 
-import json
+from goerr import err
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from goerr import err
+from django.contrib.auth.models import Group
 from gencharts import ChartsGenerator
 from .utils import _write_file
 from .conf import number_template
+
+
+class Dashboard(models.Model):
+    slug = models.CharField(max_length=120, unique=True,
+                            verbose_name=_(u"Slug"))
+    title = models.CharField(max_length=160, verbose_name=_(u"Title"))
+    updated = models.DateTimeField(
+        blank=True, null=True, verbose_name=_(u'Last update'))
+    groups = models.ManyToManyField(
+        Group, blank=True, verbose_name=_(u'Authorized groups'))
+
+    class Meta:
+        verbose_name = _(u'Dashboard')
+        verbose_name_plural = _(u'Dashboards')
+
+    def __str__(self):
+        return self.title
 
 
 class Number(models.Model):

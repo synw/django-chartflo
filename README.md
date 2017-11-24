@@ -1,12 +1,17 @@
 # Django Chartflo
 
-Charts for the lazy ones in Django using [Vega Lite](https://vega.github.io/vega-lite). Features:
+Charts for the lazy ones in Django. Features:
 
 - Generate charts using pure python: no javascript to write
-- Compose dashboards using pre-generated charts
+- Compose dashboards using the pre-generated charts
 
-Check the [documentation](http://django-chartflo.readthedocs.io/en/latest/index.html) for install and usage
+Check the [documentation](http://django-chartflo.readthedocs.io/en/latest/index.html) for the install and usage
 instructions
+
+## Supported rendering engines
+
+- [Holoviews](http://holoviews.org/) and [Bokeh](http://bokeh.pydata.org/)
+- [Altair](http://altair-viz.github.io/) and [Vega Lite](https://vega.github.io/vega-lite)
 
 ## Screenshot
 

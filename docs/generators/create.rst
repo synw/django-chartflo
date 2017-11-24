@@ -10,44 +10,52 @@ files will be detected at startup and the generators will be registered.
 Write a generator
 -----------------
 
-Example chart for last logins using the auth.User model: in ``myapp/chartflo.py``:
+Example chart for user groups: in ``myapp/chartflo.py``:
 
 .. highlight:: python
 
 ::
 
    from django.contrib.auth.models import User
-   from chartflo.factory import ChartController
+   from chartflo.charts import chart
+   
+   
+   def get_data():
+    groups = Group.objects.all()
+    groups_count = {}
+    for group in groups:
+     count = group.user_set.count()
+     groups_count[group.name] = count
+    return groups_count)
    
    
    def run(events):
-      chart = ChartController()
-      x = ("last_login", "last_login:T")
-      y = ("username", "count(username):Q")
-      q = User.objects.all().order_by("last_login")
-      chart_type = "line"
-      width = 870
-      height = 180
-      slug = "last_logins"
-      name = "Last logins"
-      time_unit = "yearmonth"
-      chart.generate(
-          slug, name, chart_type, q, x, y,
-          width, height, time_unit=time_unit, verbose=True, 
-          modelnames="User", generator="myapp"
-      )
+    groups_count = get_data()
+    # get the chart
+    c = chart.draw(groups_count, "Name", "Num", "bar")
+    # store it for later export
+    # params are: slug, title, chart object
+    chart.stack("groups", "Groups", c)
+    # export the chart to files
+    path = "dashboards/my_dashboard/charts"
+    chart.export(path)
       
-This will create a line chart showing the last logins with a timeseries ``x`` axis and a quantitative ``y``
-axis. The generated charts will be saved to the database. 
+This will create a basic bar charts comparing the number of members in user groups.
 
 Available chart types: `bar`, `circle`, `point`, `square`, `line`, `tick`, `area`, `rule`
 
-Create a ``templates/chartflo`` directory where the html files will be generated
+Create a ``templates/dashboards/my_dashboard/charts`` directory where the html files to be generated and run the generator
+
+Rendering engines
+-----------------
+
+The default rendering engine is Bokeh. To use Altair set it first: ``chart.engine = "altair"``.
+
 
 Encoding options
 ----------------
 
-For the ``x`` and ``y`` axis definitions and the ``time_unit`` refer to 
+For the ``x`` and ``y`` axis definitions and the ``time_unit`` when using Altair refer to 
 the `Altair encoding documentation <https://altair-viz.github.io/documentation/encoding.html>`_
 
 Run the generator

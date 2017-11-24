@@ -7,39 +7,33 @@ from querying the database in a view.
 Create a template
 -----------------
 
-Create a ``templates/dashboards/users.html``:
+Create a ``templates/dashboards/my_dashboard/index.html`` file:
 
 .. highlight:: django
 
 ::
 
-	{% extends "base.html" %}
-	{% load staticfiles %}
-	
-	{% block title %}Users dashboard{% endblock %}
-	
-	{% block content %}
-	<link rel="stylesheet" media="screen, projection" 
-	href="{% static 'css/chartflo.css' %}" />
-	{% include "chartflo/head.html" %}
-	<h1>Users</h1>
-	<div>
-	    {% include "chartflo/numbers/users.html" %}
-	    {% include "chartflo/numbers/emails.html" %}
-	    {% include "chartflo/numbers/names.html" %}
-	    {% include "chartflo/numbers/staff.html" %}
-	    {% include "chartflo/numbers/superusers.html" %}
-	</div>
-	<p>
-	    {% include "chartflo/charts/last_logins.html" %}
-	</p>
-	<p>
-	    {% include "chartflo/charts/date_joined.html" %}
-	</p>
-	<p>
-	    {% include "chartflo/charts/user_groups.html" %}
-	</p>
-	{% endblock %}
+   <div class="row">
+    <div class="col-xs-12"><h1>Index</h1>
+    <div>{% include "dashboards/mqueue/numbers/events.html" %}</div>
+    </div>
+   </div>
+   
+Create a ``templates/dashboards/sidebars/my_dashboard.html`` file:
+
+.. highlight:: django
+
+::
+
+   <ul class="sidebar-menu" data-widget="tree">
+    <li class="header">Header</li>
+    <li class="treeview">
+     <a href="#" onclick="loadDashboard('dashboard_page_name', 'dashboard_name')">Link 1</a>
+    </li>
+    <li class="treeview">
+     <a href="#" onclick="loadDashboard('dashboard_page_name', 'dashboard_name')">Link 2</a>
+    </li>
+  </ul>
 
 Dashboard view
 --------------
@@ -53,11 +47,5 @@ To use the generic dashboard view: in url.py:
     url(r'^dashboards/', include('chartflo.urls')),
 
 
-Go to ``/dashboards/users/`` where ``users`` is the slug of your dashboard
+Go to ``/dashboards/my_dashboard/`` where ``my_dashboard`` is the slug of your dashboard
 
-Example dashboards
-------------------
-
-Check django-chartmodels's 
-`dashboard <https://github.com/synw/django-chartmodels/blob/master/chartmodels/templates/chartmodels/dashboards/users.html>`_ 
-and `generators <https://github.com/synw/django-chartmodels/blob/master/chartmodels/chartflo/users.py>`_ for a full example

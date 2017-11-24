@@ -8,13 +8,12 @@ as charts:
 
 ::
 
-   from chartflo.factory import NumberController
    from django.contrib.auth.models import User
+   from chartflo.charts import number
    
    
    def run(events):
-      num = NumberController()
-      val = User.objects.all().count()
-      num.generate("users", "Users", val, 
-                   modelnames="User", generator="chart_users"
-      )
+    users = User.objects.all(active=True).count()
+    number.generate("users", "Users", users, verbose=True,
+                    generator="mymodule", modelnames="User", dashboard="my_dashboard",
+                    icon="user", color="blue")

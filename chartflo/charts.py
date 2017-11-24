@@ -98,6 +98,8 @@ class Chart():
                 dataset = pd.DataFrame({x: x_vals, y: y_vals})
             elif isinstance(dataset, dict):
                 dataset = self._dict_to_df(dataset, x, y)
+            elif isinstance(dataset, list):
+                return pd.DataFrame(dataset)
             else:
                 err.new(self.convert_dataset,
                         "Data format unknown: "

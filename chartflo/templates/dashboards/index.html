@@ -45,11 +45,13 @@
 <div id="app" class="wrapper">
   <header class="main-header">
     <!-- Logo -->
-    <a href="/" class="logo">
+    <a href="" class="logo" onclick="loadDashboard('index', '{{ dashboard }}')">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>{% block dashboard_logo_small %}{{ dashboard.title|slice:"1" }}{% endblock %}</b></span>
+      <span class="logo-mini"><b><i class="fa fa-{{ icon }}"></i></b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">{% block dashboard_logo %}{{ dashboard.title }}{% endblock %}</span>
+      <span class="logo-lg">
+      	<b><i class="fa fa-{{ icon }}"></i></b>&nbsp;{{ dashboard.title }}
+      </span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -60,7 +62,7 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          {% block topbar %}{% endblock %}
+          
         </ul>
       </div>
     </nav>
@@ -91,7 +93,7 @@
   <!-- /.content-wrapper -->
   {% if footer %}
   <footer class="main-footer">
-    {% block footer %}{% endblock %}
+    
   </footer>
   {% endif %}
 <!-- ./wrapper -->

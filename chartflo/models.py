@@ -19,6 +19,8 @@ class Dashboard(models.Model):
         blank=True, null=True, verbose_name=_(u'Last update'))
     groups = models.ManyToManyField(
         Group, blank=True, verbose_name=_(u'Authorized groups'))
+    icon = models.CharField(
+        max_length=60, verbose_name=_(u"Icon"), default="dashboard")
 
     class Meta:
         verbose_name = _(u'Dashboard')

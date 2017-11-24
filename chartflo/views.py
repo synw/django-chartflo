@@ -47,6 +47,7 @@ class DashboardView(TemplateView):
             raise(e)
         context["dashboard"] = self.dashboard.slug
         context["sidebar"] = sidebar
+        context["icon"] = self.dashboard.icon
         return context
 
 

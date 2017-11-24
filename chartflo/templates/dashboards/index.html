@@ -22,6 +22,17 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
 	{% include "chartflo/bokeh_head.html" %}
+	{% include "chartflo/altair_head.html" %}
+	<style type="text/css">
+	.vega-actions {
+		display:none;
+	}
+	</style>
+	<!-- jQuery 3 -->
+	<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+	<script>
+	{% include "dashboards/app.js" %}
+	</script>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -35,9 +46,9 @@
     <!-- Logo -->
     <a href="/" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>{% block dashboard_logo_small %}C{% endblock %}</b></span>
+      <span class="logo-mini"><b>{% block dashboard_logo_small %}{{ dashboard.title|slice:"1" }}{% endblock %}</b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">{% block dashboard_logo %}Chartflo{% endblock %}</span>
+      <span class="logo-lg">{% block dashboard_logo %}{{ dashboard.title }}{% endblock %}</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -66,9 +77,6 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        {{ dashboard.title }}
-      </h1>
       {% if breadcrumbs %}
       <ol class="breadcrumb">
         {{ breadcrumbs }}
@@ -80,13 +88,13 @@
     <section id="content" class="content"></section>
 
   <!-- /.content-wrapper -->
+  {% if footer %}
   <footer class="main-footer">
     {% block footer %}{% endblock %}
   </footer>
+  {% endif %}
 <!-- ./wrapper -->
 </div></div>
-<!-- jQuery 3 -->
-<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{% static 'bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -101,8 +109,5 @@
 <script src="{% static 'bower_components/fastclick/lib/fastclick.js' %}"></script>
 <!-- AdminLTE App -->
 <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
-<script>
-	{% include "dashboards/app.js" %}
-</script>
 </body>
 </html>

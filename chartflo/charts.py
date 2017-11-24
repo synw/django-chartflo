@@ -45,7 +45,9 @@ class Chart():
         """
         try:
             ds.stack(slug, title, chart_obj)
+
             print('STACK', ds.reports)
+
         except Exception as e:
             err.new(e, self.draw, "Can not stack chart")
             err.throw(True)
@@ -102,6 +104,8 @@ class Chart():
         except Exception as e:
             err.new(e, self.convert_dataset, "Can not convert dataset")
             err.throw()
+        print("COLS", dataset.columns.values)
+        print("DATASET", dataset.head())
         return dataset
 
     def _check_fields(self, x, y):
@@ -129,6 +133,10 @@ class Chart():
         for datapoint in dictobj:
             x.append(datapoint)
             y.append(dictobj[datapoint])
+        if type(xfield) == tuple:
+            xfield = xfield[0]
+        if type(yfield) == tuple:
+            yfield = yfield[0]
         df = pd.DataFrame({xfield: x, yfield: y})
         return df
 

@@ -15,7 +15,8 @@ instructions
 
 ## Examples
 
-Example Jupyter notebooks are available. Clone, copy the notebooks in a Django instance, install 
+Some [example Jupyter notebooks](https://github.com/synw/django-chartflo-notebooks) are available. 
+Clone, copy the notebooks in a Django instance, install 
 [django-extensions](https://django-extensions.readthedocs.io/en/latest/index.html) and run:
 
    ```

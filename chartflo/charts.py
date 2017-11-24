@@ -103,6 +103,12 @@ class Chart():
             err.throw()
         return dataset
 
+    def serialize_date(self, date):
+        """
+        Serialize a data to a proper Altair format
+        """
+        return date.strftime('%Y-%m-%d %H:%M:%S')
+
     def _check_fields(self, x, y):
         """
         Check if X and Y field are set

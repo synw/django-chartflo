@@ -1,22 +1,9 @@
-.panel-number {
+.info-box {
+	max-width:14em !important;
 	display:inline-block;
-	border:2px solid lightgrey;
-	border-radius:3px;
-	max-width:10em;
-	min-width:10em;
-	max-height:9em;
-	max-height:9em;
-	padding:1em;
-	text-align:center;
 }
-.panel-legend {
-	font-size:115%;
-	position:relative;
-	top:-1em !important;
-}
-.panel-number h1, .panel-legend {
-	position:relative;
-	top:-0.3em;
+.info-box-number {
+	font-size:220%;
 }
 .low {
 	color:green;

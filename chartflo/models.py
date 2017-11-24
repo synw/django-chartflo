@@ -55,16 +55,16 @@ class Number(models.Model):
     def __str__(self):
         return self.legend
 
-    def generate(self):
+    def generate(self, dashboard=None, color="green", icon=None):
         """
         Generate data and save a panel number object in the database
         """
         html = number_template(self.value, self.legend,
-                               self.unit, self.thresholds)
+                               self.unit, self.thresholds, icon, color)
         self.html = html
         self.updated = timezone.now()
         self.save()
-        _write_file(self.slug, self.html, "number")
+        _write_file(self.slug, self.html, "number", dashboard=dashboard)
         if err.exists:
             if settings.DEBUG is True:
                 err.trace()

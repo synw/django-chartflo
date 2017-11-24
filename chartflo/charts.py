@@ -4,6 +4,7 @@ from dataswim import ds
 from django.db.models.query import QuerySet
 from django.utils._os import safe_join
 from django.conf import settings
+from .models import Number as Num
 
 
 class Chart():
@@ -172,12 +173,12 @@ class Number():
     """
 
     def generate(self, slug, legend, value, generator, unit="",
-                 verbose=False, modelnames="", thresholds={}):
+                 verbose=False, modelnames="", thresholds={}, dashboard=None, color="green", icon=None):
         """
         Create or update a number instance from a value
         """
         defaults = {"legend": legend, "value": value, "unit": unit}
-        num, created = Number.objects.get_or_create(
+        num, created = Num.objects.get_or_create(
             slug=slug, defaults=defaults)
         if created is False:
             num.legend = legend
@@ -187,7 +188,7 @@ class Number():
             num.modelnames = modelnames
             num.thresholds = thresholds
             num.save()
-        num.generate()
+        num.generate(dashboard, icon=icon, color=color)
         if verbose is True:
             print("[x] Generated number", legend)
 

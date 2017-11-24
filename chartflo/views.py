@@ -12,10 +12,12 @@ def check_groups(dashboard, request):
     """
     Check groups authorization for a dashboard
     """
+    if request.user.is_superuser is True:
+        return True
     groups = dashboard.groups.all()
     user_groups = request.user.groups.all()
     for group in groups:
-        if group in user_groups or request.user.is_superuser is True:
+        if group in user_groups:
             return True
     return False
 
@@ -44,7 +46,6 @@ class DashboardView(TemplateView):
         except Exception as e:
             raise(e)
         context["dashboard"] = self.dashboard.slug
-        context["page"] = "index"
         context["sidebar"] = sidebar
         return context
 

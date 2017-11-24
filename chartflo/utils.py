@@ -43,7 +43,7 @@ def _write_json(slug, json):
         err.new(e)
 
 
-def _write_file(slug, html, ctype="chart"):
+def _write_file(slug, html, ctype="chart", dashboard=None):
     """
     Writes a chart's html to a file
     """
@@ -57,8 +57,12 @@ def _write_file(slug, html, ctype="chart"):
     endpath = "charts"
     if ctype == "number":
         endpath = "numbers"
+    if dashboard is not None:
+        midpath = "dashboards/" + dashboard + "/"
+    else:
+        midpath = "chartflo/"
     chartsdir_path = safe_join(
-        settings.BASE_DIR, "templates/chartflo/" + endpath)
+        settings.BASE_DIR, "templates/" + midpath + endpath)
     if not os.path.isdir(chartsdir_path):
         try:
             os.makedirs(chartsdir_path)

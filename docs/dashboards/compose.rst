@@ -14,9 +14,8 @@ Create a ``templates/dashboards/my_dashboard/index.html`` file:
 ::
 
    <div class="row">
-    <div class="col-xs-12"><h1>Index</h1>
-    <div>{% include "dashboards/mqueue/numbers/events.html" %}</div>
-    </div>
+      <div class="col-xs-12"><h1>Index</h1>
+      <div>{% include "dashboards/my_dashboard/charts/events.html" %}</div>
    </div>
    
 Create a ``templates/dashboards/sidebars/my_dashboard.html`` file:
@@ -26,13 +25,13 @@ Create a ``templates/dashboards/sidebars/my_dashboard.html`` file:
 ::
 
    <ul class="sidebar-menu" data-widget="tree">
-    <li class="header">Header</li>
-    <li class="treeview">
-     <a href="#" onclick="loadDashboard('dashboard_page_name', 'dashboard_name')">Link 1</a>
-    </li>
-    <li class="treeview">
-     <a href="#" onclick="loadDashboard('dashboard_page_name', 'dashboard_name')">Link 2</a>
-    </li>
+      <li class="header">Header</li>
+      <li class="treeview">
+        <a href="#" onclick="loadDashboard('dashboard_page_name', 'dashboard_name')">Link 1</a>
+      </li>
+      <li class="treeview">
+       <a href="#" onclick="loadDashboard('dashboard_page_name', 'dashboard_name')">Link 2</a>
+      </li>
   </ul>
 
 Dashboard view

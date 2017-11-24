@@ -98,6 +98,12 @@ class Chart():
                 dataset = pd.DataFrame({x: x_vals, y: y_vals})
             elif isinstance(dataset, dict):
                 dataset = self._dict_to_df(dataset, x, y)
+            else:
+                err.new(self.convert_dataset,
+                        "Data format unknown: "
+                        + str(type(dataset)) +
+                        " please provide a dictionnary, a Django Queryset or a Pandas DataFrame")
+                err.throw()
         except Exception as e:
             err.new(e, self.convert_dataset, "Can not convert dataset")
             err.throw()

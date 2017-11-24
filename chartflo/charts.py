@@ -45,9 +45,6 @@ class Chart():
         """
         try:
             ds.stack(slug, title, chart_obj)
-
-            print('STACK', ds.reports)
-
         except Exception as e:
             err.new(e, self.draw, "Can not stack chart")
             err.throw(True)
@@ -104,8 +101,6 @@ class Chart():
         except Exception as e:
             err.new(e, self.convert_dataset, "Can not convert dataset")
             err.throw()
-        print("COLS", dataset.columns.values)
-        print("DATASET", dataset.head())
         return dataset
 
     def _check_fields(self, x, y):

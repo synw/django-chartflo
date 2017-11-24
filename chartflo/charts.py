@@ -34,31 +34,43 @@ class Chart():
             ds.engine = self.engine
             ds.df = self.convert_dataset(dataset, x, y)
             chart = ds.chart_(x, y, chart_type, opts, style, label)
+            return chart
         except Exception as e:
             err.new(e, self.draw, "Can not draw chart")
             err.throw(True)
-        return chart
 
     def stack(self, slug, title, chart_obj=None):
         """
         Save reports to files
         """
-        ds.stack(slug, title, chart_obj)
+        try:
+            ds.stack(slug, title, chart_obj)
+            print('STACK', ds.reports)
+        except Exception as e:
+            err.new(e, self.draw, "Can not stack chart")
+            err.throw(True)
 
     def export(self, folderpath):
         """
         Save reports to files
         """
-        path = safe_join(settings.BASE_DIR, "templates/" + folderpath)
-        print("PATH", path)
-        ds.to_files(path)
+        try:
+            path = safe_join(settings.BASE_DIR, "templates/" + folderpath)
+            ds.to_files(path)
+        except Exception as e:
+            err.new(e, self.draw, "Can not export chart to " + path)
+            err.throw(True)
 
     def load_data(self, title, data, **args):
         """
         Loads data in the pandas dataframe format
         """
-        ds.set_df(data, **args)
-        ds.index_col(title)
+        try:
+            ds.set_df(data, **args)
+            ds.index_col(title)
+        except Exception as e:
+            err.new(e, self.draw, "Can not load data")
+            err.throw(True)
 
     def check(self):
         """

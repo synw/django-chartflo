@@ -16,7 +16,7 @@ CHART_TYPES = (
 ENGINE = getattr(settings, 'CHARTFLO_ENGINE', "vegalite")
 
 
-def number_template(number, legend=None, unit="", thresholds={}, icon=None, color="green"):
+def number_template(number, legend=None, unit="", thresholds={}, icon=None, color="green", progress=0):
     if icon is None:
         icon = '<span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>'
     else:
@@ -25,12 +25,11 @@ def number_template(number, legend=None, unit="", thresholds={}, icon=None, colo
         unit = '<span class="unit">&nbsp;' + unit + '</span>'
     css_class = ""
     if thresholds:
-        if "low" in thresholds:
-            if number <= thresholds["low"]:
-                css_class = "low"
-        if "high" in thresholds:
-            if number >= thresholds["high"]:
-                css_class = "high"
+        color = "green"
+        if progress[0] <= thresholds["low"]:
+            color = "red"
+        elif progress[0] < thresholds["high"] and progress[0] > thresholds["low"]:
+            color = "orange"
     wrapper = '<div class="info-box bg-' + color + '">'
     res = wrapper + icon + '\n<div class="info-box-content">'
     if legend is not None:
@@ -38,5 +37,11 @@ def number_template(number, legend=None, unit="", thresholds={}, icon=None, colo
             css_class + '">' + legend + '</span>'
     res = res + '\n<span class="info-box-number">' + \
         str(number) + ' ' + unit + '</span>'
-    res = res + "\n</div></div>"
+    if progress is not None:
+        res += '<div class="progress">'
+        res += '<div class="progress-bar" style="width:' + \
+            str(progress[0]) + '%"></div>'
+        res += '</div>'
+        res += '<span class="progress-description">' + progress[1] + '</span>'
+    res = res + "</div></div>"
     return res

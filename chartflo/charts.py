@@ -173,7 +173,7 @@ class Number():
     """
 
     def generate(self, slug, legend, value, generator, unit="",
-                 verbose=False, modelnames="", thresholds={}, dashboard=None, color="green", icon=None):
+                 verbose=False, modelnames="", thresholds={}, dashboard=None, color="green", icon=None, progress=None):
         """
         Create or update a number instance from a value
         """
@@ -188,7 +188,7 @@ class Number():
             num.modelnames = modelnames
             num.thresholds = thresholds
             num.save()
-        num.generate(dashboard, icon=icon, color=color)
+        num.generate(dashboard, icon=icon, color=color, progress=progress)
         if verbose is True:
             print("[x] Generated number", legend)
 

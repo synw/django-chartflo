@@ -57,12 +57,12 @@ class Number(models.Model):
     def __str__(self):
         return self.legend
 
-    def generate(self, dashboard=None, color="green", icon=None):
+    def generate(self, dashboard=None, color="green", icon=None, progress=None):
         """
         Generate data and save a panel number object in the database
         """
         html = number_template(self.value, self.legend,
-                               self.unit, self.thresholds, icon, color)
+                               self.unit, self.thresholds, icon, color, progress=progress)
         self.html = html
         self.updated = timezone.now()
         self.save()

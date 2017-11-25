@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Group
 from gencharts import ChartsGenerator
 from .utils import _write_file
-from .conf import number_template
+from .widgets import number_progress
 
 
 class Dashboard(models.Model):
@@ -61,8 +61,9 @@ class Number(models.Model):
         """
         Generate data and save a panel number object in the database
         """
-        html = number_template(self.value, self.legend,
-                               self.unit, self.thresholds, icon, color, progress=progress)
+        if progress is not None:
+            html = number_progress(self.value, self.legend,
+                                   self.unit, self.thresholds, icon, color, progress=progress)
         self.html = html
         self.updated = timezone.now()
         self.save()

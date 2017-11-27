@@ -20,7 +20,8 @@ class Chart():
         self.opts = dict(width=940)
         self.style = dict(color="blue")
 
-    def draw(self, dataset=None, x=None, y=None, chart_type="line", opts=None, style=None, label=None):
+    def draw(self, dataset=None, x=None, y=None, chart_type="line",
+             opts=None, style=None, label=None, num_col=None, index_col=None):
         """
         Returns a chart object
         """
@@ -30,6 +31,16 @@ class Chart():
                     self.draw, "Dataset not found: use load_data or pass it as parameter")
                 err.throw(True)
             dataset = ds.df
+        try:
+            if num_col is not None:
+                self.num_col(num_col[0])
+        except Exception as e:
+            self.err(e, self.draw, "Can not add numeric column")
+        try:
+            if index_col is not None:
+                self.index_col(index_col)
+        except Exception as e:
+            self.err(e, self.draw, "Can not add index column")
         try:
             opts, style, label = self._set_opts(opts, style, label)
             ds.engine = self.engine
@@ -82,6 +93,10 @@ class Chart():
         """
         Convert the input data to pandas dataframe
         """
+        if type(x) == tuple:
+            x = x[0]
+        if type(y) == tuple:
+            y = y[0]
         try:
             self._check_fields(x, y)
         except Exception as e:
@@ -93,9 +108,12 @@ class Chart():
             elif isinstance(dataset, QuerySet):
                 x_vals = []
                 y_vals = []
-                for row in dataset.values():
-                    y_vals.append(row[x])
-                    x_vals.append(row[y])
+                for row in list(dataset.values()):
+                    try:
+                        y_vals.append(row[y])
+                    except:
+                        y_vals.append(1)
+                    x_vals.append(row[x])
                 dataset = pd.DataFrame({x: x_vals, y: y_vals})
             elif isinstance(dataset, dict):
                 dataset = self._dict_to_df(dataset, x, y)
@@ -111,6 +129,19 @@ class Chart():
             err.new(e, self.convert_dataset, "Can not convert dataset")
             err.throw()
         return dataset
+
+    def num_col(self, name="num", value=1):
+        """
+        Add a numeric column to the main dataframe
+        """
+        ds.add(name, value)
+
+    def index_col(self, col):
+        """
+        Add an index to the main dataframe
+        """
+        print(ds.df.columns.values)
+        ds.index_col(col)
 
     def serialize_date(self, date):
         """

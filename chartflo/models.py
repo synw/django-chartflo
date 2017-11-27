@@ -21,6 +21,10 @@ class Dashboard(models.Model):
         Group, blank=True, verbose_name=_(u'Authorized groups'))
     icon = models.CharField(
         max_length=60, verbose_name=_(u"Icon"), default="dashboard")
+    altair = models.BooleanField(default=False, verbose_name=_(
+        u'Use the Altair rendering engine'))
+    bokeh = models.BooleanField(default=True, verbose_name=_(
+        u'Use the Bokeh rendering engine'))
 
     class Meta:
         verbose_name = _(u'Dashboard')
@@ -61,9 +65,9 @@ class Number(models.Model):
         """
         Generate data and save a panel number object in the database
         """
-        if progress is not None:
-            html = number_progress(self.value, self.legend,
-                                   self.unit, self.thresholds, icon, color, progress=progress)
+        # if progress is not None:
+        html = number_progress(self.value, self.legend,
+                               self.unit, self.thresholds, icon, color, progress=progress)
         self.html = html
         self.updated = timezone.now()
         self.save()

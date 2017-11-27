@@ -48,6 +48,8 @@ class DashboardView(TemplateView):
         context["dashboard"] = self.dashboard.slug
         context["sidebar"] = sidebar
         context["icon"] = self.dashboard.icon
+        context["altair"] = self.dashboard.altair
+        context["bokeh"] = self.dashboard.bokeh
         return context
 
 

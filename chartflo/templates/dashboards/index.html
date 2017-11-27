@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load staticfiles %}	
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,8 +21,12 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
-	{% include "chartflo/bokeh_head.html" %}
-	{% include "chartflo/altair_head.html" %}
+  	{% if bokeh is True %}
+		{% include "chartflo/bokeh_head.html" %}
+	{% endif %}
+	{% if altair is True %}
+		{% include "chartflo/altair_head.html" %}
+	{% endif %}
 	<style type="text/css">
 	.vega-actions {
 		display:none;

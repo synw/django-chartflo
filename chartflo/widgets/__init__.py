@@ -1,7 +1,8 @@
 from .number import Number
-
+from .sparkline import Sparkline
 
 number = Number()
+sparkline = Sparkline()
 
 """
 def number_progress(number, legend=None, unit="", thresholds={}, icon=None, color="green", progress=None):
@@ -46,14 +47,3 @@ def number_progress(number, legend=None, unit="", thresholds={}, icon=None, colo
     res = res + "</div></div>"
     return res
 """
-
-
-def sparkline(data):
-    w = """<span class="sparkline" data-type="line" 
-       data-spot-Radius="3" data-highlight-Spot-Color="#f39c12" data-highlight-Line-Color="#222" 
-       data-min-Spot-Color="#f56954" data-max-Spot-Color="#00a65a" data-spot-Color="#39CCCC" 
-       data-offset="90" data-width="50px" data-height="15px" data-line-Width="2" 
-       data-line-Color="#39CCCC" data-fill-Color="rgba(57, 204, 204, 0.08)">"""
-    w += data
-    w += "</span>"
-    return w

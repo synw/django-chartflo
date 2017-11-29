@@ -1,4 +1,7 @@
-from .number import number
+from .number import Number
+
+
+number = Number()
 
 """
 def number_progress(number, legend=None, unit="", thresholds={}, icon=None, color="green", progress=None):

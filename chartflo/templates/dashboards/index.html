@@ -49,7 +49,7 @@
 <div id="app" class="wrapper">
   <header class="main-header">
     <!-- Logo -->
-    <a href="" class="logo" onclick="loadDashboard('index', '{{ dashboard }}')">
+    <a href="#" class="logo" onclick="loadDashboard('index', '{{ dashboard }}')">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b><i class="fa fa-{{ icon }}"></i></b></span>
       <!-- logo for regular state and mobile devices -->
@@ -114,7 +114,17 @@
 <script src="{% static 'bower_components/jquery-slimscroll/jquery.slimscroll.min.js' %}"></script>
 <!-- FastClick -->
 <script src="{% static 'bower_components/fastclick/lib/fastclick.js' %}"></script>
+<script src="{% static 'bower_components/jquery-knob/js/jquery.knob.js' %}"></script>
+<!-- Sparkline -->
+<script src="{% static 'bower_components/jquery-sparkline/dist/jquery.sparkline.min.js' %}"></script>
 <!-- AdminLTE App -->
 <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<script>
+$(".sparkline").each(function () {
+  var $this = $(this);
+  $this.sparkline('html', $this.data());
+});
+
+</script>
 </body>
 </html>

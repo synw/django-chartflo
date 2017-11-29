@@ -4,7 +4,6 @@ from dataswim import ds
 from django.db.models.query import QuerySet
 from django.utils._os import safe_join
 from django.conf import settings
-from .models import Number as Num
 
 
 class Chart():
@@ -198,31 +197,4 @@ class Chart():
         return opts, style, label
 
 
-class Number():
-    """
-    Class to handle individual numbers
-    """
-
-    def generate(self, slug, legend, value, generator, unit="",
-                 verbose=False, modelnames="", thresholds={}, dashboard=None, color="green", icon=None, progress=None):
-        """
-        Create or update a number instance from a value
-        """
-        defaults = {"legend": legend, "value": value, "unit": unit}
-        num, created = Num.objects.get_or_create(
-            slug=slug, defaults=defaults)
-        if created is False:
-            num.legend = legend
-            num.value = value
-            num.unit = unit
-            num.generator = generator
-            num.modelnames = modelnames
-            num.thresholds = thresholds
-            num.save()
-        num.generate(dashboard, icon=icon, color=color, progress=progress)
-        if verbose is True:
-            print("[x] Generated number", legend)
-
-
 chart = Chart()
-number = Number()

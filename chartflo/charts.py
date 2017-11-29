@@ -2,8 +2,6 @@ import pandas as pd
 from goerr import err
 from dataswim import ds
 from django.db.models.query import QuerySet
-from django.utils._os import safe_join
-from django.conf import settings
 
 
 class Chart():
@@ -18,75 +16,6 @@ class Chart():
         self.engine = "bokeh"
         self.opts = dict(width=940)
         self.style = dict(color="blue")
-
-    def draw(self, dataset=None, x=None, y=None, chart_type="line",
-             opts=None, style=None, label=None, num_col=None, index_col=None):
-        """
-        Returns a chart object
-        """
-        if dataset is None:
-            if ds.df is None:
-                err.new(
-                    self.draw, "Dataset not found: use load_data or pass it as parameter")
-                err.throw(True)
-            dataset = ds.df
-        try:
-            if num_col is not None:
-                self.num_col(num_col[0])
-        except Exception as e:
-            self.err(e, self.draw, "Can not add numeric column")
-        try:
-            if index_col is not None:
-                self.index_col(index_col)
-        except Exception as e:
-            self.err(e, self.draw, "Can not add index column")
-        try:
-            opts, style, label = self._set_opts(opts, style, label)
-            ds.engine = self.engine
-            ds.df = self.convert_dataset(dataset, x, y)
-            chart = ds.chart_(x, y, chart_type, opts, style, label)
-            return chart
-        except Exception as e:
-            err.new(e, self.draw, "Can not draw chart")
-            err.throw(True)
-
-    def stack(self, slug, title, chart_obj=None):
-        """
-        Save reports to files
-        """
-        try:
-            ds.stack(slug, title, chart_obj)
-        except Exception as e:
-            err.new(e, self.draw, "Can not stack chart")
-            err.throw(True)
-
-    def export(self, folderpath):
-        """
-        Save reports to files
-        """
-        try:
-            path = safe_join(settings.BASE_DIR, "templates/" + folderpath)
-            ds.to_files(path)
-        except Exception as e:
-            err.new(e, self.draw, "Can not export chart to " + path)
-            err.throw(True)
-
-    def load_data(self, title, data, **args):
-        """
-        Loads data in the pandas dataframe format
-        """
-        try:
-            ds.set_df(data, **args)
-            ds.index_col(title)
-        except Exception as e:
-            err.new(e, self.draw, "Can not load data")
-            err.throw(True)
-
-    def check(self):
-        """
-        Returns a view of the chart's data
-        """
-        return ds.df.head()
 
     def convert_dataset(self, dataset, x=None, y=None):
         """
@@ -129,25 +58,6 @@ class Chart():
             err.throw()
         return dataset
 
-    def num_col(self, name="num", value=1):
-        """
-        Add a numeric column to the main dataframe
-        """
-        ds.add(name, value)
-
-    def index_col(self, col):
-        """
-        Add an index to the main dataframe
-        """
-        print(ds.df.columns.values)
-        ds.index_col(col)
-
-    def serialize_date(self, date):
-        """
-        Serialize a data to a proper Altair format
-        """
-        return date.strftime('%Y-%m-%d %H:%M:%S')
-
     def _check_fields(self, x, y):
         """
         Check if X and Y field are set
@@ -179,22 +89,6 @@ class Chart():
             yfield = yfield[0]
         df = pd.DataFrame({xfield: x, yfield: y})
         return df
-
-    def _set_opts(self, opts, style, label):
-        """
-        Set the chart options from input or defaults
-        """
-        if opts is None:
-            opts = self.opts
-        else:
-            self.opts = opts
-        if style is None:
-            style = self.style
-        else:
-            self.style = style
-        if label is None:
-            label = ""
-        return opts, style, label
 
 
 chart = Chart()

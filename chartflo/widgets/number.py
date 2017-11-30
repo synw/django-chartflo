@@ -9,11 +9,13 @@ class Number():
     """
 
     def simple(self, slug, value, legend=None, unit=None,
-               dashboard=None, color="green", icon=None, verbose=True):
+               dashboard=None, color="green", icon=None, verbose=True,
+               sparkline=None, sparkline_options={}):
         """
         Generates a single number widget
         """
-        html = self._simple_html(value, legend, unit, icon, color)
+        html = self._simple_html(
+            value, legend, unit, icon, color, sparkline, sparkline_options)
         _write_file(slug, html, "number", dashboard)
         if err.exists:
             if settings.DEBUG is True:
@@ -78,7 +80,7 @@ class Number():
         res = res + "</div></div>"
         return res
 
-    def _simple_html(self, number, legend=None, unit=None, icon=None, color="green"):
+    def _simple_html(self, number, legend, unit, icon, color, sparkline_data, sparkline_options):
         """
         Generates html for a simple number widget
         """
@@ -96,10 +98,34 @@ class Number():
         wrapper = '<div class="info-box">'
         res = wrapper + icon + '\n<div class="info-box-content">'
         css_class = ""
+        sl = """<span class="sparkline sparkline-embeded" data-type="line"></span>"""
+        if sparkline_data is not None:
+            sp_str = ""
+            i = 1
+            l = len(sparkline_data)
+            for el in sparkline_data:
+                sp_str += str(el)
+                if i < l:
+                    sp_str += ","
+                i += 1
+            dtype = "line"
+            if "chart_type" in sparkline_options:
+                dtype = sparkline_options["chart_type"]
+            color = "#39CCCC"
+            if "color" in sparkline_options:
+                color = sparkline_options["color"]
+            sl = '<span class="sparkline sparkline-embeded" data-type="' + dtype + '"'
+            sl += 'data-spot-Radius="3" data-highlight-Spot-Color="#f39c12" data-highlight-Line-Color="#222"'
+            sl += """ data-min-Spot-Color="#f56954" data-max-Spot-Color="#00a65a" data-spot-Color="#39CCCC" 
+               data-offset="90" data-width="100%" data-height="25px" data-line-Width="2" """
+            sl += 'data-line-Color="' + color + \
+                '" data-fill-Color="rgba(57, 204, 204, 0.08)">' + \
+                sp_str + '</span>'
+
         if legend is not None:
             res = res + '\n<span class="info-box-text ' + \
                 css_class + '">' + legend + '</span>'
         res = res + '\n<span class="info-box-number">' + \
             str(number) + ' ' + unit + '</span>'
-        res = res + "</div></div>"
+        res = res + sl + "</div></div>"
         return res

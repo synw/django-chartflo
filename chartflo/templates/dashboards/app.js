@@ -6,8 +6,16 @@ function loadDashboard(page, dashboard) {
 	}).catch(function (error) {
 		console.log(error);
 	});
+	$(".sparkline-embeded").each(function () {
+	  var $this = $(this);
+	  $this.sparkline('html', $this.data());
+	});
 }
 
 $(document).ready(function () {
 	loadDashboard("index", "{{ dashboard }}");
+	$(".sparkline").each(function () {
+	  var $this = $(this);
+	  $this.sparkline('html', $this.data());
+	});
 });

@@ -17,8 +17,6 @@ class Dashboard(models.Model):
         u'Use the Altair rendering engine'))
     bokeh = models.BooleanField(default=True, verbose_name=_(
         u'Use the Bokeh rendering engine'))
-    generators = models.CharField(max_length=255, verbose_name=_(
-        u"Generators used by this dashboard"), help_text="List of apps: ex: mqueue,myapp")
 
     class Meta:
         verbose_name = _(u'Dashboard')

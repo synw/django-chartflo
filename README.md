@@ -13,16 +13,6 @@ instructions
 - [Holoviews](http://holoviews.org/) and [Bokeh](http://bokeh.pydata.org/)
 - [Altair](http://altair-viz.github.io/) and [Vega Lite](https://vega.github.io/vega-lite)
 
-## Examples
-
-Some [example Jupyter notebooks](https://github.com/synw/django-chartflo-notebooks) are available. 
-Clone, copy the notebooks in a Django instance, install 
-[django-extensions](https://django-extensions.readthedocs.io/en/latest/index.html) and run:
-
-   ```
-   python3 manage.py shell_plus --notebook
-   ```
-
 ## Screenshot
 
 ![Dashboard screenshot](https://raw.github.com/synw/django-chartflo/master/docs/img/inflation_dash.png)

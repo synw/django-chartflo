@@ -17,6 +17,8 @@ class Dashboard(models.Model):
         u'Use the Altair rendering engine'))
     bokeh = models.BooleanField(default=True, verbose_name=_(
         u'Use the Bokeh rendering engine'))
+    chartjs = models.BooleanField(default=True, verbose_name=_(
+        u'Use the Chartjs rendering engine'))
 
     class Meta:
         verbose_name = _(u'Dashboard')

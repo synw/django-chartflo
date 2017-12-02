@@ -50,6 +50,7 @@ class DashboardView(TemplateView):
         context["icon"] = self.dashboard.icon
         context["altair"] = self.dashboard.altair
         context["bokeh"] = self.dashboard.bokeh
+        context["bokeh"] = self.dashboard.chartjs
         return context
 
 

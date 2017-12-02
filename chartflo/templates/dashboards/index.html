@@ -27,6 +27,9 @@
 	{% if altair is True %}
 		{% include "chartflo/altair_head.html" %}
 	{% endif %}
+	{% if chartjs is True %}
+		{% include "chartflo/chartjs_head.html" %}
+	{% endif %}
 	<style type="text/css">
 	.vega-actions {
 		display:none;

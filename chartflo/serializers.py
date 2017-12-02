@@ -2,6 +2,7 @@ import pandas as pd
 from goerr import err
 from dataswim import ds
 from django.db.models.query import QuerySet
+from django_pandas.io import read_frame
 
 
 def _check_fields(x, y):
@@ -55,15 +56,7 @@ def convert_dataset(dataset, x=None, y=None):
         if isinstance(dataset, pd.DataFrame):
             return dataset
         elif isinstance(dataset, QuerySet):
-            x_vals = []
-            y_vals = []
-            for row in list(dataset.values()):
-                try:
-                    y_vals.append(row[y])
-                except:
-                    y_vals.append(1)
-                x_vals.append(row[x])
-            dataset = pd.DataFrame({x: x_vals, y: y_vals})
+            dataset = read_frame(dataset)
         elif isinstance(dataset, dict):
             dataset = _dict_to_df(dataset, x, y)
         elif isinstance(dataset, list):

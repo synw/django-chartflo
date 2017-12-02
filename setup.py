@@ -28,5 +28,6 @@ setup(
         'goerr',
         "blessings",
         'dataswim',
+        "django-pandas",
     ],
 )

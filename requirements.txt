@@ -3,3 +3,4 @@ goerr
 gencharts
 blessings
 dataswim
+django-pandas

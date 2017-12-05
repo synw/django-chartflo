@@ -59,6 +59,8 @@ def _write_file(slug, html, ctype="chart", dashboard=None):
         endpath = "numbers"
     elif ctype == "sparkline":
         endpath = "sparklines"
+    elif ctype == "datatable":
+        endpath = "datatables"
     if dashboard is not None:
         midpath = "dashboards/" + dashboard + "/"
     else:

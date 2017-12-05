@@ -28,7 +28,7 @@ class Number():
     def progress(self, slug, value, progress, legend=None, unit=None, thresholds={},
                  dashboard=None, color="green", icon=None, verbose=True):
         """
-        Generates a single number widget
+        Generates a number widget with a progress bar
         """
         html = self._progress_html(
             value, progress, legend, unit, thresholds, icon, color)
@@ -42,6 +42,9 @@ class Number():
             print("[x] Generated number " + slug)
 
     def _progress_html(self, number, progress, legend, unit, thresholds, icon, color):
+        """
+        Generate html for progress bar number widget
+        """
         if unit is None:
             unit = ""
         if thresholds:

@@ -50,6 +50,7 @@ class Command(BaseCommand):
         except Exception as e:
             err.new(e, "Generator not found")
             err.report()
+            err.throw()
             return
         if quiet > 0:
             print("Running generator", app)

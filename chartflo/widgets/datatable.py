@@ -35,4 +35,17 @@ class DataTable():
                 html += '<td>' + str(row[col]) + '</td>'
             html += '</tr>'
         html += '</tbody></table>'
+        html += '<script>'
+        html += '$(function () {'
+        html += '$("#' + slug + '").DataTable({'
+        html += """
+              'paging'      : true,
+              'lengthChange': true,
+              'searching'   : true,
+              'ordering'    : true,
+              'info'        : true,
+              'autoWidth'   : true
+            })
+          })
+        </script>"""
         return html

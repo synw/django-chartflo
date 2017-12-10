@@ -1,6 +1,6 @@
 from goerr import err
-from dataswim import ds
 from ..utils import _write_file
+from chartflo.serializers import convert_dataset
 
 
 class DataTable():
@@ -8,14 +8,15 @@ class DataTable():
     A class to handle data tables
     """
 
-    def create(self, slug, df=None, dashboard=None):
+    def create(self, slug, dataset, dashboard=None):
+        df = convert_dataset(dataset)
         if df is None:
-            if ds.df is None:
+            if df is None:
                 err.new(
                     self.new, "No dataframe set: please provide one in parameter")
                 err.throw()
             else:
-                df = ds.df
+                df = df
         html = self._html(slug, df)
         _write_file(slug, html, "datatable", dashboard)
 

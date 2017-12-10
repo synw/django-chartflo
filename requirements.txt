@@ -1,6 +1,3 @@
-altair
+pandas
 goerr
-gencharts
-blessings
-dataswim
 django-pandas

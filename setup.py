@@ -24,7 +24,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'goerr',
-        'dataswim',
+        "pandas",
         "django-pandas",
     ],
 )

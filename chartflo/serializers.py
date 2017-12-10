@@ -1,6 +1,5 @@
 import pandas as pd
 from goerr import err
-from dataswim import ds
 from django.db.models.query import QuerySet
 from django_pandas.io import read_frame
 
@@ -10,21 +9,17 @@ def _check_fields(x, y):
     Check if X and Y field are set
     """
     if x is None:
-        if ds.x is None:
-            err.new(_check_fields,
-                    "No X field set: please pass one as parameter")
-            return
-        ds.x = x
+        err.new(_check_fields,
+                "No X field set: please pass one as parameter")
     if y is None:
-        if ds.y is None:
-            err.new(_check_fields,
-                    "No Y field set: please pass one as parameter")
-        ds.y = y
+        err.new(_check_fields,
+                "No Y field set: please pass one as parameter")
+    return x, y
 
 
 def _dict_to_df(dictobj, xfield, yfield):
     """
-    Converts a dictionnary to a pandas dataframe
+    Converts a dictionary to a pandas dataframe
     """
     x = []
     y = []
@@ -48,17 +43,18 @@ def convert_dataset(dataset, x=None, y=None):
     if type(y) == tuple:
         y = y[0]
     try:
-        _check_fields(x, y)
+        x, y = _check_fields(x, y)
     except Exception as e:
         err.new(e, convert_dataset, "Can not find fields", x, y)
         err.throw()
+    df = pd.DataFrame()
     try:
         if isinstance(dataset, pd.DataFrame):
             return dataset
         elif isinstance(dataset, QuerySet):
-            dataset = read_frame(dataset)
+            df = read_frame(dataset)
         elif isinstance(dataset, dict):
-            dataset = _dict_to_df(dataset, x, y)
+            df = _dict_to_df(dataset, x, y)
         elif isinstance(dataset, list):
             return pd.DataFrame(dataset)
         else:
@@ -70,4 +66,4 @@ def convert_dataset(dataset, x=None, y=None):
     except Exception as e:
         err.new(e, convert_dataset, "Can not convert dataset")
         err.throw()
-    return dataset
+    return df

@@ -73,7 +73,7 @@ class Command(BaseCommand):
             except Exception as e:
                 err.new(e)
         try:
-            generator(events_q)
+            generator(events=events_q)
         except Exception as e:
             err.new(e)
         if err.exists:

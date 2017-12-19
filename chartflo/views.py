@@ -58,6 +58,8 @@ def getDashboardPageView(request, dashboard_name, page_name):
     """
     Loads a dashboard's page content
     """
+    if "__" in page_name:
+        page_name = page_name.replace("__", "/")
     dashboard = get_object_or_404(
         Dashboard.objects.prefetch_related("groups"), slug=dashboard_name)
     authorized = check_groups(dashboard, request)

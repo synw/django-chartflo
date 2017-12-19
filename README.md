@@ -21,7 +21,7 @@ instructions
 
 ## Screenshot
 
-Example of a dahsboard showing inflation numbers:
+Example of a dashboard showing inflation numbers:
 
 ![Dashboard screenshot](https://raw.github.com/synw/django-chartflo/master/docs/img/inflation_dashboard.png)
 

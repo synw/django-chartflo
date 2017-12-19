@@ -1,50 +1,22 @@
-Charts
-======
+Write a generator
+=================
 
-To charts are created using python generators: the user defines the data and the chart options. Html files are 
-generated and included in templates to view them.
+How it works
+------------
+
+The dahsboards generation logics lives in generators. These are responsible for processing the data into widgets and charts.
+
+**Note**: Chartflo only contains methods for generating widgets. The charts generation logics is left to the generator's writer. 
+It is possible to use anything that produces html files. Put this charts generation logics in a generator and build a data
+pipeline constructing widgets.
+
+Define a generator
+------------------
 
 Define a ``chartflo.py`` file or package in any app with a ``run`` function. This is where the generators live. These
 files will be detected at startup and the generators will be registered.
 
-Write a generator
------------------
-
-Example chart for user groups: in ``myapp/chartflo.py``:
-
-.. highlight:: python
-
-::
-
-   from django.contrib.auth.models import User
-   from chartflo.charts import chart
-   
-   
-   def get_data():
-    groups = Group.objects.all()
-    groups_count = {}
-    for group in groups:
-     count = group.user_set.count()
-     groups_count[group.name] = count
-    return groups_count)
-   
-   
-   def run(events):
-    groups_count = get_data()
-    # get the chart
-    c = chart.draw(groups_count, "Name", "Num", "bar")
-    # store it for later export
-    # params are: slug, title, chart object
-    chart.stack("groups", "Groups", c)
-    # export the chart to files
-    path = "dashboards/my_dashboard/charts"
-    chart.export(path)
-      
-This will create a basic bar charts comparing the number of members in user groups.
-
-Available chart types: `bar`, `circle`, `point`, `square`, `line`, `tick`, `area`, `rule`
-
-Create a ``templates/dashboards/my_dashboard/charts`` directory where the html files to be generated and run the generator
+TODO: example
 
 Rendering engines
 -----------------
@@ -67,7 +39,7 @@ Run the generator with a management command to generate the html files:
 
 ::
    
-   python3 manage.py gen myapp -all
+   python3 manage.py gen myapp
 
 
 Subgenerators

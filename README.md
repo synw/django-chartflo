@@ -2,8 +2,13 @@
 
 Charts for the lazy ones in Django. Features:
 
-- Generate charts using pure python: no javascript to write
-- Compose dashboards using the pre-generated charts
+- Compose dashboards using pre-generated html charts. Available widgets:
+   - Simple number 
+   - Number with threshold and progress bar
+   - Sparklines
+   - Datatables
+   
+- Run generators to rebuild the dashboards on fresh data 
 
 Check the [documentation](http://django-chartflo.readthedocs.io/en/latest/index.html) for the install and usage
 instructions
@@ -16,5 +21,7 @@ instructions
 
 ## Screenshot
 
-![Dashboard screenshot](https://raw.github.com/synw/django-chartflo/master/docs/img/inflation_dash.png)
+Example of a dahsboard showing inflation numbers:
+
+![Dashboard screenshot](https://raw.github.com/synw/django-chartflo/master/docs/img/inflation_dashboard.png)
 

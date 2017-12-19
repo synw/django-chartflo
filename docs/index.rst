@@ -28,10 +28,18 @@ Run the migrations.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Create charts
+   :caption: Generators
    
    generators/create.rst
-   numbers/create.rst
+   
+.. toctree::
+   :maxdepth: 2
+   :caption: Widgets
+   
+   widgets/single_number.rst
+   widgets/number.rst
+   widgets/sparkline.rst
+   widgets/datatable.rst
    
 .. toctree::
    :maxdepth: 2

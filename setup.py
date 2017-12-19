@@ -26,5 +26,6 @@ setup(
         'goerr',
         "pandas",
         "django-pandas",
+        "django>=1.11<2",
     ],
 )

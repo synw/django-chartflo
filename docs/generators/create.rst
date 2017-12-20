@@ -16,7 +16,14 @@ Define a generator
 Define a ``chartflo.py`` file or package in any app with a ``run`` function. This is where the generators live. These
 files will be detected at startup and the generators will be registered.
 
-TODO: example
+The charts and widgets generation logic is located in a generator. There are 
+`example notebooks <https://github.com/synw/django-chartflo-notebooks>`_ available to show how to draw charts.
+
+Click on the badge to run them online:
+
+.. image:: https://mybinder.org/badge.svg :target: https://mybinder.org/v2/gh/synw/django-chartflo-notebooks/master
+
+TODO: More code examples and detailled doc about charts generation
 
 Rendering engines
 -----------------

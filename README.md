@@ -2,7 +2,9 @@
 
 Charts for the lazy ones in Django. Features:
 
-- Compose dashboards using pre-generated html charts. Available widgets:
+- Generate charts in a declarative way using pure python: no javascript to write
+
+- Compose dashboards using the pre-generated html charts. Available widgets:
    - Simple number
    - Number with threshold and progress bar
    - Sparklines
@@ -18,6 +20,13 @@ instructions
 - [Holoviews](http://holoviews.org/) and [Bokeh](http://bokeh.pydata.org/)
 - [Altair](http://altair-viz.github.io/) and [Vega Lite](https://vega.github.io/vega-lite)
 - [Chartjs](http://www.chartjs.org/)
+
+## Example notebooks
+
+[Example notebooks](https://github.com/synw/django-chartflo-notebooks) are available to show how to build the charts. 
+Click on the badge to run them online:
+
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/synw/django-chartflo-notebooks/master)
 
 ## Screenshot
 

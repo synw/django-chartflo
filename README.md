@@ -20,6 +20,7 @@ instructions
 - [Holoviews](http://holoviews.org/) and [Bokeh](http://bokeh.pydata.org/)
 - [Altair](http://altair-viz.github.io/) and [Vega Lite](https://vega.github.io/vega-lite)
 - [Chartjs](http://www.chartjs.org/)
+- [Seaborn](http://seaborn.pydata.org/)
 
 ## Example notebooks
 

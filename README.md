@@ -2,15 +2,15 @@
 
 Charts for the lazy ones in Django. Features:
 
-- Generate charts in a declarative way using pure python: no javascript to write
+- **Generate charts** in a declarative way using pure python: no javascript to write
 
-- Compose dashboards using the pre-generated html charts. Available widgets:
+- **Compose dashboards** using the pre-generated html charts. Available widgets:
    - Simple number
    - Number with threshold and progress bar
    - Sparklines
    - Datatables
 
-- Run generators to rebuild the dashboards on fresh data
+- **Rebuild the dashboards** on fresh data using generators
 
 Check the [documentation](http://django-chartflo.readthedocs.io/en/latest/index.html) for the install and usage
 instructions

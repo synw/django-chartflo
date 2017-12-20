@@ -27,5 +27,6 @@ setup(
         "pandas",
         "django-pandas",
         "django<2",
+        "dataswim",
     ],
 )

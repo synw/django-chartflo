@@ -5,6 +5,7 @@ from django.apps import AppConfig
 
 
 GENERATORS = {}
+cf = None
 
 
 def load_generator(modname, subgenerator=None):
@@ -26,7 +27,10 @@ class ChartfloConfig(AppConfig):
     verbose_name = "Chartflo"
 
     def ready(self):
-        global GENERATORS
+        """
+        Load generators and initialize class instance
+        """
+        global GENERATORS, cf
         from django.conf import settings
         apps = settings.INSTALLED_APPS
         generators = {}
@@ -38,5 +42,8 @@ class ChartfloConfig(AppConfig):
             except Exception as e:
                 err.new(e)
         GENERATORS = generators
+        # Initialize class instance
+        from chartflo.engine import ChartFlo
+        cf = ChartFlo()
         if err.exists:
             err.trace()

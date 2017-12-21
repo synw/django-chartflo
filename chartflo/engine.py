@@ -7,19 +7,30 @@ from django_pandas.io import read_frame
 
 class ChartFlo(DataSwim):
 
-    def convert_dataset(self, dataset, x=None, y=None):
+    def load_data(self, dataset):
+        """
+        Set the main dataframe with the input data
+        """
+        try:
+            df = self._load_data(dataset)
+            self.df = df
+        except Exception as e:
+            err.new(e, self.load_data, "Can not load dataset")
+
+    def load_data_(self, dataset):
+        """
+        Returns an instance with the input data
+        """
+        try:
+            df = self._load_data(dataset)
+            return self.clone_(df)
+        except Exception as e:
+            err.new(e, self._load_data, "Can not load dataset")
+
+    def _load_data(self, dataset):
         """
         Convert the input data to pandas dataframe
         """
-        if type(x) == tuple:
-            x = x[0]
-        if type(y) == tuple:
-            y = y[0]
-        try:
-            x, y = self._check_fields(x, y)
-        except Exception as e:
-            err.new(e, self.convert_dataset, "Can not find fields", x, y)
-            err.throw()
         df = pd.DataFrame()
         try:
             if isinstance(dataset, pd.DataFrame):
@@ -31,27 +42,15 @@ class ChartFlo(DataSwim):
             elif isinstance(dataset, list):
                 return pd.DataFrame(dataset)
             else:
-                err.new(self.convert_dataset,
+                err.new(self._load_data,
                         "Data format unknown: "
                         + str(type(dataset)) +
                         " please provide a dictionnary, a Django Queryset or a Pandas DataFrame")
         except Exception as e:
-            err.new(e, self.convert_dataset, "Can not convert dataset")
+            err.new(e, self._load_data, "Can not convert dataset")
         if err.exists:
             err.throw()
         return df
-
-    def _check_fields(self, x, y):
-        """
-        Check if X and Y field are set
-        """
-        if x is None:
-            err.new(self._check_fields,
-                    "No X field set: please pass one as parameter")
-        if y is None:
-            err.new(self._check_fields,
-                    "No Y field set: please pass one as parameter")
-        return x, y
 
     def _dict_to_df(self, dictobj, xfield, yfield):
         """

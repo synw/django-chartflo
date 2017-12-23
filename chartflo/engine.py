@@ -7,27 +7,27 @@ from django_pandas.io import read_frame
 
 class ChartFlo(DataSwim):
 
-    def load_data(self, dataset):
+    def load_data(self, dataset, x, y):
         """
         Set the main dataframe with the input data
         """
         try:
-            df = self._load_data(dataset)
+            df = self._load_data(dataset, x, y)
             self.df = df
         except Exception as e:
             err.new(e, self.load_data, "Can not load dataset")
 
-    def load_data_(self, dataset):
+    def load_data_(self, dataset, x, y):
         """
         Returns an instance with the input data
         """
         try:
-            df = self._load_data(dataset)
+            df = self._load_data(dataset, x, y)
             return self.clone_(df)
         except Exception as e:
             err.new(e, self._load_data, "Can not load dataset")
 
-    def _load_data(self, dataset):
+    def _load_data(self, dataset, x, y):
         """
         Convert the input data to pandas dataframe
         """

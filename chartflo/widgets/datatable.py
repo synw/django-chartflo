@@ -1,6 +1,6 @@
 from goerr import err
 from ..utils import _write_file
-from chartflo.serializers import convert_dataset
+from ..apps import cf
 
 
 class DataTable():
@@ -9,7 +9,7 @@ class DataTable():
     """
 
     def create(self, slug, dataset, dashboard=None):
-        df = convert_dataset(dataset)
+        df = cf.convert_dataset(dataset)
         if df is None:
             if df is None:
                 err.new(

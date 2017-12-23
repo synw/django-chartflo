@@ -7,6 +7,13 @@ from django_pandas.io import read_frame
 
 class ChartFlo(DataSwim):
 
+    def __repr__(self):
+        """
+        Initialize
+        """
+        rows = str(len(self.df.columns))
+        return '<Chartflo object - ' + rows + " >"
+
     def load_data(self, dataset, x, y):
         """
         Set the main dataframe with the input data
@@ -67,3 +74,6 @@ class ChartFlo(DataSwim):
             yfield = yfield[0]
         df = pd.DataFrame({xfield: x, yfield: y})
         return df
+
+
+cf = ChartFlo()

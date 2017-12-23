@@ -20,6 +20,8 @@ def load_generator(modname, subgenerator=None):
         if "No module named" not in str(e):
             err.new(e)
         return None
+    except Exception as e:
+        err.new(e, load_generator, "Error loading module")
 
 
 class ChartfloConfig(AppConfig):

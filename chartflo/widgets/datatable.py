@@ -1,6 +1,6 @@
 from goerr import err
 from ..utils import _write_file
-from ..apps import cf
+from ..engine import cf
 
 
 class DataTable():
@@ -9,15 +9,12 @@ class DataTable():
     """
 
     def create(self, slug, dataset, dashboard=None):
-        df = cf.convert_dataset(dataset)
-        if df is None:
-            if df is None:
-                err.new(
-                    self.new, "No dataframe set: please provide one in parameter")
-                err.throw()
-            else:
-                df = df
-        html = self._html(slug, df)
+        ds = cf.load_data_(dataset, "x", "y")
+        if ds is None:
+            err.new(
+                self.new, "No dataframe set: please provide one in parameter")
+            err.throw()
+        html = self._html(slug, ds.df)
         _write_file(slug, html, "datatable", dashboard)
 
     def _html(self, slug, df):

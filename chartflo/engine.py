@@ -9,32 +9,32 @@ class ChartFlo(DataSwim):
 
     def __repr__(self):
         """
-        Initialize
+        String representation of the object
         """
         rows = str(len(self.df.columns))
         return '<Chartflo object - ' + rows + " >"
 
-    def load_data(self, dataset, x, y):
+    def load_data(self, dataset):
         """
         Set the main dataframe with the input data
         """
         try:
-            df = self._load_data(dataset, x, y)
+            df = self._load_data(dataset)
             self.df = df
         except Exception as e:
             err.new(e, self.load_data, "Can not load dataset")
 
-    def load_data_(self, dataset, x, y):
+    def load_data_(self, dataset):
         """
         Returns an instance with the input data
         """
         try:
-            df = self._load_data(dataset, x, y)
+            df = self._load_data(dataset)
             return self.clone_(df)
         except Exception as e:
             err.new(e, self._load_data, "Can not load dataset")
 
-    def _load_data(self, dataset, x, y):
+    def _load_data(self, dataset):
         """
         Convert the input data to pandas dataframe
         """
@@ -45,7 +45,7 @@ class ChartFlo(DataSwim):
             elif isinstance(dataset, QuerySet):
                 df = read_frame(dataset)
             elif isinstance(dataset, dict):
-                df = self._dict_to_df(dataset, x, y)
+                df = self._dict_to_df(dataset)
             elif isinstance(dataset, list):
                 return pd.DataFrame(dataset)
             else:
@@ -59,20 +59,17 @@ class ChartFlo(DataSwim):
             err.throw()
         return df
 
-    def _dict_to_df(self, dictobj, xfield, yfield):
+    def _dict_to_df(self, dictobj):
         """
         Converts a dictionary to a pandas dataframe
         """
         x = []
         y = []
+        print("DICT")
         for datapoint in dictobj:
             x.append(datapoint)
             y.append(dictobj[datapoint])
-        if type(xfield) == tuple:
-            xfield = xfield[0]
-        if type(yfield) == tuple:
-            yfield = yfield[0]
-        df = pd.DataFrame({xfield: x, yfield: y})
+        df = pd.DataFrame(dictobj)
         return df
 
 

@@ -2,10 +2,11 @@ from __future__ import unicode_literals
 import importlib
 from goerr import err
 from django.apps import AppConfig
+from chartflo.engine import ChartFlo
 
 
 GENERATORS = {}
-cf = None
+cf = ChartFlo()
 
 
 def load_generator(modname, subgenerator=None):
@@ -42,10 +43,8 @@ class ChartfloConfig(AppConfig):
                 if res is not None:
                     generators[app] = res
             except Exception as e:
-                err.new(e)
+                err.new(e, self.ready,
+                        "Can not initialize Chartflo generators")
         GENERATORS = generators
-        # Initialize class instance
-        from chartflo.engine import ChartFlo
-        cf = ChartFlo()
         if err.exists:
             err.trace()

@@ -3,10 +3,10 @@
 from __future__ import print_function
 from django.core.management.base import BaseCommand
 from django.conf import settings
-from chartflo.apps import GENERATORS, load_generator
 from goerr import err
-from .gencharts import get_changes_events, get_last_run_q, get_events_q
-from mqueue.models import MEvent
+#from .gencharts import get_changes_events, get_last_run_q, get_events_q
+#from mqueue.models import MEvent
+from ...apps import GENERATORS, load_generator
 
 
 class Command(BaseCommand):
@@ -33,7 +33,7 @@ class Command(BaseCommand):
         """
         app = options["app"]
         quiet = int(options["quiet"])
-        runall = int(options["all"])
+        #runall = int(options["all"])
         subgenerator = None
         if "." in app:
             l = app.split(".")
@@ -54,6 +54,11 @@ class Command(BaseCommand):
             return
         if quiet > 0:
             print("Running generator", app)
+        try:
+            generator()
+        except Exception as e:
+            err.new(e)
+        """
         try:
             last_run_q = get_last_run_q()
         except Exception:
@@ -76,6 +81,7 @@ class Command(BaseCommand):
             generator(events=events_q)
         except Exception as e:
             err.new(e)
+        """
         if err.exists:
             if settings.DEBUG is True:
                 err.throw()

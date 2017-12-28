@@ -5,7 +5,7 @@ from django.http.response import Http404
 from django.template.loader import get_template
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
-from chartflo.models import Dashboard
+from .models import Dashboard
 
 
 def check_groups(dashboard, request):
@@ -40,8 +40,8 @@ class DashboardView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data(**kwargs)
         try:
-            t = get_template("dashboards/sidebars/" +
-                             self.dashboard.slug + ".html")
+            t = get_template(
+                "dashboards/" + self.dashboard.slug + "/sidebar.html")
             sidebar = t.render({})
         except Exception as e:
             raise(e)

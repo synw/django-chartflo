@@ -40,6 +40,7 @@ Run the migrations.
    widgets/number.rst
    widgets/sparkline.rst
    widgets/datatable.rst
+   widgets/sequence.rst
    
 .. toctree::
    :maxdepth: 2

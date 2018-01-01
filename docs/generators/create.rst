@@ -6,10 +6,6 @@ How it works
 
 The dahsboards generation logics lives in generators. These are responsible for processing the data into widgets and charts.
 
-**Note**: Chartflo only contains methods for generating widgets. The charts generation logics is left to the generator's writer. 
-It is possible to use anything that produces html files. Put this charts generation logics in a generator and build a data
-pipeline constructing widgets.
-
 Define a generator
 ------------------
 

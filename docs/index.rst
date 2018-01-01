@@ -26,11 +26,12 @@ Add to urls:
    
 Run the migrations.
 
+
 .. toctree::
    :maxdepth: 2
-   :caption: Generators
+   :caption: Charts
    
-   generators/create.rst
+   charts/charts.rst
    
 .. toctree::
    :maxdepth: 2
@@ -47,6 +48,12 @@ Run the migrations.
    :caption: Dashboards
    
    dashboards/compose.rst
+   
+.. toctree::
+   :maxdepth: 2
+   :caption: Generators
+   
+   generators/create.rst
    
 .. toctree::
    :maxdepth: 2

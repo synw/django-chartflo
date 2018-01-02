@@ -1,6 +1,6 @@
 from goerr import err
 from ..utils import _write_file
-from ..engine import cf
+from dataswim import ds as cf
 
 
 class DataTable():

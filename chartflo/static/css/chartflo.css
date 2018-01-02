@@ -1,6 +1,6 @@
 .info-box {
 	max-width:13em !important;
-	display:inline-block;
+	display:inline-block !important;
 	margin:0 0.2em 0 0.2em;
 }
 .sparkline-inline {
@@ -8,4 +8,15 @@
 }
 h1 {
 	margin-top:-0.5em;
+}
+.sparkline {
+	display:inline-block !important;
+}
+/*.sequence {
+    text-align:center;
+}*/
+.sequence-box {
+    display:inline-block;
+    text-align:center;
+    border:1px solid black;
 }

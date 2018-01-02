@@ -12,6 +12,8 @@ def check_groups(dashboard, request):
     """
     Check groups authorization for a dashboard
     """
+    if dashboard.public is True:
+        return True
     if request.user.is_superuser is True:
         return True
     groups = dashboard.groups.all()

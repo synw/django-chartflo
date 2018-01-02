@@ -4,11 +4,12 @@ from django.contrib.auth.models import Group
 
 
 class Dashboard(models.Model):
+    title = models.CharField(max_length=160, verbose_name=_(u"Title"))
     slug = models.CharField(max_length=120, unique=True,
                             verbose_name=_(u"Slug"))
-    title = models.CharField(max_length=160, verbose_name=_(u"Title"))
     updated = models.DateTimeField(
         blank=True, null=True, verbose_name=_(u'Last update'))
+    public = models.BooleanField(default=False, verbose_name=_(u'Public'))
     groups = models.ManyToManyField(
         Group, blank=True, verbose_name=_(u'Authorized groups'))
     icon = models.CharField(

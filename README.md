@@ -15,7 +15,7 @@ Charts for the lazy ones in Django. Features:
 Check the [documentation](http://django-chartflo.readthedocs.io/en/latest/index.html) for the install and usage
 instructions
 
-## Supported rendering engines
+### Supported rendering engines
 
 - [Holoviews](http://holoviews.org/) and [Bokeh](http://bokeh.pydata.org/)
 - [Altair](http://altair-viz.github.io/) and [Vega Lite](https://vega.github.io/vega-lite)
@@ -29,9 +29,13 @@ Click on the badge to run them online:
 
 [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/synw/django-chartflo-notebooks/master)
 
-## Screenshot
+## Demo project
 
-Example of a dashboard showing inflation numbers:
+A demo project is available: 
+[check it online](https://chartflo.herokuapp.com/dashboards/inflation/) or visit the
+[repository](https://github.com/synw/django-chartflo-demo) to install it locally.
+
+### Screenshot
 
 ![Dashboard screenshot](https://raw.github.com/synw/django-chartflo/master/docs/img/inflation_dashboard.png)
 

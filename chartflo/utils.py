@@ -61,6 +61,8 @@ def _write_file(slug, html, ctype="chart", dashboard=None):
         endpath = "sparklines"
     elif ctype == "datatable":
         endpath = "datatables"
+    elif ctype == "sequence":
+        endpath = "sequences"
     if dashboard is not None:
         midpath = "dashboards/" + dashboard + "/"
     else:
@@ -74,7 +76,7 @@ def _write_file(slug, html, ctype="chart", dashboard=None):
             err.new(e)
     # check file
     filepath = chartsdir_path + "/" + slug + ".html"
-    #~ write the file
+    # write the file
     try:
         filex = open(filepath, "w")
         filex.write(html)

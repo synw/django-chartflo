@@ -15,6 +15,8 @@ Charts for the lazy ones in Django. Features:
 Check the [documentation](http://django-chartflo.readthedocs.io/en/latest/index.html) for the install and usage
 instructions
 
+Powered by the [Dataswim](https://github.com/synw/dataswim) data analytics library
+
 ### Supported rendering engines
 
 - [Holoviews](http://holoviews.org/) and [Bokeh](http://bokeh.pydata.org/)

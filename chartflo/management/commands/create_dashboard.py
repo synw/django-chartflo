@@ -2,6 +2,7 @@
 from __future__ import print_function
 import os
 import importlib
+from goerr import err, colors
 from django.core.management.base import BaseCommand
 import chartflo
 from ...utils import copytree
@@ -18,24 +19,24 @@ class Command(BaseCommand):
         # check if module exists
         mod = importlib.util.find_spec(app)
         if mod is None:
-            print("No module named", app)
+            err.new("No module named " + app)
+            err.throw()
             return
         # get paths
         origin = os.path.dirname(chartflo.__file__) + "/templates/dashboards"
         dest = os.getcwd() + "/" + app + "/templates/dashboards"
         # check directories
         if not os.path.exists(dest):
+            print("Creating directories")
             os.makedirs(dest, exist_ok=True)
         # copy
-        print("Copying:", origin, "=>", dest)
+        print("Copying base templates", "=>", dest)
         try:
             copytree(origin, dest)
         except FileExistsError:
-            print("The directory", app +
-                  "/templates/dashboards/base already exists, aborting")
+            err.new("The directory", app +
+                    "/templates/dashboards/base already exists, aborting")
+            err.throw()
             return
-        print(
-            "Ok: dashboard base template is in",
-            app + "/templates/dashboards")
-        print("Rename the 'base' folder to", app,
-              "to be able to access it from /dashboards/" + app)
+        print("[" + colors.green("Ok") + "] Dashboard base template is in",
+              app + "/templates/dashboards")

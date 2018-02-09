@@ -2,10 +2,19 @@
 from __future__ import print_function
 import os
 import importlib
+import shutil
 from goerr import err, colors
 from django.core.management.base import BaseCommand
 import chartflo
 from ...utils import copytree
+
+
+def config_template(filename, app):
+    with open(filename, 'r') as file:
+        filedata = file.read()
+        filedata = filedata.replace("base", app)
+    with open(filename, 'w') as file:
+        file.write(filedata)
 
 
 class Command(BaseCommand):
@@ -38,5 +47,12 @@ class Command(BaseCommand):
                     "/templates/dashboards/base already exists, aborting")
             err.throw()
             return
+        # rename stuff
+        src = dest + "/base"
+        des = dest + "/" + app
+        shutil.move(src, des)
+        # fic imports in files
+        config_template(des + "/index.html", app)
+        # end msg
         print("[" + colors.green("Ok") + "] Dashboard base template is in",
               app + "/templates/dashboards")

@@ -6,6 +6,7 @@ import shutil
 from goerr import err, colors
 from django.core.management.base import BaseCommand
 import chartflo
+from chartflo.models import Dashboard
 from ...utils import copytree
 
 
@@ -48,11 +49,15 @@ class Command(BaseCommand):
             err.throw()
             return
         # rename stuff
+        print("Configuring templates")
         src = dest + "/base"
         des = dest + "/" + app
         shutil.move(src, des)
         # fic imports in files
         config_template(des + "/index.html", app)
+        # create dashboard object in the database
+        print("Creating dashboard object in the database")
+        Dashboard.objects.get_or_create(slug=app, title=app)
         # end msg
         print("[" + colors.green("Ok") + "] Dashboard base template is in",
               app + "/templates/dashboards")

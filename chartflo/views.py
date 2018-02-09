@@ -28,7 +28,6 @@ class DashboardView(TemplateView):
     """
     Generic dashboard view
     """
-    template_name = "dashboards/index.html"
 
     def dispatch(self, request, *args, **kwargs):
         slug = kwargs["dashboard_name"]
@@ -41,19 +40,16 @@ class DashboardView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data(**kwargs)
-        try:
-            t = get_template(
-                "dashboards/" + self.dashboard.slug + "/sidebar.html")
-            sidebar = t.render({})
-        except Exception as e:
-            raise(e)
         context["dashboard"] = self.dashboard.slug
-        context["sidebar"] = sidebar
         context["icon"] = self.dashboard.icon
         context["altair"] = self.dashboard.altair
         context["bokeh"] = self.dashboard.bokeh
         context["chartjs"] = self.dashboard.chartjs
         return context
+
+    def get_template_names(self):
+        template_name = "dashboards/" + self.dashboard.slug + "/index.html"
+        return [template_name]
 
 
 def getDashboardPageView(request, dashboard_name, page_name):

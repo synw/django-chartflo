@@ -9,8 +9,11 @@ class ChartFlo(DataSwim, Widget):
         """
         String representation of the object
         """
-        rows = str(len(self.df.columns))
-        return '<Chartflo object - ' + rows + " >"
+        num = 0
+        if self.df is not None:
+            num = len(self.df.index)
+        msg = "<Chartflo object | " + str(num) + " rows>"
+        return msg
 
     def new_(self, df=pd.DataFrame(), db=None, quiet=False):
         """

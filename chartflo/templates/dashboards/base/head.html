@@ -1,8 +1,18 @@
+{% load staticfiles %}
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" media="screen, projection" href="css/font-awesome/css/font-awesome.min.css"/>
-<link rel="stylesheet" media="screen, projection" href="css/bulma/bulma.css" />
-<link rel="stylesheet" media="screen, projection" href="css/bokeh.css" />
-<link rel="stylesheet" media="screen, projection" href="css/screen.css" />
-<script type="text/javascript" src="js/bokeh/bokeh.min.js"></script>
+<link rel="stylesheet" media="screen, projection" href="{% static 'bulma/css/font-awesome/css/font-awesome.min.css' %}"/>
+<link rel="stylesheet" media="screen, projection" href="{% static 'bulma/css/style.css' %}" />
+{% if bokeh is True %}
+<link rel="stylesheet" media="screen, projection" href="{% static 'css/bokeh.css' %}" />
+<script type="text/javascript" src="{% static 'js/bokeh/bokeh.min.js' %}"></script>
+{% endif %}
+{% if altair is True %}
+<script type="text/javascript" src="{% static 'js/vegalite/vega.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/vegalite/vega-lite.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/vegalite/vega-embed.js' %}"></script>
+{% endif %}
+{% if chartjs is True %}
+<script type="text/javascript" src="{% static 'js/chartjs/Chart.min.js' %}"></script>
+{% endif %}

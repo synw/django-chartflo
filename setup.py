@@ -11,8 +11,8 @@ setup(
     description='Charts for the lazy ones in Django',
     author='synw',
     author_email='synwe@yahoo.com',
-    url='https://github.com/synw/chartflo',
-    download_url='https://github.com/synw/chartflo/releases/tag/' + version,
+    url='https://github.com/synw/django-chartflo',
+    download_url='https://github.com/synw/django-chartflo/releases/tag/' + version,
     keywords=["charts", "dashboards", "reporting"],
     classifiers=[
         'Development Status :: 3 - Alpha',

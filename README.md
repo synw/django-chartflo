@@ -11,6 +11,10 @@ instructions
 
 Optionaly powered by the [Dataswim](https://github.com/synw/dataswim) data analytics library for charts generation
 
+## Demo project
+
+A [demo project](https://github.com/synw/django-chartflo-demo) is available
+
 ### Screenshot
 
 ![Dashboard screenshot](docs/img/screenshot.png)

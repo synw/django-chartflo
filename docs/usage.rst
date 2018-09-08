@@ -4,6 +4,8 @@ Usage
 The dashboards use pre-generated html charts loaded as templates. The charts generation is handled by the 
 `Dataswim <https://github.com/synw/dataswim>`_ library, but anything that produces html can be used.
 
+A `demo project <https://github.com/synw/django-chartflo-demo>`_ is available for a complete example
+
 Let's make a simple timeseries module with a dashboard as an example.
 
 Create a model

@@ -28,11 +28,12 @@ class DashboardView(TemplateView):
     """
     Generic dashboard view
     """
+    template_name = "chartflo/dashboards/index.html"
 
     def dispatch(self, request, *args, **kwargs):
         slug = kwargs["dashboard_name"]
         self.dashboard = get_object_or_404(
-            Dashboard.objects.prefetch_related("groups"), slug=slug)
+            Dashboard.objects.prefetch_related("groups", 'views'), slug=slug)
         authorized = check_groups(self.dashboard, request)
         if authorized is False:
             raise Http404
@@ -40,37 +41,47 @@ class DashboardView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data(**kwargs)
-        context["dashboard"] = self.dashboard.slug
+        context["dashboard_slug"] = self.dashboard.slug
         context["icon"] = self.dashboard.icon
         context["altair"] = self.dashboard.altair
         context["bokeh"] = self.dashboard.bokeh
         context["chartjs"] = self.dashboard.chartjs
+        context["title"] = self.dashboard.title
+        context["navbar_class"] = self.dashboard.navbar_class
+        content_template = "chartflo/dashboards/content.html"
+        if self.dashboard.custom_content == True:
+            content_template = "dashboards/" + self.dashboard.slug + "/content.html"
+        context["dashboard_content_template"] = content_template
+        header = "chartflo/dashboards/header.html"
+        if self.dashboard.custom_header is True:
+            header = "dashboards/" + self.dashboard.slug + "/header.html"
+        context["dashboard_header_template"] = header
+        viewsq = self.dashboard.views.all()
+        views_templates = {}
+        views_titles = {}
+        active_view = None
+        for view in viewsq:
+            views_templates[view.slug] = "dashboards/" + self.dashboard.slug + \
+                "/views/" + view.slug + ".html"
+            views_titles[view.slug] = view.title
+            if view.active == True:
+                active_view = view.slug
+        context["views_templates"] = views_templates
+        context["views_titles"] = views_titles
+        context["active_view"] = active_view
         return context
 
-    def get_template_names(self):
-        template_name = "dashboards/" + self.dashboard.slug + "/index.html"
-        return [template_name]
 
-
-def getDashboardPageView(request, dashboard_name, page_name):
+def getDashboardView(request, dashboard_name, view_name):
     """
-    Loads a dashboard's page content
+    Loads a dashboard's view
     """
-    if "__" in page_name:
-        page_name = page_name.replace("__", "/")
     dashboard = get_object_or_404(
         Dashboard.objects.prefetch_related("groups"), slug=dashboard_name)
     authorized = check_groups(dashboard, request)
     if authorized is False:
         raise Http404
-    t = get_template("dashboards/" + dashboard_name +
-                     '/' + page_name + ".html")
-    html = t.render({"page": page_name, "dashboard": dashboard.slug})
+    t = get_template("dashboards/" + dashboard_name + 
+                     '/views/' + view_name + ".html")
+    html = t.render()
     return HttpResponse(html)
-
-
-def getDashboardIndexView(request, dashboard_name):
-    """
-    Loads a dashboard's frontpage
-    """
-    return getDashboardPageView(request, dashboard_name, "index")

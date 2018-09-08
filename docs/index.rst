@@ -14,7 +14,14 @@ Add to INSTALLED_APPS:
 
 ::
 
+   "vv",
    "chartflo",
+   
+Add to settings:
+
+::
+
+   VV_APPS = ["chartflo"]
    
 Add to urls: 
 
@@ -29,35 +36,21 @@ Run the migrations.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Charts
+   :caption: Overview
    
-   charts/charts.rst
+   overview.rst
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Usage
+   
+   usage.rst
    
 .. toctree::
    :maxdepth: 2
    :caption: Widgets
    
    widgets/single_number.rst
-   widgets/number.rst
    widgets/sparkline.rst
    widgets/datatable.rst
-   widgets/sequence.rst
-   
-.. toctree::
-   :maxdepth: 2
-   :caption: Dashboards
-   
-   dashboards/compose.rst
-   
-.. toctree::
-   :maxdepth: 2
-   :caption: Generators
-   
-   generators/create.rst
-   
-.. toctree::
-   :maxdepth: 2
-   :caption: Charts regeneration
-   
-   data_change/handle.rst
 

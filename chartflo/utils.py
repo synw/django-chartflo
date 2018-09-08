@@ -1,59 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
-import shutil
 from django.conf import settings
 from django.utils._os import safe_join
-from goerr import err
+from goerr import Err
 
-
-def copytree(src, dst, symlinks=False, ignore=None):
-    """
-    Utility to copy directories
-    """
-    for item in os.listdir(src):
-        s = os.path.join(src, item)
-        d = os.path.join(dst, item)
-        if os.path.isdir(s):
-            shutil.copytree(s, d, symlinks, ignore)
-        else:
-            shutil.copy2(s, d)
-
-
-def _write_json(slug, json):
-    """
-    Writes a chart to Vega Lite json format to a file
-    """
-    # check paths
-    folderpath = safe_join(settings.BASE_DIR, "templates/chartflo")
-    if not os.path.isdir(folderpath):
-        try:
-            os.makedirs(folderpath)
-        except Exception as e:
-            err.new(e)
-    folderpath = safe_join(settings.BASE_DIR, "templates/chartflo/json")
-    if not os.path.isdir(folderpath):
-        try:
-            os.makedirs(folderpath)
-        except Exception as e:
-            err.new(e)
-    folderpath = safe_join(settings.BASE_DIR, "templates/chartflo/json/charts")
-    if not os.path.isdir(folderpath):
-        try:
-            os.makedirs(folderpath)
-        except Exception as e:
-            err.new(e)
-    # gen json
-    endpath = "charts"
-    chartsdir_path = safe_join(
-        settings.BASE_DIR, "templates/chartflo/json/" + endpath)
-    filepath = chartsdir_path + "/" + slug + ".json"
-    #~ write the file
-    try:
-        filex = open(filepath, "w")
-        filex.write(json)
-        filex.close()
-    except Exception as e:
-        err.new(e)
+tr = Err()
 
 
 def _write_file(slug, html, ctype="chart", dashboard=None):
@@ -66,7 +17,8 @@ def _write_file(slug, html, ctype="chart", dashboard=None):
         try:
             os.makedirs(folderpath)
         except Exception as e:
-            err.new(e)
+            tr.err(e)
+            return
     endpath = "charts"
     if ctype == "number":
         endpath = "numbers"
@@ -86,7 +38,8 @@ def _write_file(slug, html, ctype="chart", dashboard=None):
         try:
             os.makedirs(chartsdir_path)
         except Exception as e:
-            err.new(e)
+            tr.err(e)
+            return
     # check file
     filepath = chartsdir_path + "/" + slug + ".html"
     # write the file
@@ -95,4 +48,4 @@ def _write_file(slug, html, ctype="chart", dashboard=None):
         filex.write(html)
         filex.close()
     except Exception as e:
-        err.new(e)
+        tr.err(e)

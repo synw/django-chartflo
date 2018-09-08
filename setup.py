@@ -1,6 +1,5 @@
 from setuptools import setup, find_packages
 
-
 version = __import__('chartflo').__version__
 
 setup(
@@ -24,7 +23,6 @@ setup(
     zip_safe=False,
     install_requires=[
         'goerr',
-        "django<2",
-        "dataswim",
+        "django-vitevue",
     ],
 )

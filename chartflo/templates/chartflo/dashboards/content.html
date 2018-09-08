@@ -1,0 +1,5 @@
+{% for slug, template in views_templates.items%}
+	<div v-bind:class="isActiveView('{{ slug }}')">
+		{% include template %}
+	</div>
+{% endfor %}

@@ -1,0 +1,13 @@
+{% extends "chartflo/dashboards/base.html" %}
+{% load vv_tags %}
+
+{% block header %}
+	{% include dashboard_header_template %}
+{% endblock %}
+{% block content %}
+	{% include dashboard_content_template %}
+{% endblock %}
+{% block vues %}
+	{% getVvapps as apps %}
+	{% include "vv/app.js" %}
+{% endblock %}

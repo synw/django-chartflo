@@ -1,0 +1,31 @@
+{% load staticfiles %}
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="{% static 'js/vue.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/vuex.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/page.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/axios.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'vv//vv.js' %}"></script>
+<script type="text/javascript" src="{% static 'vv/vvstore.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/datatables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.sparkline.min.js' %}"></script>
+<link rel="stylesheet" media="screen, projection" href="{% static 'css/fontawesome/css/all.css' %}"/>
+<link rel="stylesheet" media="screen, projection" href="{% static 'css/buefy.min.css' %}" />
+<link rel="stylesheet" media="screen, projection" href="{% static 'css/chartflo.css' %}" />
+<link rel="stylesheet" media="screen, projection" href="{% static 'css/datatables.min.css' %}" />
+{% if bokeh is True %}
+<link rel="stylesheet" media="screen, projection" href="{% static 'css/bokeh.min.css' %}" />
+<script type="text/javascript" src="{% static 'js/bokeh/bokeh.min.js' %}"></script>
+{% endif %}
+{% if altair is True %}
+<script type="text/javascript" src="{% static 'js/vegalite/vega.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/vegalite/vega-lite.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/vegalite/vega-embed.js' %}"></script>
+{% endif %}
+{% if chartjs is True %}
+<script type="text/javascript" src="{% static 'js/chartjs/Chart.min.js' %}"></script>
+{% endif %}
+<script type="text/javascript" src="{% static 'js/buefy.min.js' %}"></script>
+<style>.vega-actions {display:none}</style>

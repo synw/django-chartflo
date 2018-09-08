@@ -1,0 +1,17 @@
+<div class="container-fluid">
+	<div class="navbar {% if navbar_class %}{{ navbar_class }}{% else %}is-dark{% endif %}">
+		<div class="navbar-brand">
+			<div class="navbar-item is-size-3 is-bold">{{ title }}</div>
+		</div>
+		<div class="navbar-menu">
+			<div class="navbar-end">
+				<div class="navbar-item" v-for="view in views">
+					<div class="button" v-html="view.name" 
+						v-bind:class="isActiveBtn(view.slug)"
+						@click="activateView(view.slug)">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

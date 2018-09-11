@@ -20,9 +20,9 @@
 <script type="text/javascript" src="{% static 'js/bokeh/bokeh.min.js' %}"></script>
 {% endif %}
 {% if altair is True %}
-<script type="text/javascript" src="{% static 'js/vegalite/vega.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/vegalite/vega-lite.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/vegalite/vega-embed.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
 {% endif %}
 {% if chartjs is True %}
 <script type="text/javascript" src="{% static 'js/chartjs/Chart.min.js' %}"></script>

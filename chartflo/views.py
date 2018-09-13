@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from collections import OrderedDict
 from django.views.generic import TemplateView
 from django.http.response import Http404
 from django.template.loader import get_template
@@ -56,9 +56,9 @@ class DashboardView(TemplateView):
         if self.dashboard.custom_header is True:
             header = "dashboards/" + self.dashboard.slug + "/header.html"
         context["dashboard_header_template"] = header
-        viewsq = self.dashboard.views.all()
+        viewsq = self.dashboard.views.all().order_by("order")
         views_templates = {}
-        views_titles = {}
+        views_titles = OrderedDict()
         active_view = None
         for view in viewsq:
             views_templates[view.slug] = "dashboards/" + self.dashboard.slug + \

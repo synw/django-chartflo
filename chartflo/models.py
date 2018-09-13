@@ -39,10 +39,12 @@ class DashboardView(models.Model):
     active = models.BooleanField(default=False, verbose_name=_(u'Active view'))
     dashboard = models.ForeignKey(Dashboard, verbose_name=_(u"Dashboard"),
                                   on_delete=models.CASCADE, related_name="views")
+    order = models.PositiveIntegerField(default=0, blank=False, null=False)
     
     class Meta:
         verbose_name = _(u'View')
         verbose_name_plural = _(u'Views')
+        ordering = ["order"]
 
     def __str__(self):
         return self.title

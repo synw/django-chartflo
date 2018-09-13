@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
+from adminsortable2.admin import SortableInlineAdminMixin
 from .models import Dashboard, DashboardView
 
 
-class DashboardViewInline(admin.TabularInline):
+class DashboardViewInline(SortableInlineAdminMixin, admin.TabularInline):
     model = DashboardView
-    fields = ["title", "slug", "active"]
+    fields = ["title", "slug", "active", "order"]
     prepopulated_fields = {'slug': ('title',), }
     extra = 0
 

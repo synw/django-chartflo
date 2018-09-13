@@ -1,2 +1,3 @@
 goerr
-dataswim
+django-vitevue
+django-admin-sortable2

@@ -24,5 +24,6 @@ setup(
     install_requires=[
         'goerr',
         "django-vitevue",
+        "django-admin-sortable2",
     ],
 )

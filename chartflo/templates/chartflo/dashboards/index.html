@@ -15,7 +15,6 @@
 {% if altair is True %}
 	{% get_altair_scripts dashboard_slug as scripts %}
 	{% for script in scripts %}
-		S{{ script }}
 		{% include script %}
 	{% endfor %}
 {% endif %}

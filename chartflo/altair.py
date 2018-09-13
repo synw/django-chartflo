@@ -32,7 +32,7 @@ def get_altair_script_(chart_obj, slug):
                         + '</div>');
         throw error;
     };\n"""
-    html += "const el = document.getElementById('" + slug + "');"
+    html += "var el = document.getElementById('" + slug + "');"
     html += "vegaEmbed('#" + slug + "', spec, embed_opt)"
     html += ".catch(error => showError(el, error));"
     html += '</script>'
